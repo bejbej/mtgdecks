@@ -21,7 +21,7 @@ module app {
 
         private createNewDeck = () => {
             var deck = this.DeckFactory.createDeck();
-            deck.name = "Unititled Deck";
+            deck.name = "New Deck";
             var mainboard = this.CardGroupFactory.createCardGroup();
             var sideboard = this.CardGroupFactory.createCardGroup();
             var maybeboard = this.CardGroupFactory.createCardGroup();

@@ -1,8 +1,5 @@
 <div ng-controller="DecksController as vm">
     <div class="list-group">
-        <a class="list-group-item" href="#/decks/new">Create a new deck</a>
-    </div>
-    <div class="list-group">
         <a class="list-group-item" href="#/decks/{{deck.id}}" ng-repeat="deck in vm.decks">{{deck.name}}</a>
     </div>
 </div>
