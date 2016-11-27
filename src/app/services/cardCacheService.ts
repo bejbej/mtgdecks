@@ -3,6 +3,8 @@ module app {
 
         private key = "cards";
 
+        constructor(private CardFactory: CardFactory) { }
+
         get = (name: string): Card => {
             var cache = JSON.parse(localStorage.getItem(this.key));
 
@@ -17,7 +19,7 @@ module app {
                 return undefined;
             }
 
-            return angular.merge(new Card(), cachedCard);
+            return angular.merge(this.CardFactory.createCard(), cachedCard);
         }
 
         add = (cards: Card[]): void => {

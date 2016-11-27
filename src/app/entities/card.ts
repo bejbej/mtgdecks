@@ -6,12 +6,14 @@ module app {
         cmc: number;
         multiverseId: number;
 
+        constructor(private config: IConfig) { }
+
         imageUrl = (): string => {
-            return "https://image.deckbrew.com/mtg/multiverseid/" + this.multiverseId + ".jpg";
+            return this.config.imagesUrl + this.multiverseId + ".jpg";
         }
 
         storeUrl = (): string => {
-            return "http://shop.tcgplayer.com/productcatalog/product/show?ProductName=" + this.name.replace(/ /g, "+");
+            return this.config.storeUrl + this.name.replace(/ /g, "+");
         }
     }
 }

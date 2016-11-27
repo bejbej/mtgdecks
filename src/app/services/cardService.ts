@@ -1,18 +1,15 @@
 module app {
     export class CardService {
-        private url: string;
         private cache: { [id: string] : Card; };
-        private types: string[];
 
         constructor(
-            config,
+            private config: IConfig,
             private $http: ng.IHttpService,
             private $q: ng.IQService,
-            private CardCacheService: CardCacheService) {
+            private CardCacheService: CardCacheService,
+            private CardFactory: CardFactory) {
             
             this.cache = {};
-            this.url = config.cardsUrl;
-            this.types = config.types;
         }
 
         getCards = (names: string[]): ng.IPromise<Card[]> => {
@@ -33,7 +30,7 @@ module app {
 
             var deferred = this.$q.defer();
 
-            var url = this.url + "?" + unknownNames.map(name => {
+            var url = this.config.cardsUrl + "?" + unknownNames.map(name => {
                 return "name=" + name.replace(/ /g, "+");
             }).join("&");
 
@@ -72,10 +69,10 @@ module app {
         };
 
         private mapApiCard = (apiData: IApiCard): Card => {
-            var card = new Card();
+            var card = this.CardFactory.createCard();
             card.name = apiData.name;
             card.cmc = apiData.cmc;
-            card.primaryType = this.types.filter(type => {
+            card.primaryType = this.config.types.filter(type => {
                 return apiData.types.indexOf(type) >= 0;
             })[0];
             card.multiverseId = apiData.editions.map(edition => {
