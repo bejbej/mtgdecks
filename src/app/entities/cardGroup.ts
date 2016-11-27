@@ -39,18 +39,40 @@ module app {
             }, 0);
         }
 
+        private combineDuplicateNames = (items: NameQuantityPair[]): NameQuantityPair[] => {
+            items = items.sort((a, b) => {
+                return a.name > b.name ? 1 : -1;
+            });
+            
+            var combinedItems = [];
+
+            for (var i = 0; i < items.length; ++i) {
+                var currentItem = items[i];
+                while (items[i + 1] !== undefined && currentItem.name.toLowerCase() === items[i + 1].name.toLowerCase()) {
+                    currentItem.quantity += items[i + 1].quantity;
+                    delete items[i + 1];
+                    ++i;
+                }
+                combinedItems.push(currentItem);
+            }
+            
+            return combinedItems;
+        }
+
         private parseCards = () => {
             this.failedCardNames = [];
 
-            var cards = this.cards.split("\n").map(text => {
-                var results = /^([\d]*)[x ]*(.*)$/.exec(text.trim());
-                var card = new Card();
-                card.name = results[2];
-                card.quantity = Number(results[1]);
-                return card;
+            var nameQuantityPairs = this.cards.split("\n").map(text => {
+                var results = /^([\d]*)[Xx ]*(.*)$/.exec(text.trim());
+                var nameQuantityPair = new NameQuantityPair();
+                nameQuantityPair.name = results[2];
+                nameQuantityPair.quantity = results[1] === "" ? 1 : Number(results[1]);
+                return nameQuantityPair;
             });
 
-            var names = cards.map(card => {
+            nameQuantityPairs = this.combineDuplicateNames(nameQuantityPairs);
+
+            var names = nameQuantityPairs.map(card => {
                 return card.name.trim();
             }).filter(name => {
                 return name && name.length > 2;
@@ -63,7 +85,7 @@ module app {
 
             this.CardService.getCards(names).then(cardDetails => {
                 var hydratedCards: Card[] = [];
-                cards.forEach(card => {
+                nameQuantityPairs.forEach(card => {
                     var matchingCard = cardDetails.filter(cardDetail => {
                         return cardDetail.name.toLowerCase() === card.name.toLowerCase();
                     })[0];
@@ -78,7 +100,7 @@ module app {
                 });
 
                 this.cardList = hydratedCards.sort((a, b) => {
-                    return a.name > b.name? 1 : -1;
+                    return a.name > b.name ? 1 : -1;
                 });
             });
         }
