@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html ng-app="app">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Deck</title>
+    <link rel="shortcut icon" href="images/favicon.ico">
+    
+    <link rel="stylesheet" href="styles/app.css">
+</head>
+
+<body>
+    <div class="navigation">
+        <div class="con">
+            <a href="#/decks/new">Build a New Deck</a>
+            <a href="#/decks">My Decks</a>
+        </div>
+    </div>
+
+    <div class="con padding">
+        <ng-view></ng-view>
+    </div>
+
+    <script src="scripts/lib.js"></script>
+    <script src="scripts/config.js"></script>
+    <script src="scripts/app.js"></script>
+</body>
+
+</html>
