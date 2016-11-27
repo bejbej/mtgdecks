@@ -2,6 +2,7 @@ module app {
     export class CardGroup {
         name: string;
         cardList: Card[];
+        failedCardNames: string[];
 
         private cards: string;
 
@@ -39,6 +40,8 @@ module app {
         }
 
         private parseCards = () => {
+            this.failedCardNames = [];
+
             var cards = this.cards.split("\n").map(text => {
                 var results = /^([\d]*)[x ]*(.*)$/.exec(text.trim());
                 var card = new Card();
@@ -66,8 +69,8 @@ module app {
                     })[0];
 
                     if (matchingCard === undefined) {
-                        console.log("can't find " + card.name);
-                        return null;
+                        this.failedCardNames.push(card.name);
+                        return;
                     }
 
                     matchingCard.quantity = card.quantity;

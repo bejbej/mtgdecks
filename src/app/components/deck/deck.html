@@ -6,9 +6,9 @@
         </div>
     </div>
 
-    <div class="panel panel-default">
+    <div class="panel panel-default" ng-if="vm.deck.cardGroups[0].cards.length > 0">
         <div class="panel-heading">Stats</div>
-        <div class="panel-body" ng-if="vm.deck.cardGroups[0].cards.length > 0">
+        <div class="panel-body">
             <stats cards="vm.deck.cardGroups[0].cardList"></stats>
         </div>
     </div>
