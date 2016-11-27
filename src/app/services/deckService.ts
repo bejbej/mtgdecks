@@ -58,12 +58,14 @@ module app {
 
             var payload = {
                 name: deck.name,
-                cardGroups: deck.cardGroups.map(cardGroup => {
-                    return {
-                        name: cardGroup.name,
-                        cards: cardGroup.getCards()
-                    };
-                })
+                data: {
+                    cardGroups: deck.cardGroups.map(cardGroup => {
+                        return {
+                            name: cardGroup.name,
+                            cards: cardGroup.getCards()
+                        };
+                    })
+                }
             };
 
             this.$http.post(this.url + "/" + deck.id, payload).then(() => {
@@ -77,7 +79,7 @@ module app {
             var deck = this.DeckFactory.createDeck();
             deck.id = apidata.id;
             deck.name = apidata.name;
-            deck.cardGroups = apidata.cardGroups.map(apiCardGroup =>{
+            deck.cardGroups = apidata.data.cardGroups.map(apiCardGroup => {
                 var cardGroup = this.CardGroupFactory.createCardGroup();
                 cardGroup.name = apiCardGroup.name;
                 cardGroup.setCards(apiCardGroup.cards);
