@@ -13,15 +13,12 @@ module app {
         }
 
         getCards = (names: string[]): ng.IPromise<Card[]> => {
-            var cachedCards = [];
+            var cachedCards = this.CardCacheService.get(names);
+
             var unknownNames = names.filter(name => {
-                var cachedCard = this.CardCacheService.get(name);
-                if (cachedCard === undefined) {
-                    return true;
-                } else {
-                    cachedCards.push(cachedCard);
-                    return false;
-                }
+                return !cachedCards.some(cachedCard => {
+                    return cachedCard.name.toLowerCase() === name.toLowerCase();
+                });
             });
 
             if (unknownNames.length === 0) {
