@@ -1,7 +1,7 @@
 <div class="panel panel-default" ng-controller="CardGroupController as vm">
     <div class="panel-heading">
         <span>{{vm.cardGroup.name}}</span>
-        <span class="badge">{{vm.cardGroup.count()}}</span>
+        <span class="badge" ng-if="!vm.isEditing">{{vm.cardGroup.count()}}</span>
         <button class="btn btn-default btn-xs" ng-if="!vm.isEditing" ng-click="vm.startEditing()">Edit</button>
         <button class="btn btn-default btn-xs" ng-if="vm.isEditing" ng-click="vm.applyChanges()">Apply Changes</button>
         <button class="btn btn-default btn-xs" ng-if="vm.isEditing" ng-click="vm.discardChanges()">Discard Changes</button>

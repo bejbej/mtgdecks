@@ -3,6 +3,7 @@
 
     angular.module('app', [
         'templates',
-        'ngRoute'
+        'ngRoute',
+        'puElasticInput'
     ]);
 }

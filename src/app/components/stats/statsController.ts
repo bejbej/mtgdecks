@@ -47,7 +47,7 @@ module app {
         }
 
         updateStats = (cards: Card[], x, y) => {
-            if (cards) {
+            if (cards && cards.length > 0) {
                 this.statGroups = this.createStatGroups(cards, this.categories);
             } else {
                 this.statGroups = [];

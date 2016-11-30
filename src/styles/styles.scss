@@ -91,3 +91,17 @@ textarea {
     position:absolute;
     height:300px;
 }
+
+.form-control.name-input {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 18px;
+    transition-duration: 0ms;
+    margin-left: -5px;
+    padding-left: 5px;
+    &:not(:hover):not(:focus):not(:active) {
+        background-color: transparent;
+        border-color: transparent;
+        box-shadow: transparent 0 0 0;
+    }
+}

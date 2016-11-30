@@ -1,14 +1,14 @@
 <div ng-controller="DeckController as vm">
-    <div class="navbar navbar-default">
-        <div class="navbar-brand">{{vm.deck.name}}</div>
-        <div class="navbar-form" style="display:none;">
+    <div class="panel panel-default" ng-if="vm.deck">
+        <div class="panel-heading form-inline">
+            <input class="form-control name-input" ng-model="vm.deck.name" pu-elastic-input />
             <button class="btn btn-default" ng-click="vm.deck.save()">Save Deck</button>
         </div>
     </div>
 
     <div class="panel panel-default" ng-if="vm.deck.cardGroups[0].cards.length > 0">
         <div class="panel-heading">Stats</div>
-        <div class="panel-body">
+        <div class="panel-body" ng-if="vm.deck.cardGroups[0].cardList.length > 0">
             <stats cards="vm.deck.cardGroups[0].cardList"></stats>
         </div>
     </div>
