@@ -68,7 +68,7 @@ module app {
                 }
             };
 
-            this.$http.post(this.url + "/" + deck.id, payload).then(() => {
+            this.$http.put(this.url + "/" + deck.id, payload).then(() => {
                 deferred.resolve();
             });
 
