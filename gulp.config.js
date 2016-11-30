@@ -1,59 +1,37 @@
-﻿module.exports = function() {
-    'use strict';
-
-    var srcDir = './src/',
-        app = srcDir + 'app/',
-        temp = './.tmp/',
-        typings = './typings/',
-        config = { // keep it alphabetical, yo
-            bower: {
-                json: require('./bower.json'),
-                directory: './bower_components',
-                ignorePath: '../'
-            },
-            build: './dist/',
-            client: srcDir,
-            config: app + 'config.js',
-            css: temp + 'styles.css',
+﻿module.exports = new function () {
+        this.dist = {
+            root: "./dist",
+            fonts: "./dist/fonts",
+            scripts: "./dist/scripts",
+            styles: "./dist/styles",
+            indexFile: "./dist/index.html",
+            cssFiles: "./dist/styles/*.css",
+            jsFiles: [
+                "./dist/scripts/lib.js",
+                "./dist/scripts/config.js",
+                "./dist/scripts/app.js"
+            ]
+        };
+        this.src = {
+            config: "./src/app/config.js",
             fonts: [
-                srcDir + 'fonts/**/*.*'
+                "./bower_components/bootstrap-sass/assets/fonts/bootstrap/*.*"
             ],
-            images: [
-                srcDir + 'images/**/*.*'
-            ],
-            index: srcDir + 'index.html',
-            js: [
-                temp + '**/app.js',
-                temp + '**/*.js',
-                app + '**/*.js',
-                '!' + app + 'config.js'
-            ],
-            sassVendorPaths: [
-                "bower_components/bootstrap-sass/assets/stylesheets"
-            ],
-            temp: temp,
+            index: "./src/index.html",
             templates: [
-                srcDir + 'app/**/*.html',
-                '!' + srcDir + 'index.html'
+                './src/app/**/*.html',
+                '!./src/app/index.html'
             ],
-            tsBase: [
-                app + 'app.module.ts',
-                app + '*.ts',
-                app + '**/*.ts',
-                typings + '**/*.ts'
+            typescript: [
+                "./src/app/app.module.ts",
+                "./src/app/**/*.ts",
+                "./typings/**/*.ts"
             ],
-            sass: srcDir + 'styles/styles.scss'
-        };
-
-    config.getWiredepDefaultOptions = function() {
-        var options = {
-            bowerJson: config.bower.json,
-            directory: config.bower.directory,
-            ignorePath: config.bower.ignorePath
-        };
-
-        return options;
-    };
-
-    return config;
-};
+            sass: [
+                "./src/styles/styles.scss"
+            ]
+        }
+        this.wiredepOptions = {
+            exclude: [/jquery/, /bootstrap-sass/]
+        }
+} ();
