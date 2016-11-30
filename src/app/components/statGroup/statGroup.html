@@ -1,0 +1,8 @@
+<div class="stat-group">
+    <h3>{{group.name}}</h3>
+    <div ng-repeat="stat in group.stats">
+        <span class="name">{{stat.name}}</span>
+        <span class="bar">{{"X".repeat(stat.value)}}</span>
+        <span class="value" ng-if="stat.value > 0">{{stat.value}}</span>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+<div class="panel panel-default" ng-controller="CardGroupController as vm">
+    <div class="panel-heading">
+        <span>{{vm.cardGroup.name}}</span>
+        <span class="badge">{{vm.cardGroup.count()}}</span>
+        <button class="btn btn-default btn-xs" ng-if="!vm.isEditing" ng-click="vm.startEditing()">Edit</button>
+        <button class="btn btn-default btn-xs" ng-if="vm.isEditing" ng-click="vm.applyChanges()">Apply Changes</button>
+        <button class="btn btn-default btn-xs" ng-if="vm.isEditing" ng-click="vm.discardChanges()">Discard Changes</button>
+    </div>
+    <div class="panel-body" ng-if="!vm.isEditing && vm.cardGroup.count() > 0">
+        <div class="row">
+            <div class="col-sm-4" ng-repeat="category in vm.categories">
+                <div class="card-group" ng-repeat="type in category.types" ng-if="vm.cardGroup.countByPrimaryType(type) > 0">
+                    <h3>{{type}} <span class="badge">{{vm.cardGroup.countByPrimaryType(type)}}</span></h3>
+                    <div ng-repeat="card in vm.cardGroup.getCardsByPrimaryType(type)">
+                        <span class="quantity">{{card.quantity}}</span>
+                        <a class="name" href="{{card.storeUrl()}}" target="_blank" card-preview="card.imageUrl()">{{card.name}}</a>
+                        <span class="price"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel-body" ng-if="vm.isEditing">
+        <form>
+            <div class="form-group">
+                <textarea class="form-control" ng-model="vm.cardsBlob"></textarea>
+            </div>
+            <button class="btn btn-default" type="button" ng-click="vm.applyChanges()">Apply Changes</button>
+            <button class="btn btn-default" type="button" ng-click="vm.discardChanges()">Discard Changes</button>
+        </form>
+    </div>
+</div>

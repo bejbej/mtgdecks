@@ -1,0 +1,9 @@
+{
+  "name": "mtg-decks",
+  "private": true,
+  "dependencies": {
+    "angular": "1.4.12",
+    "angular-route": "1.4.12",
+    "bootstrap-sass": "^3.3.7"
+  }
+}

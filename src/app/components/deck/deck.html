@@ -1,0 +1,19 @@
+<div ng-controller="DeckController as vm">
+    <div class="navbar navbar-default">
+        <div class="navbar-brand">{{vm.deck.name}}</div>
+        <div class="navbar-form" style="display:none;">
+            <button class="btn btn-default" ng-click="vm.deck.save()">Save Deck</button>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">Stats</div>
+        <div class="panel-body" ng-if="vm.deck.cardGroups[0].cards.length > 0">
+            <stats cards="vm.deck.cardGroups[0].cardList"></stats>
+        </div>
+    </div>
+
+    <div ng-repeat="cardGroup in vm.deck.cardGroups">
+        <card-group group="cardGroup"></card-group>
+    </div>
+</div>

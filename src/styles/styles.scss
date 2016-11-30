@@ -1,0 +1,89 @@
+$screen-xs: 10px;
+$screen-sm: 480px;
+
+@import "../../bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+
+body {
+    padding-bottom: 200px;
+    background-color: #334;
+}
+
+.con {
+    max-width: 1170px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.padding {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.quantity {
+    color: #aaa;
+    &::after {
+        content: "x";
+    }
+}
+
+textarea {
+    min-height: 200px;
+    resize: vertical;
+}
+
+.panel-heading:only-child {
+    border-bottom-width: 0;
+}
+
+.stat-group {
+    .name::after {
+        content: ":";
+    }
+    .bar {
+        background-color: #555;
+        color: #555;
+    }
+    .value {
+        color: #aaa;
+        &::before {
+            content: "(";
+        }
+        &::after {
+            content: ")";
+        }
+    }
+}
+
+.navbar a{
+    float: left;
+    height: 50px;
+    padding: 15px 15px;
+    font-size: 18px;
+    line-height: 20px;
+}
+
+.navigation {
+    background-color: #222;
+    height: 50px;
+    border-bottom: 1px solid black;
+    margin-bottom: 20px;
+
+    a {
+        float: left;
+        height: 50px;
+        padding: 15px 15px;
+        font-size: 18px;
+        line-height: 20px;
+
+        color: #9d9d9d;
+        
+        &:hover {
+            color: #fff;
+        }
+    }
+}
+
+#card-preview {
+    position:absolute;
+    height:300px;
+}
