@@ -3,10 +3,13 @@ module app {
 
         private key = "cards";
 
-        constructor(private CardFactory: CardFactory) { }
+        constructor(
+            private config: IConfig,
+            private CardFactory: CardFactory) { }
 
         get = (names: string[]): Card[] => {
             var cache = JSON.parse(localStorage.getItem(this.key));
+            var currentDate = new Date().getTime();
 
             if (!cache) {
                 cache = {};
@@ -14,19 +17,35 @@ module app {
                 return [];
             }
 
-            return names.map(name => {
+            var cards = names.map(name => {
                 return cache[name.toLowerCase()];
             }).filter(card => {
-                return card !== undefined;
+                if (card !== undefined) {
+                    card.date = currentDate;
+                    return true;
+                } else {
+                    return false;
+                }
             }).map(cachedCard => {
                 return angular.merge(this.CardFactory.createCard(), cachedCard);
             });
+
+            localStorage.setItem(this.key, JSON.stringify(cache));
+
+            return cards;
         }
 
         add = (cards: Card[]): void => {
+            if (this.config.cardCacheLimit === 0) {
+                return;
+            }
+
             var cache = JSON.parse(localStorage.getItem(this.key));
+            var currentDate = new Date().getTime();
+
             cards.map(card => {
                 return {
+                    date: currentDate,
                     name: card.name,
                     primaryType: card.primaryType,
                     cmc: card.cmc,
@@ -35,8 +54,24 @@ module app {
             }).forEach(card => {
                 cache[card.name.toLowerCase()] = card;
             });
+
+            var keys = Object.keys(cache);
+            if (keys.length > this.config.cardCacheLimit) {
+                var n = keys.length - this.config.cardCacheLimit;
+                var n = n > this.config.cardCacheLimit / 10 ? n : Math.ceil(this.config.cardCacheLimit / 10);
+                //console.log("removing " + n + " cards from the cache");
+                keys.sort((a, b) => {
+                    return cache[a].date - cache[b].date;
+                }).slice(0, n).forEach(key => {
+                    delete cache[key];
+                });
+            }
+
             localStorage.setItem(this.key, JSON.stringify(cache));
-            console.log("cache contains " + Object.keys(cache).length + " cards");
+            //console.log("cache contains " + Object.keys(cache).length + " cards");
+
+            var endDate = new Date().getTime();
+            //console.log("setting cache took " + Number(endDate - currentDate) + " ms");
         }
     }
 

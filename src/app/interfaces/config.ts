@@ -3,6 +3,7 @@ module app {
         types: string[]
         categories: ICategory[];
         statCategories: ICategory[];
+        cardCacheLimit: number;
         cardsUrl: string;
         decksUrl: string;
         imagesUrl: string;
