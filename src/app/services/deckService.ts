@@ -3,7 +3,7 @@ module app {
 
         private url: string;
 
-        constructor (
+        constructor(
             config: IConfig,
             private $http: ng.IHttpService,
             private $q: ng.IQService,
@@ -38,16 +38,18 @@ module app {
 
             var payload = {
                 name: deck.name,
-                cardGroups: deck.cardGroups.map(cardGroup => {
-                    return {
-                        name: cardGroup.name,
-                        cards: cardGroup.getCards()
-                    };
-                })
+                data: {
+                    cardGroups: deck.cardGroups.map(cardGroup => {
+                        return {
+                            name: cardGroup.name,
+                            cards: cardGroup.getCards()
+                        };
+                    })
+                }
             };
 
-            this.$http.post(this.url, payload).then(() => {
-                deferred.resolve();
+            this.$http.post<{id:number}>(this.url, payload).then(response => {
+                deferred.resolve(response.data.id);
             });
 
             return deferred.promise;
@@ -69,6 +71,16 @@ module app {
             };
 
             this.$http.put(this.url + "/" + deck.id, payload).then(() => {
+                deferred.resolve();
+            });
+
+            return deferred.promise;
+        }
+
+        public deleteDeck = (id: number): ng.IPromise<any> => {
+            var deferred = this.$q.defer();
+
+            this.$http.delete(this.url + "/" + id).then(() => {
                 deferred.resolve();
             });
 

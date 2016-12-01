@@ -5,8 +5,12 @@
         <div class="panel-heading form-inline">
             <input class="form-control name-input" ng-model="vm.deck.name" pu-elastic-input />
             <button class="btn btn-default" ng-click="vm.save()" ng-disabled="vm.isSaving">
-                {{ vm.isSaving ? "Saving" : "Save Deck" }}
+                {{ vm.isSaving ? "Saving" : vm.deck.id ? "Save Changes" : "Add to Cloud" }}
                 <pulse ng-if="vm.isSaving"></pulse>
+            </button>
+            <button class="btn btn-default" ng-click="vm.delete()" ng-if="vm.deck.id" ng-disabled="vm.isDeleting">
+                {{ vm.isDeleting ? "Removing" : "Remove from Cloud" }}
+                <pulse ng-if="vm.isDeleting"></pulse>
             </button>
         </div>
     </div>

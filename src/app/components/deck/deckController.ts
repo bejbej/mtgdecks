@@ -1,12 +1,17 @@
 module app {
 
+    interface IRouteParams {
+        id: number | string;
+    }
+
     class DeckController {
 
         public deck: Deck;
         public isSaving: boolean;
+        public isDeleting: boolean;
 
         constructor(
-            $routeParams: any,
+            $routeParams: IRouteParams,
             private DeckService: DeckService,
             private DeckFactory: DeckFactory,
             private CardGroupFactory: CardGroupFactory) {
@@ -25,6 +30,16 @@ module app {
             this.deck.save().finally(() => {
                 this.isSaving = false;
             });
+        }
+
+        private delete = () => {
+            var r = confirm("Are you sure you want to remove this deck from the cloud?");
+            if (r) {
+                this.isDeleting = true;
+                this.deck.delete().finally(() => {
+                    this.isDeleting = false;
+                });
+            }
         }
 
         private createNewDeck = () => {

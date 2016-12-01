@@ -4,7 +4,9 @@ module app {
         constructor(private $injector: ng.auto.IInjectorService) { }
 
         public createDeck(): Deck {
-            return new Deck(this.$injector.get<DeckService>("DeckService"));
+            return new Deck(
+                this.$injector.get<ng.IQService>("$q"),
+                this.$injector.get<DeckService>("DeckService"));
         }
     }
 
