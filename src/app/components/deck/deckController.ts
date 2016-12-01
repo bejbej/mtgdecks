@@ -3,6 +3,7 @@ module app {
     class DeckController {
 
         public deck: Deck;
+        public isSaving: boolean;
 
         constructor(
             $routeParams: any,
@@ -17,6 +18,13 @@ module app {
                     this.deck = deck;
                 });
             }
+        }
+
+        private save = () => {
+            this.isSaving = true;
+            this.deck.save().finally(() => {
+                this.isSaving = false;
+            });
         }
 
         private createNewDeck = () => {

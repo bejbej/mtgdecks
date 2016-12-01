@@ -1,8 +1,13 @@
 <div ng-controller="DeckController as vm">
+    <spinner class="light" ng-if="!vm.deck"></spinner>
+
     <div class="panel panel-default" ng-if="vm.deck">
         <div class="panel-heading form-inline">
             <input class="form-control name-input" ng-model="vm.deck.name" pu-elastic-input />
-            <button class="btn btn-default" ng-click="vm.deck.save()">Save Deck</button>
+            <button class="btn btn-default" ng-click="vm.save()" ng-disabled="vm.isSaving">
+                {{ vm.isSaving ? "Saving" : "Save Deck" }}
+                <pulse ng-if="vm.isSaving"></pulse>
+            </button>
         </div>
     </div>
 
