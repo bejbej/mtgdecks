@@ -2,6 +2,7 @@
     angular.module('app', [
         'templates',
         'ngRoute',
-        'puElasticInput'
+        'puElasticInput',
+        'ngLocationUpdate'
     ]);
 }

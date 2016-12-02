@@ -12,6 +12,7 @@ module app {
 
         constructor(
             $routeParams: IRouteParams,
+            private $location: any,
             private DeckService: DeckService,
             private DeckFactory: DeckFactory,
             private CardGroupFactory: CardGroupFactory) {
@@ -29,6 +30,7 @@ module app {
             this.isSaving = true;
             this.deck.save().finally(() => {
                 this.isSaving = false;
+                this.$location.update_path("/decks/" + this.deck.id);
             });
         }
 
@@ -38,6 +40,7 @@ module app {
                 this.isDeleting = true;
                 this.deck.delete().finally(() => {
                     this.isDeleting = false;
+                    this.$location.update_path("/decks/new");
                 });
             }
         }
