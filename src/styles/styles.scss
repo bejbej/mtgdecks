@@ -1,7 +1,4 @@
-$screen-xs: 10px;
-$screen-sm: 480px;
-$icon-font-path: "../fonts/";
-@import "../../bower_components/bootstrap-sass/assets/stylesheets/_bootstrap.scss";
+@import "./components/bootstrap.scss";
 
 @import "../../bower_components/SpinKit/scss/spinners/5-pulse.scss";
 @import "../../bower_components/SpinKit/scss/spinners/10-fading-circle.scss";
