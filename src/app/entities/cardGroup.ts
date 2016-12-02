@@ -62,12 +62,20 @@ module app {
         private parseCards = () => {
             this.failedCardNames = [];
 
-            var nameQuantityPairs = this.cards.split("\n").map(text => {
-                var results = /^([\d]*)[Xx ]*(.*)$/.exec(text.trim());
+            var nameQuantityPairs = this.cards.split("\n").filter(text => {
+                return text.trim().length > 0;
+            }).map(text => {
+                var results = /^(?:(\d)+[Xx]?\s)?\s*([^0-9]+)$/.exec(text.trim());
+                if (results === null) {
+                    this.failedCardNames.push(text);
+                    return undefined;
+                }
                 var nameQuantityPair = new NameQuantityPair();
                 nameQuantityPair.name = results[2];
-                nameQuantityPair.quantity = results[1] === "" ? 1 : Number(results[1]);
+                nameQuantityPair.quantity = Number(results[1] || 1);
                 return nameQuantityPair;
+            }).filter(item => {
+                return item != undefined;
             });
 
             nameQuantityPairs = this.combineDuplicateNames(nameQuantityPairs);
