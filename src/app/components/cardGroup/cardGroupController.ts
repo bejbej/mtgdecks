@@ -10,6 +10,7 @@ module app {
         categories: ICategory[];
         isEditing: boolean;
         cardsBlob: string;
+        form: ng.IFormController;
 
         constructor(
             $scope: scope,
@@ -26,7 +27,9 @@ module app {
         }
 
         applyChanges = (): void => {
-            this.cardGroup.setCards(this.cardsBlob);
+            if (this.form.$dirty) {
+                this.cardGroup.setCards(this.cardsBlob);
+            }
             this.isEditing = false;
         }
 
