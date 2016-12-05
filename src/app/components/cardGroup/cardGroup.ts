@@ -3,7 +3,8 @@ module app {
     class CardGroup implements ng.IDirective {
         restrict = "E";
         scope = {
-            group: "="
+            group: "=",
+            onChange: "="
         };
         templateUrl = "cardGroup/cardGroup.html";
     }

@@ -2,6 +2,7 @@ module app {
 
     interface scope extends ng.IScope {
         group: CardGroup;
+        onChange: Function;
     }
 
     class CardGroupController {
@@ -11,12 +12,14 @@ module app {
         isEditing: boolean;
         cardsBlob: string;
         form: ng.IFormController;
+        onChange: Function;
 
         constructor(
             $scope: scope,
             config: IConfig) {
                 
             this.cardGroup = $scope.group;
+            this.onChange = $scope.onChange;
             this.isEditing = false;
             this.categories = config.categories;
         }
@@ -29,6 +32,9 @@ module app {
         applyChanges = (): void => {
             if (this.form.$dirty) {
                 this.cardGroup.setCards(this.cardsBlob);
+                if (this.onChange) {
+                    this.onChange();
+                }
             }
             this.isEditing = false;
         }

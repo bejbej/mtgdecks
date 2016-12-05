@@ -3,9 +3,13 @@
 
     <div class="panel panel-default" ng-if="vm.deck">
         <div class="panel-heading form-inline">
-            <input class="form-control name-input" ng-model="vm.deck.name" pu-elastic-input />
-            <button class="btn btn-default" ng-click="vm.save()" ng-disabled="vm.isSaving">
-                {{ vm.isSaving ? "Saving" : vm.deck.id ? "Save Changes" : "Add to Cloud" }}
+            <input class="form-control name-input"
+                   ng-model="vm.deck.name"
+                   ng-model-options="{updateOn: 'blur'}"
+                   ng-change="vm.onChange()"
+                   pu-elastic-input />
+            <button class="btn btn-default" ng-click="vm.save()" ng-if="!vm.deck.id" ng-disabled="vm.isSaving">
+                {{ vm.isSaving ? "Syncing" : "Sync to Cloud" }}
                 <pulse ng-if="vm.isSaving"></pulse>
             </button>
             <button class="btn btn-default" ng-click="vm.delete()" ng-if="vm.deck.id" ng-disabled="vm.isDeleting">
@@ -23,6 +27,6 @@
     </div>
 
     <div ng-repeat="cardGroup in vm.deck.cardGroups">
-        <card-group group="cardGroup"></card-group>
+        <card-group group="cardGroup" on-change="vm.onChange"></card-group>
     </div>
 </div>

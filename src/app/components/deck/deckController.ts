@@ -26,6 +26,12 @@ module app {
             }
         }
 
+        private onChange = () => {
+            if (this.deck.id) {
+                this.deck.save();
+            }
+        }
+
         private save = () => {
             this.isSaving = true;
             this.deck.save().finally(() => {
