@@ -3,6 +3,8 @@
 @import "../../bower_components/SpinKit/scss/spinners/5-pulse.scss";
 @import "../../bower_components/SpinKit/scss/spinners/10-fading-circle.scss";
 
+@import "./components/lightbox.scss";
+
 .light>.sk-fading-circle>.sk-circle:before {
     background-color: white;
 }

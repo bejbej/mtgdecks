@@ -2,6 +2,10 @@ module app {
 
     class CardPreview implements ng.IDirective {
 
+        constructor(private config: IConfig) {
+
+        }
+
         getOffset = (el) => {
             var rect = el.getBoundingClientRect();
             var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
@@ -24,25 +28,31 @@ module app {
             img.src = url;
         }
 
-        hideCardPreview = (event): void => {
+        hideCardPreview = (): void => {
             var img: any = document.getElementById("card-preview");
-            img.src = "";
-            img.style.top = "-300px";
-            img.style.left ="-200px";
+            if (img) {
+                img.src = "";
+                img.style.top = "-300px";
+                img.style.left ="-200px";
+            }
         }
 
         restrict = "A";
-        scope = {
-            cardPreview: "="
-        };
-        link = (scope, elem, attr) => {
+        link = (scope, elem, attrs) => {
+            var url = scope.$eval(attrs.lightbox);
             elem[0].addEventListener("mouseover", event => {
-                this.showCardPreview(event, scope.cardPreview);
+                if (this.config.enableHover) {
+                    this.showCardPreview(event, url);
+                }
             });
 
-            elem[0].addEventListener("mouseleave", this.hideCardPreview);
+            elem[0].addEventListener("mouseleave", event => {
+                if (this.config.enableHover) {
+                    this.hideCardPreview();
+                }
+            });
         };
     }
 
-    angular.module("app").directive("cardPreview", () => new CardPreview());
+    angular.module("app").directive("cardPreview", (config: IConfig) => new CardPreview(config));
 }

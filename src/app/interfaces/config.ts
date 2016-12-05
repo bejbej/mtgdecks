@@ -8,5 +8,6 @@ module app {
         decksUrl: string;
         imagesUrl: string;
         storeUrl: string;
+        enableHover: boolean;
     }
 }

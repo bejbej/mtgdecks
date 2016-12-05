@@ -19,7 +19,7 @@
                     <h3>{{type}} <span class="badge">{{vm.cardGroup.countByPrimaryType(type)}}</span></h3>
                     <div ng-repeat="card in vm.cardGroup.getCardsByPrimaryType(type)">
                         <span class="quantity">{{card.quantity}}</span>
-                        <a class="name" href="{{card.storeUrl()}}" target="_blank" card-preview="card.imageUrl()">{{card.name}}</a>
+                        <a class="name" href="{{card.storeUrl()}}" card-preview="card.imageUrl()" lightbox="card.imageUrl()">{{card.name}}</a>
                         <span class="price"></span>
                     </div>
                 </div>
