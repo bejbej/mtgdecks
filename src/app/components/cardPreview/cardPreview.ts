@@ -39,9 +39,12 @@ module app {
 
         restrict = "A";
         link = (scope, elem, attrs) => {
-            var url = scope.$eval(attrs.lightbox);
+            var url: string;
             elem[0].addEventListener("mouseover", event => {
                 if (this.config.enableHover) {
+                    if (!url) {
+                        url = scope.$eval(attrs.lightbox);
+                    }
                     this.showCardPreview(event, url);
                 }
             });

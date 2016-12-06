@@ -19,8 +19,11 @@ module app {
 
         restrict = "A";
         link = (scope, elem, attrs) => {
-            var url = scope.$eval(attrs.lightbox);
+            var url: string;
             elem[0].addEventListener("click", event => {
+                if (!url) {
+                    url = scope.$eval(attrs.lightbox);
+                }
                 this.showLightbox(event, url);
             });
         };

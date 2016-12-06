@@ -1,6 +1,6 @@
 <div class="panel panel-default" ng-controller="CardGroupController as vm">
     <div class="panel-heading">
-        <span>{{vm.cardGroup.name}}</span>
+        <span>{{::vm.cardGroup.name}}</span>
         <span class="badge" ng-if="!vm.isEditing">{{vm.cardGroup.count()}}</span>
         <button class="btn btn-default btn-xs" ng-if="!vm.isEditing" ng-click="vm.startEditing()">Edit</button>
         <button class="btn btn-default btn-xs" ng-if="vm.isEditing" ng-click="vm.applyChanges()">Apply Changes</button>
@@ -9,17 +9,17 @@
     <div class="alert alert-danger margin" ng-if="vm.cardGroup.failedCards.length > 0">
         Couldn't identify the following cards:
         <ul>
-            <li ng-repeat="card in vm.cardGroup.failedCards">{{card.name}}</li>
+            <li ng-repeat="card in ::vm.cardGroup.failedCards">{{::card.name}}</li>
         </ul>
     </div>
     <div class="margin" ng-if="!vm.isEditing && vm.cardGroup.count() > 0">
         <div class="row">
-            <div class="col-sm-4" ng-repeat="category in vm.categories">
-                <div class="card-group" ng-repeat="type in category.types" ng-if="vm.cardGroup.countByPrimaryType(type) > 0">
-                    <h3>{{type}} <span class="badge">{{vm.cardGroup.countByPrimaryType(type)}}</span></h3>
+            <div class="col-sm-4" ng-repeat="category in ::vm.categories">
+                <div class="card-group" ng-repeat="type in ::category.types" ng-if="vm.cardGroup.countByPrimaryType(type) > 0">
+                    <h3>{{::type}} <span class="badge">{{vm.cardGroup.countByPrimaryType(type)}}</span></h3>
                     <div ng-repeat="card in vm.cardGroup.getCardsByPrimaryType(type)">
-                        <span class="quantity">{{card.quantity}}</span>
-                        <a class="name" href="{{card.storeUrl()}}" card-preview="card.imageUrl()" lightbox="card.imageUrl()">{{card.name}}</a>
+                        <span class="quantity">{{::card.quantity}}</span>
+                        <a class="name" href="{{::card.storeUrl()}}" card-preview="card.imageUrl()" lightbox="card.imageUrl()">{{::card.name}}</a>
                         <span class="price"></span>
                     </div>
                 </div>
