@@ -28,7 +28,7 @@
     </div>
     <form name="vm.form" class="margin" ng-if="vm.isEditing">
         <div class="form-group">
-            <textarea class="form-control" ng-model="vm.cardsBlob"></textarea>
+            <textarea class="form-control" ng-model="vm.cardsBlob" ng-model-options="{updateOn: 'blur'}"></textarea>
         </div>
         <button class="btn btn-default" type="button" ng-click="vm.applyChanges()">Apply Changes</button>
         <button class="btn btn-default" type="button" ng-click="vm.discardChanges()">Discard Changes</button>

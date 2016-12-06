@@ -21,12 +21,12 @@
 
     <div class="panel panel-default" ng-if="vm.deck.cardGroups[0].cards.length > 0">
         <div class="panel-heading">Stats</div>
-        <div class="panel-body" ng-if="vm.deck.cardGroups[0].cards.length > 0">
+        <div class="panel-body">
             <stats cards="vm.deck.cardGroups[0].cards"></stats>
         </div>
     </div>
 
-    <div ng-repeat="cardGroup in vm.deck.cardGroups">
+    <div ng-repeat="cardGroup in ::vm.deck.cardGroups">
         <card-group group="cardGroup" on-change="vm.onChange"></card-group>
     </div>
 </div>
