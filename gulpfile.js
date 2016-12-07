@@ -34,7 +34,7 @@ gulp.task('css', function() {
     return gulp
         .src(config.src.sass)
         .pipe($.plumber())
-        .pipe($.sass())
+        .pipe($.sass({includePaths: config.src.sassLib}))
         .pipe($.csso())
         .pipe($.concat("app.css"))
         .pipe(gulp.dest(config.dist.styles));

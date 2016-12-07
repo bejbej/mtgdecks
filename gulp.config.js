@@ -25,6 +25,10 @@
                 "./src/app/**/*.ts",
                 "./typings/**/*.ts"
             ],
+            sassLib: [
+                "./bower_components/bootstrap-sass/assets/stylesheets",
+                "./bower_components/SpinKit/scss"
+            ],
             sass: [
                 "./src/styles/styles.scss"
             ]
