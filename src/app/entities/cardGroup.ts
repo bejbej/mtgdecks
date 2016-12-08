@@ -22,26 +22,8 @@ module app {
             return this.cardBlob;
         }
 
-        public getCardsByPrimaryType = (type): Card[] => {
-            return this.cards.filter(card => {
-                return card.primaryType === type;
-            });
-        }
-
-        public getCardsByCmc = (cmc): Card[] => {
-            return this.cards.filter(card => {
-                return card.cmc = cmc;
-            });
-        }
-
         public count = (): Number => {
             return this.cards.reduce((a, b) => {
-                return a + Number(b.quantity);
-            }, 0);
-        }
-
-        public countByPrimaryType = (type): Number => {
-            return this.getCardsByPrimaryType(type).reduce((a, b) => {
                 return a + Number(b.quantity);
             }, 0);
         }

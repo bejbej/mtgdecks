@@ -13,7 +13,7 @@ module app {
         form: ng.IFormController;
         onChange: Function;
         showToolbar: boolean;
-        view: string = "type";
+        view: string = "group-by-type";
 
         constructor(
             $scope: scope,
@@ -41,11 +41,6 @@ module app {
 
         discardChanges = (): void => {
             this.isEditing = false;
-        }
-
-        changeView = (view: string): void => {
-            this.view = view;
-            this.showToolbar = false;
         }
     }
 

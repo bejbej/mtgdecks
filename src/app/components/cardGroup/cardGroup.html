@@ -13,11 +13,11 @@
     </div>
     <div class="radio-group" ng-if="!vm.isEditing && vm.showToolbar">
         <label>
-            <input type="radio" ng-model="vm.view" value="cmc" ng-click="vm.showToolbar = false"/>
+            <input type="radio" ng-model="vm.view" value="group-by-cmc" ng-click="vm.showToolbar = false"/>
             Converted Mana Cost
         </label>
         <label>
-            <input type="radio" ng-model="vm.view" value="type" ng-click="vm.showToolbar = false"/>
+            <input type="radio" ng-model="vm.view" value="group-by-type" ng-click="vm.showToolbar = false"/>
             Card Type
         </label>
     </div>
@@ -28,8 +28,7 @@
         </ul>
     </div>
     <div ng-if="!vm.isEditing && vm.cardGroup.cards.length > 0">
-        <group-by-type cards="vm.cardGroup.cards" ng-if="vm.view === 'type'"></group-by-type>
-        <group-by-cmc cards="vm.cardGroup.cards" ng-if="vm.view === 'cmc'"></group-by-cmc>
+        <directive-container directive="vm.view" cards="vm.cardGroup.cards"></directive-container>
     </div>
     <form name="vm.form" class="margin" ng-if="vm.isEditing">
         <div class="form-group">
