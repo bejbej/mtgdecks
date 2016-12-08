@@ -28,6 +28,12 @@ module app {
             });
         }
 
+        public getCardsByCmc = (cmc): Card[] => {
+            return this.cards.filter(card => {
+                return card.cmc = cmc;
+            });
+        }
+
         public count = (): Number => {
             return this.cards.reduce((a, b) => {
                 return a + Number(b.quantity);

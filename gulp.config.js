@@ -14,7 +14,9 @@
         };
         this.src = {
             config: "./src/app/config.js",
-            fonts: [],
+            fonts: [
+                "./bower_components/bootstrap-sass/assets/fonts/bootstrap/*.*"
+            ],
             index: "./src/index.html",
             templates: [
                 './src/app/**/*.html',

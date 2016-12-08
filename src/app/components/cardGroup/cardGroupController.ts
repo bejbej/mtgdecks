@@ -8,11 +8,12 @@ module app {
     class CardGroupController {
 
         cardGroup: CardGroup;
-        categories: ICategory[];
         isEditing: boolean;
         cardsBlob: string;
         form: ng.IFormController;
         onChange: Function;
+        showToolbar: boolean;
+        view: string = "type";
 
         constructor(
             $scope: scope,
@@ -21,7 +22,6 @@ module app {
             this.cardGroup = $scope.group;
             this.onChange = $scope.onChange;
             this.isEditing = false;
-            this.categories = config.categories;
         }
 
         startEditing = (): void => {
@@ -41,6 +41,11 @@ module app {
 
         discardChanges = (): void => {
             this.isEditing = false;
+        }
+
+        changeView = (view: string): void => {
+            this.view = view;
+            this.showToolbar = false;
         }
     }
 

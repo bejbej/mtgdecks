@@ -1,0 +1,14 @@
+<div class="margin" style="margin-top: 0px">
+    <div class="row">
+        <div class="col-sm-4" ng-repeat="column in columns">
+            <div class="card-group" ng-repeat="row in ::column">
+                <h3>{{::row.name}} <span class="badge">{{::row.numberOfCards}}</span></h3>
+                <div ng-repeat="card in ::row.cards">
+                    <span class="quantity">{{::card.quantity}}</span>
+                    <a class="name" href="{{::card.storeUrl()}}" card-preview="card.imageUrl()" lightbox="card.imageUrl()">{{::card.name}}</a>
+                    <span class="price"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

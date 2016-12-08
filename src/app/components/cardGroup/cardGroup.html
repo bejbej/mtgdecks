@@ -1,10 +1,25 @@
 <div class="panel panel-default" ng-controller="CardGroupController as vm">
-    <div class="panel-heading">
+    <div class="panel-heading" ng-click="vm.showToolbar = !vm.showToolbar">
         <span>{{::vm.cardGroup.name}}</span>
-        <span class="badge" ng-if="!vm.isEditing">{{vm.cardGroup.count()}}</span>
-        <button class="btn btn-default btn-xs" ng-if="!vm.isEditing" ng-click="vm.startEditing()">Edit</button>
-        <button class="btn btn-default btn-xs" ng-if="vm.isEditing" ng-click="vm.applyChanges()">Apply Changes</button>
-        <button class="btn btn-default btn-xs" ng-if="vm.isEditing" ng-click="vm.discardChanges()">Discard Changes</button>
+        <span ng-if="!vm.isEditing">
+            <span class="badge" ng-if="!vm.isEditing">{{vm.cardGroup.count()}}</span>
+            <button class="btn btn-default btn-xs" ng-click="vm.startEditing(); $event.stopPropagation();">Edit</button>
+            <span class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': vm.showToolbar, 'glyphicon-chevron-down': !vm.showToolbar}" ng-if="vm.cardGroup.cards.length > 0"></span>
+        </span>
+        <span ng-if="vm.isEditing">
+            <button class="btn btn-default btn-xs" ng-click="vm.applyChanges(); $event.stopPropagation();">Apply Changes</button>
+            <button class="btn btn-default btn-xs" ng-click="vm.discardChanges(); $event.stopPropagation();">Discard Changes</button>
+        </span>
+    </div>
+    <div class="radio-group" ng-if="!vm.isEditing && vm.showToolbar">
+        <label>
+            <input type="radio" ng-model="vm.view" value="cmc" ng-click="vm.showToolbar = false"/>
+            Converted Mana Cost
+        </label>
+        <label>
+            <input type="radio" ng-model="vm.view" value="type" ng-click="vm.showToolbar = false"/>
+            Card Type
+        </label>
     </div>
     <div class="alert alert-danger margin" ng-if="vm.cardGroup.failedCards.length > 0">
         Couldn't identify the following cards:
@@ -12,19 +27,9 @@
             <li ng-repeat="card in ::vm.cardGroup.failedCards">{{::card.name}}</li>
         </ul>
     </div>
-    <div class="margin" ng-if="!vm.isEditing && vm.cardGroup.count() > 0">
-        <div class="row">
-            <div class="col-sm-4" ng-repeat="category in ::vm.categories">
-                <div class="card-group" ng-repeat="type in ::category.types" ng-if="vm.cardGroup.countByPrimaryType(type) > 0">
-                    <h3>{{::type}} <span class="badge">{{vm.cardGroup.countByPrimaryType(type)}}</span></h3>
-                    <div ng-repeat="card in vm.cardGroup.getCardsByPrimaryType(type)">
-                        <span class="quantity">{{::card.quantity}}</span>
-                        <a class="name" href="{{::card.storeUrl()}}" card-preview="card.imageUrl()" lightbox="card.imageUrl()">{{::card.name}}</a>
-                        <span class="price"></span>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div ng-if="!vm.isEditing && vm.cardGroup.cards.length > 0">
+        <group-by-type cards="vm.cardGroup.cards" ng-if="vm.view === 'type'"></group-by-type>
+        <group-by-cmc cards="vm.cardGroup.cards" ng-if="vm.view === 'cmc'"></group-by-cmc>
     </div>
     <form name="vm.form" class="margin" ng-if="vm.isEditing">
         <div class="form-group">
