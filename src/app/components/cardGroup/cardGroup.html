@@ -1,17 +1,18 @@
 <div class="panel panel-default" ng-controller="CardGroupController as vm">
-    <div class="panel-heading" ng-click="vm.showToolbar = !vm.showToolbar">
+    <div class="panel-heading" ng-if="!vm.isEditing" ng-click="vm.showToolbar = !vm.showToolbar">
         <span>{{::vm.cardGroup.name}}</span>
         <span ng-if="!vm.isEditing">
             <span class="badge" ng-if="!vm.isEditing">{{vm.cardGroup.count()}}</span>
             <button class="btn btn-default btn-xs" ng-click="vm.startEditing(); $event.stopPropagation();">Edit</button>
             <span class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': vm.showToolbar, 'glyphicon-chevron-down': !vm.showToolbar}" ng-if="vm.cardGroup.cards.length > 0"></span>
         </span>
-        <span ng-if="vm.isEditing">
-            <button class="btn btn-default btn-xs" ng-click="vm.applyChanges(); $event.stopPropagation();">Apply Changes</button>
-            <button class="btn btn-default btn-xs" ng-click="vm.discardChanges(); $event.stopPropagation();">Discard Changes</button>
-        </span>
     </div>
-    <div class="radio-group" ng-if="!vm.isEditing && vm.showToolbar">
+    <div class="panel-heading" ng-if="vm.isEditing">
+        <span>{{::vm.cardGroup.name}}</span>
+        <button class="btn btn-default btn-xs" ng-click="vm.applyChanges()">Apply Changes</button>
+        <button class="btn btn-default btn-xs" ng-click="vm.discardChanges()">Discard Changes</button>
+    </div>
+    <div class="radio-group" ng-if="vm.cardGroup.cards.length > 0 && !vm.isEditing && vm.showToolbar">
         <label>
             <input type="radio" ng-model="vm.view" value="group-by-cmc" ng-click="vm.showToolbar = false"/>
             Converted Mana Cost
