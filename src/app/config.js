@@ -5,7 +5,7 @@
     ],
     cardCacheLimit: 1000,
     cardsUrl: "https://api.deckbrew.com/mtg/cards",
-    decksUrl: "https://uit.pythonanywhere.com/deck/default/stashes",
+    decksUrl: "https://mtgdecks-api.herokuapp.com/api/decks",
     imagesUrl: "https://image.deckbrew.com/mtg/multiverseid/",
     storeUrl: "http://shop.tcgplayer.com/productcatalog/product/show?ProductName="
 };

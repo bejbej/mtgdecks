@@ -25,13 +25,13 @@ module app {
         }
 
         startEditing = (): void => {
-            this.cardsBlob = this.cardGroup.getCards();
+            this.cardsBlob = this.cardGroup.getCardBlob();
             this.isEditing = true;
         }
 
         applyChanges = (): void => {
             if (this.form.$dirty) {
-                this.cardGroup.setCards(this.cardsBlob);
+                this.cardGroup.setCardBlob(this.cardsBlob);
                 if (this.onChange) {
                     this.onChange();
                 }

@@ -38,14 +38,12 @@ module app {
 
             var payload = {
                 name: deck.name,
-                data: {
-                    cardGroups: deck.cardGroups.map(cardGroup => {
-                        return {
-                            name: cardGroup.name,
-                            cards: cardGroup.getCards()
-                        };
-                    })
-                }
+                cardGroups: deck.cardGroups.map(cardGroup => {
+                    return {
+                        name: cardGroup.name,
+                        cardBlob: cardGroup.getCardBlob()
+                    };
+                })
             };
 
             this.$http.post<{id:number}>(this.url, payload).then(response => {
@@ -60,14 +58,12 @@ module app {
 
             var payload = {
                 name: deck.name,
-                data: {
-                    cardGroups: deck.cardGroups.map(cardGroup => {
-                        return {
-                            name: cardGroup.name,
-                            cards: cardGroup.getCards()
-                        };
-                    })
-                }
+                cardGroups: deck.cardGroups.map(cardGroup => {
+                    return {
+                        name: cardGroup.name,
+                        cardBlob: cardGroup.getCardBlob()
+                    };
+                })
             };
 
             this.$http.put(this.url + "/" + deck.id, payload).then(() => {
@@ -91,10 +87,10 @@ module app {
             var deck = this.DeckFactory.createDeck();
             deck.id = apidata.id;
             deck.name = apidata.name;
-            deck.cardGroups = apidata.data.cardGroups.map(apiCardGroup => {
+            deck.cardGroups = apidata.cardGroups.map(apiCardGroup => {
                 var cardGroup = this.CardGroupFactory.createCardGroup();
                 cardGroup.name = apiCardGroup.name;
-                cardGroup.setCards(apiCardGroup.cards);
+                cardGroup.setCardBlob(apiCardGroup.cardBlob);
                 return cardGroup;
             });
             return deck;

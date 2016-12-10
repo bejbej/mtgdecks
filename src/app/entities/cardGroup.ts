@@ -12,13 +12,13 @@ module app {
             this.cardBlob = "";
         }
 
-        public setCards = (cards: string): void => {
+        public setCardBlob = (cards: string): void => {
             var nameQuantityPairs = this.getNameQuantityPairs(cards);
             this.loadCards(nameQuantityPairs);
             this.cardBlob = this.formatCardBlob(nameQuantityPairs);
         }
 
-        public getCards = (): string => {
+        public getCardBlob = (): string => {
             return this.cardBlob;
         }
 
