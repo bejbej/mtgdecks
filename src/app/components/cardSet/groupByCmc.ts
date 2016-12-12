@@ -7,31 +7,31 @@ module app {
     class GroupByCmc implements ng.IDirective {
         
         private groupByCmc = (cards: Card[]): CardSet[][] => {
-            var columns = [
-                [0, 1, 2],
-                [3, 4, 5],
-                [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16],
-            ];
 
-            return columns.map(column => {
-                return column.reduce((array, cmc) => {
-                    var cardSet = new CardSet();
-                    cardSet.name = cmc.toString() + " drop";
-                    cardSet.cards = cards.filter(card => {
-                        return card.cmc === cmc;
-                    });
-                    cardSet.numberOfCards = cardSet.cards.reduce((count, card) => {
-                        return count + card.quantity;
-                    }, 0);
+            var sets = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
-                    if (cardSet.cards.length > 0) {
-                        array.push(cardSet);
-                    }
+            var cardSets = sets.reduce((array, cmc) => {
+                var cardSet = new CardSet();
+                cardSet.name = cmc.toString() + " drop";
+                cardSet.cards = cards.filter(card => {
+                    return card.cmc === cmc;
+                });
+                cardSet.numberOfCards = cardSet.cards.reduce((count, card) => {
+                    return count + card.quantity;
+                }, 0);
 
-                    return array;
-                }, []);
+                if (cardSet.cards.length > 0) {
+                    array.push(cardSet);
+                }
+
+                return array;
+            }, []);
+
+            return new GroupEvenly().exec(cardSets, 3, cardSet => {
+                // Add extraS to the size to account for the header
+                return cardSet.cards.length + 4;
             });
-        }
+        } 
 
         restrict = "E";
         scope = {
