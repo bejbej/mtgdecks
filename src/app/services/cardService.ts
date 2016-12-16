@@ -77,7 +77,7 @@ module app {
             }).sort((a, b) => {
                 return a - b;
             }).pop();
-
+            card.color = apiData.colors === undefined ? "colorless" : apiData.colors.length > 1 ? "multicolored" : apiData.colors[0];
             return card;
         }
     }

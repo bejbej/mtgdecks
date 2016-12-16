@@ -2,10 +2,18 @@ module app {
     export class CardCacheService {
 
         private key = "cards";
+        private versionKey = "cards-version";
+        private version = "1";
 
         constructor(
             private config: IConfig,
-            private CardFactory: CardFactory) { }
+            private CardFactory: CardFactory) {
+            
+            if(localStorage.getItem(this.versionKey) !== this.version) {
+                localStorage.removeItem(this.key);
+                localStorage.setItem(this.versionKey, this.version);
+            }
+        }
 
         get = (names: string[]): Card[] => {
             var cache = JSON.parse(localStorage.getItem(this.key));
@@ -49,7 +57,8 @@ module app {
                     name: card.name,
                     primaryType: card.primaryType,
                     cmc: card.cmc,
-                    multiverseId: card.multiverseId
+                    multiverseId: card.multiverseId,
+                    color: card.color
                 };
             }).forEach(card => {
                 cache[card.name.toLowerCase()] = card;

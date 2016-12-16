@@ -14,12 +14,16 @@
     </div>
     <div class="radio-group" ng-if="vm.cardGroup.cards.length > 0 && !vm.isEditing && vm.showToolbar">
         <label>
-            <input type="radio" ng-model="vm.view" value="group-by-cmc" ng-click="vm.showToolbar = false"/>
-            Converted Mana Cost
-        </label>
-        <label>
             <input type="radio" ng-model="vm.view" value="group-by-type" ng-click="vm.showToolbar = false"/>
             Card Type
+        </label>
+        <label>
+            <input type="radio" ng-model="vm.view" value="group-by-color" ng-click="vm.showToolbar = false"/>
+            Color
+        </label>
+        <label>
+            <input type="radio" ng-model="vm.view" value="group-by-cmc" ng-click="vm.showToolbar = false"/>
+            Converted Mana Cost
         </label>
     </div>
     <div class="alert alert-danger margin" ng-if="vm.cardGroup.failedCards.length > 0">

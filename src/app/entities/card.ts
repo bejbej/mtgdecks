@@ -1,5 +1,6 @@
 module app {
     export class Card {
+        color: string;
         name: string;
         quantity: number;
         primaryType: string;
