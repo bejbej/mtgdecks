@@ -38,21 +38,32 @@ module app {
         }
 
         restrict = "A";
-        link = (scope, elem, attrs) => {
+        link = (scope: ng.IScope, elem: Element[], attrs) => {
             var url: string;
-            elem[0].addEventListener("mouseover", event => {
+
+            var mouseOver = (event) => {
                 if (this.config.enableHover) {
                     if (!url) {
                         url = scope.$eval(attrs.lightbox);
                     }
                     this.showCardPreview(event, url);
                 }
-            });
+            }
 
-            elem[0].addEventListener("mouseleave", event => {
+            var mouseLeave = (event) => {
                 if (this.config.enableHover) {
                     this.hideCardPreview();
                 }
+            }
+
+            elem[0].addEventListener("mouseover", mouseOver);
+
+            elem[0].addEventListener("mouseleave", mouseLeave);
+
+            scope.$on("$destroy", () => {
+                this.hideCardPreview();
+                elem[0].removeEventListener("mouseover", mouseOver);
+                elem[0].removeEventListener("mousleave", mouseLeave);
             });
         };
     }
