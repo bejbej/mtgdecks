@@ -1,12 +1,9 @@
 module app {
     export interface IApiCard {
         name: string;
-        types: string[];
-        colors: string[];
+        primaryType: string;
+        color: string;
         cmc: number;
-        editions: {
-            multiverse_id: number;
-        }[];
-        store_url: string;
+        multiverseId: number;
     }
 }

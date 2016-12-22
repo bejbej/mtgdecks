@@ -28,13 +28,25 @@ module app {
             }, 0);
         }
 
-        private convertToTitleCase = (name:string): string => {
-            return name.replace(/[^\s-]+/g, text => {
-                if (["a", "an", "of", "the", "to"].indexOf(text) >= 0) {
-                    return text;
-                }
-                return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
-            });
+        private formatName = (name: string): string => {
+            var convertToTitleCase = (name:string): string => {
+                return name.replace(/[^\s-]+/g, (text, index) => {
+                    if (index > 0 && ["a", "an", "and", "but", "from", "in" ,"into", "of", "or", "the", "to", "with"].indexOf(text.toLowerCase()) >= 0) {
+                        return text.toLowerCase();
+                    }
+                    return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
+                });
+            }
+
+            var formatSplitCardName = (name: string):string => {
+                return name.replace(/\s*[\/\\]{2}\s*/, " \/\/ ");
+            }
+
+            return [
+                name => name.trim(),
+                formatSplitCardName,
+                convertToTitleCase
+            ].reduce((name, func) => func(name), name);
         }
 
         private getNameQuantityPairs = (cardBlob: string): NameQuantityPair[] => {
@@ -45,7 +57,7 @@ module app {
                     card.name = text;
                 } else {
                     card.quantity = Number(results[1] || 1);
-                    card.name = this.convertToTitleCase(results[2].trim());
+                    card.name = this.formatName(results[2]);
                 }
                 return card;
             }).reduce((a, b) => {

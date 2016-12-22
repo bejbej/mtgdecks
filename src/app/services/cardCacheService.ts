@@ -1,4 +1,9 @@
 module app {
+    interface ICardCacheResponse {
+        cards: Card[];
+        failedNames: string[];
+    }
+
     export class CardCacheService {
 
         private key = "cards";
@@ -15,32 +20,40 @@ module app {
             }
         }
 
-        get = (names: string[]): Card[] => {
+        get = (names: string[]): ICardCacheResponse => {
             var cache = JSON.parse(localStorage.getItem(this.key));
             var currentDate = new Date().getTime();
 
             if (!cache) {
                 cache = {};
                 localStorage.setItem(this.key, JSON.stringify(cache));
-                return [];
+                return {
+                    cards: [],
+                    failedNames: names
+                };
             }
 
-            var cards = names.map(name => {
-                return cache[name.toLowerCase()];
-            }).filter(card => {
-                if (card !== undefined) {
-                    card.date = currentDate;
-                    return true;
+            var result = {
+                cards: [],
+                failedNames: []
+            };
+
+            var result = names.reduce((result, name) => {
+                var cachedCard = cache[name.toLowerCase()];
+                if (cachedCard === undefined) {
+                    result.failedNames.push(name);
                 } else {
-                    return false;
+                    cachedCard.date = currentDate;
+                    var card = angular.merge(this.CardFactory.createCard(), cachedCard);
+                    delete card.date;
+                    result.cards.push(card);
                 }
-            }).map(cachedCard => {
-                return angular.merge(this.CardFactory.createCard(), cachedCard);
-            });
+                return result;
+            }, result);
 
             localStorage.setItem(this.key, JSON.stringify(cache));
 
-            return cards;
+            return result;
         }
 
         add = (cards: Card[]): void => {
