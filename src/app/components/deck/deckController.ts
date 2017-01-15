@@ -19,14 +19,21 @@ module app {
 
             if ($routeParams.id === "new") {
                 this.deck = this.createNewDeck();
+                this.updateTitle();
             } else {
                 this.DeckService.getDeck($routeParams.id).then(deck => {
                     this.deck = deck;
+                    this.updateTitle();
                 });
             }
         }
 
+        private updateTitle = () => {
+            document.title = this.deck.name;
+        }
+
         private onChange = () => {
+            this.updateTitle();
             if (this.deck.id) {
                 this.deck.save();
             }
