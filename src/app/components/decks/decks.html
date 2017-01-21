@@ -1,6 +1,12 @@
 <div ng-controller="DecksController as vm">
-    <spinner class="light" ng-if="!vm.decks"></spinner>
     <div class="list-group">
-        <a class="list-group-item" href="#/decks/{{::deck.id}}" ng-repeat="deck in ::vm.decks">{{::deck.name}}</a>
+        <a class="list-group-item" href="#/decks/new">
+            <span class="glyphicon glyphicon-plus"></span>
+            Build a New Deck
+        </a>
+    </div>
+    <spinner class="light" ng-if="vm.isSearching"></spinner>
+    <div class="list-group">
+        <a class="list-group-item" href="#/decks/{{::deck.id}}" ng-repeat="deck in vm.decks">{{::deck.name}}</a>
     </div>
 </div>

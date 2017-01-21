@@ -3,6 +3,7 @@ module app {
         id: number;
         name: string;
         cardGroups: CardGroup[];
+        owners: string[];
 
         constructor(
             private $q: ng.IQService,

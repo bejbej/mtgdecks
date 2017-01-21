@@ -17,6 +17,7 @@
     "bower": "*",
     "del": "^1.2.0",
     "event-stream": "^3.3.4",
+    "express": "^4.14.0",
     "gulp": "^3.8.11",
     "gulp-angular-templatecache": "^1.7.0",
     "gulp-concat": "^2.5.2",

@@ -1,6 +1,7 @@
 module app {
 
     interface scope extends ng.IScope {
+        canEdit: boolean;
         group: CardGroup;
         onChange: Function;
     }
@@ -8,6 +9,7 @@ module app {
     class CardGroupController {
 
         cardGroup: CardGroup;
+        canEdit: boolean;
         isEditing: boolean;
         cardsBlob: string;
         form: ng.IFormController;
@@ -16,12 +18,23 @@ module app {
         view: string = "group-by-type";
 
         constructor(
-            $scope: scope,
+            private $scope: scope,
             config: IConfig) {
                 
-            this.cardGroup = $scope.group;
-            this.onChange = $scope.onChange;
+            this.cardGroup = this.$scope.group;
+            this.onChange = this.$scope.onChange;
+
+            this.updateEditability();
+            this.$scope.$watch("canEdit", this.updateEditability);
+
             this.isEditing = false;
+        }
+
+        updateEditability = (): void => {
+            this.canEdit = this.$scope.canEdit;
+            if (!this.$scope.canEdit) {
+                this.discardChanges();
+            }
         }
 
         startEditing = (): void => {

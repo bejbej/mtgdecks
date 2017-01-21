@@ -1,0 +1,4 @@
+<div ng-controller="AuthController as vm">
+    <button ng-click="vm.login()" ng-if="!vm.isLoggedIn" ng-disabled="vm.isLoggingIn"><span ng-if="vm.isLoggingIn">*</span> Login</button>
+    <button ng-click="vm.logout()" ng-if="vm.isLoggedIn">Logout</button>
+</div>

@@ -3,6 +3,7 @@ module app {
     class CardGroup implements ng.IDirective {
         restrict = "E";
         scope = {
+            canEdit: "=",
             group: "=",
             onChange: "="
         };

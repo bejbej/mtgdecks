@@ -1,6 +1,13 @@
 ﻿module app {
     angular.module('app').constant('config', appConfig);
 
+    angular.module("app").config(($authProvider, config: IConfig) => {
+        $authProvider.google({
+            clientId: config.authClients.google.clientId,
+            url: config.authClients.google.authUrl
+        });
+    });
+
     var lastMouseOverEvent: Date = undefined;
 
     var enableHover = () => {

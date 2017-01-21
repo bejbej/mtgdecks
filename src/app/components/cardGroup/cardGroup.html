@@ -3,7 +3,7 @@
         <span>{{::vm.cardGroup.name}}</span>
         <span ng-if="!vm.isEditing">
             <span class="badge" ng-if="!vm.isEditing">{{vm.cardGroup.count()}}</span>
-            <button class="btn btn-default btn-xs" ng-click="vm.startEditing(); $event.stopPropagation();">Edit</button>
+            <button class="btn btn-default btn-xs" ng-click="vm.startEditing(); $event.stopPropagation();" ng-if="vm.canEdit">Edit</button>
             <span class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': vm.showToolbar, 'glyphicon-chevron-down': !vm.showToolbar}" ng-if="vm.cardGroup.cards.length > 0"></span>
         </span>
     </div>

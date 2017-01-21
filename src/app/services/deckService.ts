@@ -26,7 +26,7 @@ module app {
         public getDecksByQuery = (query): ng.IPromise<IDeckQueryResult[]> => {
             var deferred = this.$q.defer();
 
-            this.$http.get<IDeckQueryResults>(this.url).then(response => {
+            this.$http.get<IDeckQueryResults>(this.url, { params: query }).then(response => {
                 deferred.resolve(response.data.results);
             });
 
@@ -87,6 +87,7 @@ module app {
             var deck = this.DeckFactory.createDeck();
             deck.id = apidata.id;
             deck.name = apidata.name;
+            deck.owners = apidata.owners;
             deck.cardGroups = apidata.cardGroups.map(apiCardGroup => {
                 var cardGroup = this.CardGroupFactory.createCardGroup();
                 cardGroup.name = apiCardGroup.name;

@@ -3,6 +3,7 @@
         'templates',
         'ngRoute',
         'puElasticInput',
-        'ngLocationUpdate'
+        'ngLocationUpdate',
+        'satellizer'
     ]);
 }

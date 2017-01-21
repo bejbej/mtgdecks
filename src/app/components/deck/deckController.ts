@@ -9,27 +9,40 @@ module app {
         public deck: Deck;
         public isSaving: boolean;
         public isDeleting: boolean;
+        public canEdit: boolean;
+        public canCreate: boolean;
 
         constructor(
             $routeParams: IRouteParams,
             private $location: any,
+            private $scope,
             private DeckService: DeckService,
             private DeckFactory: DeckFactory,
             private CardGroupFactory: CardGroupFactory) {
 
             if ($routeParams.id === "new") {
                 this.deck = this.createNewDeck();
+                this.updateAuthentication();
                 this.updateTitle();
             } else {
                 this.DeckService.getDeck($routeParams.id).then(deck => {
                     this.deck = deck;
+                    this.updateAuthentication();
                     this.updateTitle();
                 });
             }
+
+            this.$scope.$on("authentication-changed", this.updateAuthentication);
         }
 
         private updateTitle = () => {
             document.title = this.deck.name;
+        }
+
+        private updateAuthentication = () => {
+            var user = this.$scope.user;
+            this.canCreate = Boolean(user);
+            this.canEdit = !this.deck.id || (user && this.deck.owners.indexOf(user.id) >= 0);
         }
 
         private onChange = () => {
@@ -42,6 +55,7 @@ module app {
         private save = () => {
             this.isSaving = true;
             this.deck.save().finally(() => {
+                this.deck.owners = [this.$scope.user.id];
                 this.isSaving = false;
                 this.$location.update_path("/decks/" + this.deck.id);
             });
