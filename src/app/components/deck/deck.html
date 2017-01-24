@@ -1,40 +1,32 @@
 <div ng-controller="DeckController as vm">
     <spinner class="light" ng-if="!vm.deck"></spinner>
 
-    <div class="panel panel-default" ng-if="vm.deck">
-        <div class="panel-heading form-inline">
-            <span class="h4" ng-if="!vm.canEdit">{{vm.deck.name}}</span>
-            <input class="form-control name-input"
-                   ng-model="vm.deck.name"
-                   ng-model-options="{updateOn: 'blur'}"
-                   ng-change="vm.onChange()"
-                   pu-elastic-input
-                   ng-if="vm.canEdit" />
-            <button class="btn btn-default"
-                    ng-click="vm.save()"
-                    ng-if="vm.canCreate && !vm.deck.id"
-                    ng-disabled="vm.isSaving">
+    <div class="margin-v margin-h">
+        <div class="panel panel-default" ng-if="vm.deck">
+            <div class="panel-heading form-inline">
+                <span class="h4" ng-if="!vm.canEdit">{{vm.deck.name}}</span>
+                <input class="form-control name-input" ng-model="vm.deck.name" ng-model-options="{updateOn: 'blur'}" ng-change="vm.onChange()"
+                    pu-elastic-input ng-if="vm.canEdit" />
+                <button class="btn btn-default" ng-click="vm.save()" ng-if="vm.canCreate && !vm.deck.id" ng-disabled="vm.isSaving">
                 {{ vm.isSaving ? "Syncing" : "Sync to Cloud" }}
                 <pulse ng-if="vm.isSaving"></pulse>
             </button>
-            <button class="btn btn-default"
-                    ng-click="vm.delete()"
-                    ng-if="vm.canEdit && vm.deck.id"
-                    ng-disabled="vm.isDeleting">
+                <button class="btn btn-default" ng-click="vm.delete()" ng-if="vm.canEdit && vm.deck.id" ng-disabled="vm.isDeleting">
                 {{ vm.isDeleting ? "Removing" : "Remove from Cloud" }}
                 <pulse ng-if="vm.isDeleting"></pulse>
             </button>
+            </div>
         </div>
-    </div>
 
-    <div class="panel panel-default" ng-if="vm.deck.cardGroups[0].cards.length > 0">
-        <div class="panel-heading">Stats</div>
-        <div class="panel-body">
-            <stats cards="vm.deck.cardGroups[0].cards"></stats>
+        <div class="panel panel-default" ng-if="vm.deck.cardGroups[0].cards.length > 0">
+            <div class="panel-heading">Stats</div>
+            <div class="panel-body">
+                <stats cards="vm.deck.cardGroups[0].cards"></stats>
+            </div>
         </div>
-    </div>
 
-    <div ng-repeat="cardGroup in ::vm.deck.cardGroups">
-        <card-group group="cardGroup" on-change="vm.onChange" can-edit="vm.canEdit"></card-group>
+        <div ng-repeat="cardGroup in ::vm.deck.cardGroups">
+            <card-group group="cardGroup" on-change="vm.onChange" can-edit="vm.canEdit"></card-group>
+        </div>
     </div>
 </div>

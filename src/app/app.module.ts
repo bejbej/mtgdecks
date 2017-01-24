@@ -4,6 +4,7 @@
         'ngRoute',
         'puElasticInput',
         'ngLocationUpdate',
-        'satellizer'
+        'satellizer',
+        'monospaced.elastic'
     ]);
 }

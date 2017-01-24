@@ -2,6 +2,7 @@
         this.dist = {
             root: "./dist",
             fonts: "./dist/fonts",
+            images: "./dist/images",
             scripts: "./dist/scripts",
             styles: "./dist/styles",
             indexFile: "./dist/index.html",
@@ -17,6 +18,7 @@
             fonts: [
                 "./bower_components/bootstrap-sass/assets/fonts/bootstrap/*.*"
             ],
+            images: "./src/images/*.*",
             index: "./src/index.html",
             templates: [
                 './src/app/**/*.html',
@@ -29,7 +31,8 @@
             ],
             sassLib: [
                 "./bower_components/bootstrap-sass/assets/stylesheets",
-                "./bower_components/SpinKit/scss"
+                "./bower_components/SpinKit/scss",
+                "./bower_components"
             ],
             sass: [
                 "./src/styles/styles.scss"

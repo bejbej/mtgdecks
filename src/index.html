@@ -4,8 +4,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#313131" />
     <title>Deck</title>
-    <link rel="shortcut icon" href="images/favicon.ico">
     <!-- inject:css -->
     <!-- endinject -->
 </head>
@@ -13,14 +13,16 @@
 <body>
     <div class="navigation">
         <div class="container-fluid">
-            <a href="#/decks">My Decks</a>
-            <div class="pull-right">
-                <ng-include src="'auth/auth.html'"></ng-include>
+            <div class="margin-h">
+                <a href="#/decks">My Decks</a>
+                <div class="pull-right">
+                    <ng-include src="'auth/auth.html'"></ng-include>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid main">
         <ng-view></ng-view>
     </div>
     <!-- inject:js -->
