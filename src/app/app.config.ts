@@ -8,6 +8,16 @@
         });
     });
 
+    angular.module("app").run((config: IConfig, $http: ng.IHttpService, $q: ng.IQService, $auth) => {
+        var apiKey = localStorage.getItem("api-key");
+        if (apiKey) {
+            $http.defaults.headers.common["Api-Key"] = apiKey;
+            $auth.isAuthenticated = () => { return true; }
+            $auth.logout = () => { return $q.reject() }
+            $auth.authenticate = () => { return $q.reject() }
+        }
+    });
+
     var lastMouseOverEvent: Date = undefined;
 
     var enableHover = () => {

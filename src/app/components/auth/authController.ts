@@ -28,9 +28,10 @@ module app {
         }
 
         logout = () => {
-            this.$auth.logout();
-            localStorage.removeItem("user");
-            this.updateAuthenticationStatus();
+            this.$auth.logout().then(() => {
+                localStorage.removeItem("user");
+                this.updateAuthenticationStatus();
+            });
         }
 
         updateAuthenticationStatus = () => {
