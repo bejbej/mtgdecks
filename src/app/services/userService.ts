@@ -3,18 +3,13 @@ module app {
 
         constructor(
             private $http: ng.IHttpService,
-            private $q: ng.IQService,
             private config: IConfig
         ) { }
 
         public getMe = () => {
-            var deferred = this.$q.defer();
-
-            this.$http.post<IApiUser>(this.config.usersUrl + "/me", {}).then(response => {
-                deferred.resolve(this.mapApiUser(response.data));
+            return this.$http.post<IApiUser>(this.config.usersUrl + "/me", {}).then(response => {
+                return this.mapApiUser(response.data);
             });
-
-            return deferred.promise;
         }
 
         private mapApiUser = (apiData: IApiUser): User => {

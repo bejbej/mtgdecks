@@ -16,14 +16,12 @@ module app {
         login = () => {
             this.isLoggingIn = true;
             this.$auth.authenticate("google").then((temp) => {
-                this.UserService.getMe().then(user => {
+                return this.UserService.getMe().then(user => {
                     localStorage.setItem("user", JSON.stringify(user));
-                    this.isLoggingIn = false;
                     this.updateAuthenticationStatus();
                 });
-            }, () => {
+            }).finally(() => {
                 this.isLoggingIn = false;
-                console.log("failed to login");
             });
         }
 

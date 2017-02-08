@@ -6,7 +6,6 @@ module app {
         constructor(
             config: IConfig,
             private $http: ng.IHttpService,
-            private $q: ng.IQService,
             private DeckFactory: DeckFactory,
             private CardGroupFactory: CardGroupFactory) {
 
@@ -14,28 +13,18 @@ module app {
         }
 
         public getDeck = (id): ng.IPromise<Deck> => {
-            var deferred = this.$q.defer();
-
-            this.$http.get<IApiDeck>(this.url + "/" + id).then(response => {
-                deferred.resolve(this.mapApiDeck(response.data));
+            return this.$http.get<IApiDeck>(this.url + "/" + id).then(response => {
+                return this.mapApiDeck(response.data);
             });
-
-            return deferred.promise;
         }
 
         public getDecksByQuery = (query): ng.IPromise<IDeckQueryResult[]> => {
-            var deferred = this.$q.defer();
-
-            this.$http.get<IDeckQueryResults>(this.url, { params: query }).then(response => {
-                deferred.resolve(response.data.results);
+            return this.$http.get<IDeckQueryResults>(this.url, { params: query }).then(response => {
+                return response.data.results;
             });
-
-            return deferred.promise;
         }
 
         public createDeck = (deck: Deck): ng.IPromise<number> => {
-            var deferred = this.$q.defer();
-
             var payload = {
                 name: deck.name,
                 cardGroups: deck.cardGroups.map(cardGroup => {
@@ -46,16 +35,12 @@ module app {
                 })
             };
 
-            this.$http.post<{id:number}>(this.url, payload).then(response => {
-                deferred.resolve(response.data.id);
+            return this.$http.post<{id:number}>(this.url, payload).then(response => {
+                return response.data.id;
             });
-
-            return deferred.promise;
         }
 
         public updateDeck = (deck: Deck): ng.IPromise<any> => {
-            var deferred = this.$q.defer();
-
             var payload = {
                 name: deck.name,
                 cardGroups: deck.cardGroups.map(cardGroup => {
@@ -66,21 +51,11 @@ module app {
                 })
             };
 
-            this.$http.put(this.url + "/" + deck.id, payload).then(() => {
-                deferred.resolve();
-            });
-
-            return deferred.promise;
+            return this.$http.put(this.url + "/" + deck.id, payload);;
         }
 
         public deleteDeck = (id: number): ng.IPromise<any> => {
-            var deferred = this.$q.defer();
-
-            this.$http.delete(this.url + "/" + id).then(() => {
-                deferred.resolve();
-            });
-
-            return deferred.promise;
+            return this.$http.delete(this.url + "/" + id);
         }
 
         private mapApiDeck = (apidata: IApiDeck): Deck => {

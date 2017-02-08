@@ -11,20 +11,16 @@
 </head>
 
 <body>
-    <div class="navigation">
-        <div class="container-fluid">
-            <div class="margin-h">
-                <a href="#/decks">My Decks</a>
-                <div class="pull-right">
-                    <ng-include src="'auth/auth.html'"></ng-include>
-                </div>
-            </div>
+    <nav>
+        <a href="#/decks">My Decks</a>
+        <div class="pull-right">
+            <ng-include src="'auth/auth.html'"></ng-include>
         </div>
-    </div>
+    </nav>
 
-    <div class="container-fluid main">
+    <main>
         <ng-view></ng-view>
-    </div>
+    </main>
     <!-- inject:js -->
     <!-- endinject -->
 </body>

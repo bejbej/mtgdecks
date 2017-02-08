@@ -15,19 +15,15 @@ module app {
                 return this.$q.when(result.cards);
             }
 
-            var deferred = this.$q.defer();
-
             var url = this.config.cardsUrl + "?" + result.failedNames.map(name => {
                 return "name=" + name.replace(/ /g, "+");
             }).join("&");
 
-            this.$http.get<IApiCard[]>(url).then(response => {
+            return this.$http.get<IApiCard[]>(url).then(response => {
                 var cards = response.data.map(this.mapApiCard);
                 this.CardCacheService.add(cards);
-                deferred.resolve(result.cards.concat(cards));
-            }, deferred.reject);
-
-            return deferred.promise;
+                return result.cards.concat(cards);
+            });
         }
 
         private mapApiCard = (apiData: IApiCard): Card => {

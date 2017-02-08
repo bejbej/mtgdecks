@@ -1,4 +1,6 @@
 .radio-group {
+    border-bottom:1px solid $panel-inner-border;
+
     >* {
         padding: 10px 15px;
         width: 100%;
@@ -10,8 +12,4 @@
             background-color: $list-group-hover-bg;
         }
     }
-}
-
-.panel>.radio-group {
-    border-bottom:1px solid $panel-inner-border;
 }
