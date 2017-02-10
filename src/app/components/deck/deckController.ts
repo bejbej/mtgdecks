@@ -62,12 +62,13 @@ module app {
         }
 
         private delete = () => {
-            var r = confirm("Are you sure you want to remove this deck from the cloud?");
+            var r = confirm("Are you sure you want to delete this deck?");
             if (r) {
                 this.isDeleting = true;
-                this.deck.delete().finally(() => {
+                this.deck.delete().then(() => {
+                    location.hash = "/decks";
+                }).finally(() => {
                     this.isDeleting = false;
-                    this.$location.update_path("/decks/new");
                 });
             }
         }

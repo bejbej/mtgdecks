@@ -7,11 +7,11 @@
             <input class="form-control name-input" ng-model="vm.deck.name" ng-model-options="{updateOn: 'blur'}" ng-change="vm.onChange()"
                 pu-elastic-input ng-if="vm.canEdit" />
             <button class="btn btn-default" ng-click="vm.save()" ng-if="vm.canCreate && !vm.deck.id" ng-disabled="vm.isSaving">
-                {{ vm.isSaving ? "Syncing" : "Sync to Cloud" }}
+                {{ vm.isSaving ? "Saving" : "Save this Deck" }}
                 <pulse ng-if="vm.isSaving"></pulse>
             </button>
             <button class="btn btn-default" ng-click="vm.delete()" ng-if="vm.canEdit && vm.deck.id" ng-disabled="vm.isDeleting">
-                {{ vm.isDeleting ? "Removing" : "Remove from Cloud" }}
+                {{ vm.isDeleting ? "Deleting" : "Delete this Deck" }}
                 <pulse ng-if="vm.isDeleting"></pulse>
             </button>
         </header>
