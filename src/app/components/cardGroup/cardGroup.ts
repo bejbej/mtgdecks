@@ -5,7 +5,9 @@ module app {
         scope = {
             canEdit: "=",
             group: "=",
-            onChange: "="
+            onChange: "=",
+            isEditing: "@"
+
         };
         templateUrl = "cardGroup/cardGroup.html";
     }

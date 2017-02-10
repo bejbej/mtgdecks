@@ -4,6 +4,7 @@ module app {
         canEdit: boolean;
         group: CardGroup;
         onChange: Function;
+        isEditing: string;
     }
 
     class CardGroupController {
@@ -27,7 +28,7 @@ module app {
             this.updateEditability();
             this.$scope.$watch("canEdit", this.updateEditability);
 
-            this.isEditing = false;
+            this.$scope.isEditing === "true" ? this.startEditing() : this.discardChanges();
         }
 
         updateEditability = (): void => {
