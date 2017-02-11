@@ -11,10 +11,12 @@ module app {
         public isDeleting: boolean;
         public canEdit: boolean;
         public canCreate: boolean;
+        public timeout: ng.IDeferred<any>;
 
         constructor(
             $routeParams: IRouteParams,
             private $location: any,
+            private $q: ng.IQService,
             private $scope,
             private DeckService: DeckService,
             private DeckFactory: DeckFactory,
@@ -25,14 +27,18 @@ module app {
                 this.updateAuthentication();
                 this.updateTitle();
             } else {
-                this.DeckService.getDeck($routeParams.id).then(deck => {
+                this.timeout = this.$q.defer();
+                this.DeckService.getDeck($routeParams.id, this.timeout.promise).then(deck => {
                     this.deck = deck;
                     this.updateAuthentication();
                     this.updateTitle();
+                }).finally(() => {
+                    delete this.timeout;
                 });
             }
 
             this.$scope.$on("authentication-changed", this.updateAuthentication);
+            this.$scope.$on("$destroy", this.cancelPendingRequests);
         }
 
         private updateTitle = () => {
@@ -84,6 +90,12 @@ module app {
             maybeboard.name = "Maybeboard";
             deck.cardGroups = [mainboard, sideboard, maybeboard];
             return deck;
+        }
+
+        private cancelPendingRequests = () => {
+            if (this.timeout) {
+                this.timeout.resolve();
+            }
         }
     }
 

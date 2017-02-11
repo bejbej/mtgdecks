@@ -12,14 +12,14 @@ module app {
             this.url = config.decksUrl;
         }
 
-        public getDeck = (id): ng.IPromise<Deck> => {
-            return this.$http.get<IApiDeck>(this.url + "/" + id).then(response => {
+        public getDeck = (id, timeout?: ng.IPromise<any>): ng.IPromise<Deck> => {
+            return this.$http.get<IApiDeck>(this.url + "/" + id, { timeout: timeout }).then(response => {
                 return this.mapApiDeck(response.data);
             });
         }
 
-        public getDecksByQuery = (query): ng.IPromise<IDeckQueryResult[]> => {
-            return this.$http.get<IDeckQueryResults>(this.url, { params: query }).then(response => {
+        public getDecksByQuery = (query, timeout?: ng.IPromise<any>): ng.IPromise<IDeckQueryResult[]> => {
+            return this.$http.get<IDeckQueryResults>(this.url, { params: query, timeout: timeout }).then(response => {
                 return response.data.results;
             });
         }

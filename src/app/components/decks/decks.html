@@ -5,7 +5,7 @@
             Build a New Deck
         </a>
     </div>
-    <spinner class="light" ng-if="vm.isSearching"></spinner>
+    <spinner class="light" ng-if="vm.timeout"></spinner>
     <div class="list-group">
         <a class="list-group-item" href="#/decks/{{::deck.id}}" ng-repeat="deck in vm.decks">{{::deck.name}}</a>
     </div>
