@@ -4,13 +4,15 @@
     <section ng-if="vm.deck">
         <header class="form-inline" style="border-top:0;">
             <span class="h4" ng-if="!vm.canEdit">{{vm.deck.name}}</span>
-            <input class="form-control name-input" ng-model="vm.deck.name" ng-model-options="{updateOn: 'blur'}" ng-change="vm.onChange()"
-                pu-elastic-input ng-if="vm.canEdit" />
-            <button class="btn btn-default" ng-click="vm.save()" ng-if="vm.canCreate && !vm.deck.id" ng-disabled="vm.isSaving">
-                {{ vm.isSaving ? "Saving" : "Save this Deck" }}
-                <pulse ng-if="vm.isSaving"></pulse>
-            </button>
-            <button class="btn btn-default" ng-click="vm.delete()" ng-if="vm.canEdit && vm.deck.id" ng-disabled="vm.isDeleting">
+            <input class="form-control name-input"
+                   ng-model="vm.deck.name"
+                   ng-model-options="{updateOn: 'blur'}"
+                   ng-change="vm.save()"
+                   pu-elastic-input ng-if="vm.canEdit" />
+            <button class="btn btn-default" 
+                    ng-click="vm.delete()"
+                    ng-if="vm.canEdit && vm.deck.id"
+                    ng-disabled="vm.isDeleting">
                 {{ vm.isDeleting ? "Deleting" : "Delete this Deck" }}
                 <pulse ng-if="vm.isDeleting"></pulse>
             </button>
@@ -22,7 +24,7 @@
         </div>
 
         <div ng-repeat="cardGroup in ::vm.deck.cardGroups">
-            <card-group group="cardGroup" on-change="vm.onChange" can-edit="vm.canEdit" is-editing="{{::$index === 0 && vm.deck.id === undefined}}"></card-group>
+            <card-group group="cardGroup" on-change="vm.save" can-edit="vm.canEdit" is-editing="{{::$index === 0 && vm.deck.id === undefined}}"></card-group>
         </div>
     </section>
 </div>

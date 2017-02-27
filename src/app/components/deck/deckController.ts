@@ -49,21 +49,19 @@ module app {
             var user = this.$scope.user;
             this.canCreate = Boolean(user);
             this.canEdit = !this.deck.id || (user && this.deck.owners.indexOf(user.id) >= 0);
-        }
-
-        private onChange = () => {
-            this.updateTitle();
-            if (this.deck.id) {
-                this.deck.save();
+            if (this.canCreate && !this.deck.id && this.deck.cardGroups.some(cardGroup => cardGroup.cards.length > 0)) {
+                this.save();
             }
         }
 
         private save = () => {
+            this.updateTitle();
             this.isSaving = true;
-            this.deck.save().finally(() => {
-                this.deck.owners = [this.$scope.user.id];
-                this.isSaving = false;
+            this.deck.save().then(() => {
+                this.deck.owners = this.deck.owners || [this.$scope.user.id];
                 this.$location.update_path("/decks/" + this.deck.id);
+            }).finally(() => {
+                this.isSaving = false;
             });
         }
 
