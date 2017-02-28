@@ -11,6 +11,7 @@
 @import "./components/radio-group.scss";
 @import "./components/section.scss";
 @import "./components/spinners.scss";
+@import "./components/tabs.scss";
 
 body {
     padding-bottom: 200px;
@@ -88,4 +89,8 @@ textarea {
         border-color: transparent;
         box-shadow: transparent 0 0 0;
     }
+}
+
+[ng-click] {
+    cursor: pointer;
 }

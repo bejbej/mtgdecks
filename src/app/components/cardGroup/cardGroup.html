@@ -1,16 +1,40 @@
 <div ng-controller="CardGroupController as vm">
-    <header ng-if="!vm.isEditing" ng-click="vm.showToolbar = !vm.showToolbar">
+    <ul class="nav nav-pills" ng-if="vm.canEdit && !vm.isEditing">
+        <li>
+            <div ng-click="vm.showToolbar = !vm.showToolbar">
+                {{::vm.cardGroup.name}}
+                <span class="badge">{{vm.cardGroup.count()}}</span>
+                <span class="glyphicon"
+                      ng-class="{'glyphicon-chevron-up': vm.showToolbar, 'glyphicon-chevron-down': !vm.showToolbar}"
+                      ng-if="vm.cardGroup.cards.length > 0"></span>
+            </div>
+        </li>
+        <li>
+            <a ng-click="vm.startEditing()">Edit</a>
+        </li>
+    </ul>
+    <ul class="nav nav-tabs" ng-if="vm.isEditing">
+        <li>
+            <a ng-click="vm.applyChanges()">
+                {{::vm.cardGroup.name}}
+                <span class="badge">{{vm.cardGroup.count()}}</span>
+                <span class="glyphicon"
+                      ng-class="::{'glyphicon-chevron-up': vm.showToolbar, 'glyphicon-chevron-down': !vm.showToolbar}"
+                      ng-if="vm.cardGroup.cards.length > 0"></span>
+            </a>
+        </li>
+        <li class="active">
+            <a>Edit</a>
+        </li>
+    </ul>
+    <header ng-if="!vm.canEdit && vm.cardGroup.cards.length === 0">
         <span>{{::vm.cardGroup.name}}</span>
-        <span ng-if="!vm.isEditing">
-            <span class="badge" ng-if="!vm.isEditing">{{vm.cardGroup.count()}}</span>
-            <button class="btn btn-default btn-xs" ng-click="vm.startEditing(); $event.stopPropagation();" ng-if="vm.canEdit">Edit</button>
-            <span class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': vm.showToolbar, 'glyphicon-chevron-down': !vm.showToolbar}" ng-if="vm.cardGroup.cards.length > 0"></span>
-        </span>
+        <span class="badge">{{vm.cardGroup.count()}}</span>
     </header>
-    <header ng-if="vm.isEditing">
+    <header ng-if="!vm.canEdit && vm.cardGroup.cards.length > 0" ng-click="vm.showToolbar = !vm.showToolbar">
         <span>{{::vm.cardGroup.name}}</span>
-        <button class="btn btn-default btn-xs" ng-click="vm.applyChanges()">Apply Changes</button>
-        <button class="btn btn-default btn-xs" ng-click="vm.discardChanges()">Discard Changes</button>
+        <span class="badge">{{vm.cardGroup.count()}}</span>
+        <span class="glyphicon" ng-class="{'glyphicon-chevron-up': vm.showToolbar, 'glyphicon-chevron-down': !vm.showToolbar}" ng-if="vm.cardGroup.cards.length > 0"></span>
     </header>
     <div class="radio-group" ng-if="vm.cardGroup.cards.length > 0 && !vm.isEditing && vm.showToolbar">
         <label>

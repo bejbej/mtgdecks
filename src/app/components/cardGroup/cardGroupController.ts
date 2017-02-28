@@ -56,6 +56,10 @@ module app {
         discardChanges = (): void => {
             this.isEditing = false;
         }
+
+        isEmpty = (): boolean => {
+            return this.cardGroup.cards.length + (this.cardGroup.failedCards || []).length === 0;
+        }
     }
 
     angular.module("app").controller("CardGroupController", CardGroupController);
