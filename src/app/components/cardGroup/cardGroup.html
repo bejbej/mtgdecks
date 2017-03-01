@@ -60,14 +60,14 @@
         <directive-container directive="vm.view" cards="vm.cardGroup.cards"></directive-container>
     </div>
     <form name="vm.form" class="margin" ng-if="vm.isEditing">
-        <div class="form-group">
-            <textarea class="form-control"
-                      placeholder="4x Island"
-                      ng-model="vm.cardsBlob"
-                      ng-model-options="{updateOn: 'blur'}"
-                      msd-elastic></textarea>
+        <textarea class="form-control has-bottom-buttons"
+                  placeholder="4x Island"
+                  ng-model="vm.cardsBlob"
+                  ng-model-options="{updateOn: 'blur'}"
+                  msd-elastic></textarea>
+        <div class="bottom-buttons">
+            <button class="btn btn-default" type="button" ng-click="vm.applyChanges()">Apply Changes</button><!--
+            --><button class="btn btn-default" type="button" ng-click="vm.discardChanges()">Discard Changes</button>
         </div>
-        <button class="btn btn-default" type="button" ng-click="vm.applyChanges()">Apply Changes</button>
-        <button class="btn btn-default" type="button" ng-click="vm.discardChanges()">Discard Changes</button>
     </form>
 </div>

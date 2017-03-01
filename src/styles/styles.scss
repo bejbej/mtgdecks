@@ -30,6 +30,12 @@ textarea {
     resize: none;
 }
 
+.btn-default {
+    &:hover, &:focus, &:active {
+        border-color: $btn-default-border;
+    }
+}
+
 .list-group {
     @include animate();
     @media (max-width: $screen-sm-max) {
@@ -93,4 +99,38 @@ textarea {
 
 [ng-click] {
     cursor: pointer;
+}
+
+.has-bottom-buttons {
+    position: relative;
+    border-bottom-left-radius: 0;
+
+    @media (max-width: $screen-xs-max) {
+        border-bottom-right-radius: 0;
+    }
+}
+
+.bottom-buttons {
+    @media (max-width: $screen-xs-max) {
+        display: flex;
+    }
+
+    button {
+        border-top-width: 0;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+
+        @media (max-width: $screen-xs-max) {
+            flex: 1;
+        }
+
+        &:not(:first-of-type) {
+            border-bottom-left-radius: 0;
+            border-left-width: 0;
+        }
+
+        &:not(:last-of-type) {
+            border-bottom-right-radius: 0;
+        }
+    }
 }
