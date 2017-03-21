@@ -15,5 +15,6 @@
     decksUrl: "https://mtgdecks-api.herokuapp.com/api/decks",
     usersUrl: "https://mtgdecks-api.herokuapp.com/api/users",
     imagesUrl: "https://image.deckbrew.com/mtg/multiverseid/",
-    storeUrl: "http://shop.tcgplayer.com/productcatalog/product/show?ProductName="
+    storeUrl: "http://shop.tcgplayer.com/productcatalog/product/show?ProductName=",
+    storeMassEntryUrl: "http://shop.tcgplayer.com/massentry"
 };

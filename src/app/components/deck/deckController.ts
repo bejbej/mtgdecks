@@ -1,7 +1,11 @@
 module app {
 
     interface IRouteParams {
-        id: number | string;
+        id: string;
+    }
+
+    interface IScope extends ng.IScope {
+        user: User;
     }
 
     class DeckController {
@@ -11,31 +15,27 @@ module app {
         public isDeleting: boolean;
         public canEdit: boolean;
         public canCreate: boolean;
-        public timeout: ng.IDeferred<any>;
+        public storeUrl: string;
+
+        private timeout: ng.IDeferred<any>;
 
         constructor(
             $routeParams: IRouteParams,
             private $location: any,
             private $q: ng.IQService,
-            private $scope,
+            private $scope: IScope,
+            private config: IConfig,
             private DeckService: DeckService,
             private DeckFactory: DeckFactory,
             private CardGroupFactory: CardGroupFactory) {
 
-            if ($routeParams.id === "new") {
-                this.deck = this.createNewDeck();
+            this.getDeck($routeParams.id).then(deck => {
+                this.deck = deck;
                 this.updateAuthentication();
                 this.updateTitle();
-            } else {
-                this.timeout = this.$q.defer();
-                this.DeckService.getDeck($routeParams.id, this.timeout.promise).then(deck => {
-                    this.deck = deck;
-                    this.updateAuthentication();
-                    this.updateTitle();
-                }).finally(() => {
-                    delete this.timeout;
-                });
-            }
+                this.updateStoreUrl();
+                this.deck.cardGroups[0].watch(this.updateStoreUrl);
+            })
 
             this.$scope.$on("authentication-changed", this.updateAuthentication);
             this.$scope.$on("$destroy", this.cancelPendingRequests);
@@ -52,6 +52,12 @@ module app {
             if (this.canCreate && !this.deck.id && this.deck.cardGroups.some(cardGroup => cardGroup.cards.length > 0)) {
                 this.save();
             }
+        }
+
+        private updateStoreUrl = () => {
+            this.storeUrl = this.config.storeMassEntryUrl + "?c=" + this.deck.cardGroups[0].cards.map(card => {
+                return card.quantity + " " + card.name;
+            }).join("||");
         }
 
         private save = () => {
@@ -73,6 +79,19 @@ module app {
                     location.hash = "/decks";
                 }).finally(() => {
                     this.isDeleting = false;
+                });
+            }
+        }
+
+        private getDeck = (id: string): ng.IPromise<Deck> => {
+            if (id === "new") {
+                return this.$q.when(this.createNewDeck());
+            } else {
+                this.timeout = this.$q.defer();
+                return this.DeckService.getDeck(id, this.timeout.promise).then(deck => {
+                    return deck;
+                }).finally(() => {
+                    delete this.timeout;
                 });
             }
         }

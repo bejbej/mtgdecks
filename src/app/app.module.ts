@@ -2,7 +2,6 @@
     angular.module('app', [
         'templates',
         'ngRoute',
-        'puElasticInput',
         'ngLocationUpdate',
         'satellizer',
         'monospaced.elastic'

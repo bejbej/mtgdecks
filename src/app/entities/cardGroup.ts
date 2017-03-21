@@ -3,19 +3,25 @@ module app {
         name: string;
         cards: Card[];
         failedCards: NameQuantityPair[];
+        massEntryQueryString: string;
 
         private cardBlob: string;
+        private watchers: Function[];
 
-        constructor(private CardService: CardService) {
+        constructor(
+            private $q: ng.IQService,
+            private CardService: CardService) {
+
             this.name = name;
             this.cards = [];
             this.cardBlob = "";
+            this.watchers = [];
         }
 
-        public setCardBlob = (cards: string): void => {
+        public setCardBlob = (cards: string): ng.IPromise<Card[]> => {
             var nameQuantityPairs = this.getNameQuantityPairs(cards);
-            this.loadCards(nameQuantityPairs);
             this.cardBlob = this.formatCardBlob(nameQuantityPairs);
+            return this.loadCards(nameQuantityPairs).finally(this.triggerWatchers);
         }
 
         public getCardBlob = (): string => {
@@ -26,6 +32,23 @@ module app {
             return this.cards.reduce((a, b) => {
                 return a + Number(b.quantity);
             }, 0);
+        }
+
+        public watch = (func: Function): void => {
+            if (this.watchers.indexOf(func) === -1) {
+                this.watchers.push(func);
+            }
+        }
+
+        public unWatch = (func: Function): void => {
+            var index = this.watchers.indexOf(func);
+            if (index !== -1) {
+                this.watchers.splice(index, 1);
+            }
+        }
+
+        private triggerWatchers = () => {
+            this.watchers.forEach(watcher => watcher());
         }
 
         private formatName = (name: string): string => {
@@ -85,7 +108,7 @@ module app {
             });
         }
 
-        private loadCards = (nameQuantityPairs: NameQuantityPair[]): void => {
+        private loadCards = (nameQuantityPairs: NameQuantityPair[]): ng.IPromise<Card[]> => {
             this.failedCards = [];
 
             var names = nameQuantityPairs.map(card => {
@@ -96,10 +119,10 @@ module app {
 
             if (names.length === 0) {
                 this.cards = [];
-                return;
+                return this.$q.when(this.cards);
             }
 
-            this.CardService.getCards(names).then(cardDetails => {
+            return this.CardService.getCards(names).then(cardDetails => {
                 var hydratedCards: Card[] = [];
                 nameQuantityPairs.forEach(card => {
                     var matchingCard = cardDetails.filter(cardDetail => {
@@ -118,6 +141,8 @@ module app {
                 this.cards = hydratedCards.sort((a, b) => {
                     return a.name > b.name ? 1 : -1;
                 });
+
+                return this.cards;
             });
         }
 

@@ -2,20 +2,28 @@
     <spinner class="light" ng-if="!vm.deck"></spinner>
 
     <section ng-if="vm.deck">
-        <header class="form-inline" style="border-top:0;">
-            <span class="h4" ng-if="!vm.canEdit">{{vm.deck.name}}</span>
-            <input class="form-control name-input"
-                   ng-model="vm.deck.name"
-                   ng-model-options="{updateOn: 'blur'}"
-                   ng-change="vm.save()"
-                   pu-elastic-input ng-if="vm.canEdit" />
-            <button class="btn btn-default" 
-                    ng-click="vm.delete()"
-                    ng-if="vm.canEdit && vm.deck.id"
-                    ng-disabled="vm.isDeleting">
-                {{ vm.isDeleting ? "Deleting" : "Delete this Deck" }}
-                <pulse ng-if="vm.isDeleting"></pulse>
-            </button>
+        <header class="deck-info">
+            <div class="deck-name" ng-if="!vm.canEdit">{{vm.deck.name}}</div>
+            <input class="form-control deck-name-input"
+                ng-model="vm.deck.name"
+                ng-model-options="{updateOn: 'blur'}"
+                ng-change="vm.save()"
+                ng-if="vm.canEdit" />
+            <div class="flex">
+                <a class="btn btn-default"
+                   style="margin-top:10px;"
+                   href="{{vm.storeUrl}}"
+                   target="_blank"
+                   ng-if="vm.deck.cardGroups[0].cards.length > 0">TCG Player</a><!--
+             --><button class="btn btn-default" 
+                        style="margin-top:10px;"
+                        ng-click="vm.delete()"
+                        ng-if="vm.canEdit && vm.deck.id"
+                        ng-disabled="vm.isDeleting">
+                    {{ vm.isDeleting ? "Deleting" : "Delete this Deck" }}
+                    <pulse ng-if="vm.isDeleting"></pulse>
+                </button>
+            </div>
         </header>
 
         <div ng-if="vm.deck.cardGroups[0].cards.length > 0">

@@ -15,6 +15,7 @@ module app {
         usersUrl: string;
         imagesUrl: string;
         storeUrl: string;
+        storeMassEntryUrl: string;
         enableHover: boolean;
     }
 }
