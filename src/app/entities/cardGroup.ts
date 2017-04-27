@@ -54,7 +54,7 @@ module app {
         private formatName = (name: string): string => {
             var convertToTitleCase = (name:string): string => {
                 return name.replace(/[^\s-]+/g, (text, index) => {
-                    if (index > 0 && ["a", "an", "and", "but", "from", "in" ,"into", "of", "or", "the", "to", "with"].indexOf(text.toLowerCase()) >= 0) {
+                    if (index > 0 && ["a", "an", "and", "but", "for", "from", "in" ,"into", "of", "or", "the", "to", "upon","with"].indexOf(text.toLowerCase()) >= 0) {
                         return text.toLowerCase();
                     }
                     return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
