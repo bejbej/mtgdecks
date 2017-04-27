@@ -5,8 +5,10 @@
 @import "./components/mixins/animate.scss";
 
 // Components
+@import "./components/flex.scss";
 @import "./components/header.scss";
 @import "./components/lightbox.scss";
+@import "./components/margins.scss";
 @import "./components/nav.scss";
 @import "./components/radio-group.scss";
 @import "./components/section.scss";
@@ -44,10 +46,6 @@ textarea {
     @media (min-width: $screen-md-min) {
         margin: 15px;
     }
-}
-
-.margin {
-    margin: 15px;
 }
 
 .quantity {
@@ -140,19 +138,6 @@ textarea {
 
         &:not(:last-of-type) {
             border-bottom-right-radius: 0;
-        }
-    }
-}
-
-.flex {
-    >*:not(:first-child) {
-        margin-left: 10px;
-    }
-
-    @media (max-width: $screen-xs-max) {
-        display: flex;
-        &>*:not(:only-child) {
-            flex: 1;
         }
     }
 }

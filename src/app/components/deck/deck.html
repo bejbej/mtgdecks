@@ -9,14 +9,12 @@
                 ng-model-options="{updateOn: 'blur'}"
                 ng-change="vm.save()"
                 ng-if="vm.canEdit" />
-            <div class="flex">
-                <a class="btn btn-default"
-                   style="margin-top:10px;"
+            <div class="flex flex-padding">
+                <a class="btn btn-default margin-top"
                    href="{{vm.storeUrl}}"
                    target="_blank"
                    ng-if="vm.deck.cardGroups[0].cards.length > 0">TCG Player</a><!--
-             --><button class="btn btn-default" 
-                        style="margin-top:10px;"
+             --><button class="btn btn-default margin-top" 
                         ng-click="vm.delete()"
                         ng-if="vm.canEdit && vm.deck.id"
                         ng-disabled="vm.isDeleting">
