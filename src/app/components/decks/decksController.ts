@@ -3,22 +3,26 @@ module app {
     class DecksController {
 
         private decks: any[];
+        private visibleDecks: Deck[];
         private timeout: ng.IDeferred<any>;
 
         constructor(
             private $q: ng.IQService,
             private $scope,
+            private AuthService: AuthService,
+            private config: IConfig,
             private DeckService: DeckService) {
 
-            this.updateAuthentication();
-            this.$scope.$on("authentication-changed", this.updateAuthentication);
+            this.sync();
+            this.$scope.$on("authentication-changed", this.sync);
             this.$scope.$on("$destroy", this.cancelPendingRequests);
         }
 
         getDecks = () => {
             this.timeout = this.$q.defer();
 
-            this.DeckService.getDecksByQuery({ owner: this.$scope.user.id }, this.timeout.promise).then(decks => {
+            var user = this.AuthService.getAuthUser();
+            this.DeckService.getDecksByQuery({ owner: user.id }, this.timeout.promise).then(decks => {
                 this.decks = decks.sort((a, b) => {
                     return a.name > b.name ? 1 : -1;
                 });
@@ -27,18 +31,21 @@ module app {
             });
         }
 
-        updateAuthentication = () => {
-            if (this.$scope.user) {
-                if (!this.decks) {
-                    this.getDecks();
-                }
-            } else {
-                delete this.decks;
+        sync = () => {
+            var authUser = this.AuthService.getAuthUser()
+
+            if (this.decks !== undefined && authUser === undefined) {
                 this.cancelPendingRequests();
+                delete this.decks;
+            }
+
+            if (this.decks === undefined && authUser !== undefined) {
+                this.getDecks();
             }
         }
 
         cancelPendingRequests = () => {
+            console.log("cancelling");            
             if (this.timeout) {
                 this.timeout.resolve();
             }

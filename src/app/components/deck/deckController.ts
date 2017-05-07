@@ -4,10 +4,6 @@ module app {
         id: string;
     }
 
-    interface IScope extends ng.IScope {
-        user: User;
-    }
-
     class DeckController {
 
         public deck: Deck;
@@ -23,21 +19,22 @@ module app {
             $routeParams: IRouteParams,
             private $location: any,
             private $q: ng.IQService,
-            private $scope: IScope,
+            private $scope: ng.IScope,
             private config: IConfig,
+            private AuthService: AuthService,
             private DeckService: DeckService,
             private DeckFactory: DeckFactory,
             private CardGroupFactory: CardGroupFactory) {
 
             this.getDeck($routeParams.id).then(deck => {
                 this.deck = deck;
-                this.updateAuthentication();
+                this.sync();
                 this.updateTitle();
                 this.updateStoreUrl();
                 this.deck.cardGroups[0].watch(this.updateStoreUrl);
             })
 
-            this.$scope.$on("authentication-changed", this.updateAuthentication);
+            this.$scope.$on("authentication-changed", this.sync);
             this.$scope.$on("$destroy", this.cancelPendingRequests);
         }
 
@@ -45,10 +42,10 @@ module app {
             document.title = this.deck.name;
         }
 
-        private updateAuthentication = () => {
-            var user = this.$scope.user;
-            this.canCreate = Boolean(user);
-            this.canEdit = !this.deck.id || (user && this.deck.owners.indexOf(user.id) >= 0);
+        private sync = () => {
+            var authUser = this.AuthService.getAuthUser();
+            this.canCreate = authUser !== undefined;
+            this.canEdit = !this.deck.id || (authUser && this.deck.owners.indexOf(authUser.id) >= 0);
             if (this.canCreate && !this.deck.id && this.deck.cardGroups.some(cardGroup => cardGroup.cards.length > 0)) {
                 this.save();
             }
@@ -62,9 +59,15 @@ module app {
 
         private save = () => {
             this.updateTitle();
+
+            var authUser = this.AuthService.getAuthUser();
+            if (authUser === undefined) {
+                return;
+            }
+
             this.isSaving = true;
             this.deck.save().then(() => {
-                this.deck.owners = this.deck.owners || [this.$scope.user.id];
+                this.deck.owners = this.deck.owners || [authUser.id];
                 this.$location.update_path("/decks/" + this.deck.id);
             }).finally(() => {
                 this.isSaving = false;

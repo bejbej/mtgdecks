@@ -4,6 +4,9 @@ module app {
         categories: ICategory[];
         statCategories: ICategory[];
         cardCacheLimit: number;
+        localStorage: {
+            user: string;
+        };
         authClients: {
             google: {
                 authUrl: string;

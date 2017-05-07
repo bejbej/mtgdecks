@@ -2,42 +2,24 @@ module app {
 
     class AuthController {
 
-        private isLoggedIn: boolean;
         private isLoggingIn: boolean;
 
-        constructor(
-            private $rootScope,
-            private $auth,
-            private UserService: UserService) {
-
-            this.updateAuthenticationStatus();
-        }
+        constructor(private AuthService: AuthService) { }
 
         login = () => {
             this.isLoggingIn = true;
-            this.$auth.authenticate("google").then((temp) => {
-                return this.UserService.getMe().then(user => {
-                    localStorage.setItem("user", JSON.stringify(user));
-                    this.updateAuthenticationStatus();
-                });
-            }).finally(() => {
+            return this.AuthService.login().finally(() => {
                 this.isLoggingIn = false;
             });
         }
 
         logout = () => {
-            this.$auth.logout().then(() => {
-                localStorage.removeItem("user");
-                this.updateAuthenticationStatus();
-            });
+            return this.AuthService.logout();
         }
 
-        updateAuthenticationStatus = () => {
-            this.isLoggedIn = this.$auth.isAuthenticated();
-            this.$rootScope.user = JSON.parse(localStorage.getItem("user"));
-            this.$rootScope.$broadcast("authentication-changed");
+        isLoggedIn = () => {
+            return this.AuthService.isLoggedIn();
         }
-
     }
 
     angular.module("app").controller("AuthController", AuthController);
