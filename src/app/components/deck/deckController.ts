@@ -104,11 +104,9 @@ module app {
             deck.name = "New Deck";
             var mainboard = this.CardGroupFactory.createCardGroup();
             var sideboard = this.CardGroupFactory.createCardGroup();
-            var maybeboard = this.CardGroupFactory.createCardGroup();
             mainboard.name = "Mainboard";
             sideboard.name = "Sideboard";
-            maybeboard.name = "Maybeboard";
-            deck.cardGroups = [mainboard, sideboard, maybeboard];
+            deck.cardGroups = [mainboard, sideboard];
             deck.notes = "";
             return deck;
         }
