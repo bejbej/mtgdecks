@@ -109,6 +109,7 @@ module app {
             sideboard.name = "Sideboard";
             maybeboard.name = "Maybeboard";
             deck.cardGroups = [mainboard, sideboard, maybeboard];
+            deck.notes = "";
             return deck;
         }
 

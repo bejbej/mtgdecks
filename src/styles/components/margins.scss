@@ -5,3 +5,14 @@
 .margin-top {
     margin-top: 10px;
 }
+
+.margin-collapse {
+    @include animate();
+
+    @media (max-width: $screen-sm-max) {
+        margin: 0;
+    }
+    @media (min-width: $screen-md-min) {
+        margin: 15px;
+    }
+}

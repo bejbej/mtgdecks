@@ -7,5 +7,6 @@ module app {
             name: string;
             cardBlob: string;
         }[];
+        notes: string;
     }
 }

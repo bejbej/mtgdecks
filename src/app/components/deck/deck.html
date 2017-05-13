@@ -1,36 +1,42 @@
 <div ng-controller="DeckController as vm">
     <spinner class="light" ng-if="!vm.deck"></spinner>
 
-    <section ng-if="vm.deck">
-        <header class="deck-info">
-            <div class="deck-name" ng-if="!vm.canEdit">{{vm.deck.name}}</div>
-            <input class="form-control deck-name-input"
-                ng-model="vm.deck.name"
-                ng-model-options="{updateOn: 'blur'}"
-                ng-change="vm.save()"
-                ng-if="vm.canEdit" />
-            <div class="flex flex-padding">
-                <a class="btn btn-default margin-top"
-                   href="{{vm.storeUrl}}"
-                   target="_blank"
-                   ng-if="vm.deck.cardGroups[0].cards.length > 0">TCG Player</a><!--
-             --><button class="btn btn-default margin-top" 
-                        ng-click="vm.delete()"
-                        ng-if="vm.canEdit && vm.deck.id"
-                        ng-disabled="vm.isDeleting">
+    <div class="margin-collapse" ng-if="vm.deck">
+        <section>
+            <header class="deck-info">
+                <div class="deck-name" ng-if="!vm.canEdit">{{vm.deck.name}}</div>
+                <input class="form-control deck-name-input"
+                       ng-model="vm.deck.name"
+                       ng-model-options="{updateOn: 'default blur', debounce: {default: 2000, blur: 0}}"
+                       ng-change="vm.save()"
+                    ng-if="vm.canEdit" />
+                <div class="flex flex-padding">
+                    <a class="btn btn-default margin-top" href="{{vm.storeUrl}}" target="_blank" ng-if="vm.deck.cardGroups[0].cards.length > 0">TCG Player</a>
+                    <!--
+             --><button class="btn btn-default margin-top" ng-click="vm.delete()" ng-if="vm.canEdit && vm.deck.id" ng-disabled="vm.isDeleting">
                     {{ vm.isDeleting ? "Deleting" : "Delete this Deck" }}
                     <pulse ng-if="vm.isDeleting"></pulse>
                 </button>
-            </div>
-        </header>
+                </div>
+            </header>
+        </section>
 
-        <div ng-if="vm.deck.cardGroups[0].cards.length > 0">
-            <header>Stats</header>
-            <stats cards="vm.deck.cardGroups[0].cards"></stats>
+        <div class="flex-gte-md">
+            <section class="flex-2">
+                <div ng-repeat="cardGroup in ::vm.deck.cardGroups">
+                    <card-group group="cardGroup" on-change="vm.save" can-edit="vm.canEdit" is-editing="{{::$index === 0 && vm.deck.id === undefined}}"></card-group>
+                </div>
+            </section>
+            <section class="border-left-gte-md">
+                <header>Notes</header>
+                <textarea ng-model="vm.deck.notes"
+                          ng-model-options="{updateOn: 'default blur', debounce: {default: 2000, blur: 0}}"
+                          ng-change="vm.save()"
+                          ng-disabled="!vm.canEdit"
+                          msd-elastic></textarea>
+                <header>Stats</header>
+                <stats cards="vm.deck.cardGroups[0].cards" ng-if="vm.deck.cardGroups[0].cards.length > 0"></stats>
+            </section>
         </div>
-
-        <div ng-repeat="cardGroup in ::vm.deck.cardGroups">
-            <card-group group="cardGroup" on-change="vm.save" can-edit="vm.canEdit" is-editing="{{::$index === 0 && vm.deck.id === undefined}}"></card-group>
-        </div>
-    </section>
+    </div>
 </div>

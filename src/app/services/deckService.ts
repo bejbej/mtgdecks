@@ -48,7 +48,8 @@ module app {
                         name: cardGroup.name,
                         cardBlob: cardGroup.getCardBlob()
                     };
-                })
+                }),
+                notes: deck.notes
             };
 
             return this.$http.put(this.url + "/" + deck.id, payload);;
@@ -69,6 +70,7 @@ module app {
                 cardGroup.setCardBlob(apiCardGroup.cardBlob);
                 return cardGroup;
             });
+            deck.notes = apidata.notes;
             return deck;
         }
     }
