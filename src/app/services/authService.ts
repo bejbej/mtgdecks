@@ -25,6 +25,7 @@ module app {
         logout = (): ng.IPromise<any> => {
             return this.$auth.logout().then(() => {
                 localStorage.removeItem(this.config.localStorage.user);
+                localStorage.removeItem(this.config.localStorage.tags);
                 this.updateAuthenticationStatus();
             });
         }

@@ -1,4 +1,11 @@
 <div ng-controller="DeckController as vm">
+    <nav>
+        <a href="#/decks">My Decks</a>
+        <div class="pull-right">
+            <ng-include src="'auth/auth.html'"></ng-include>
+        </div>
+    </nav>
+
     <spinner class="light" ng-if="!vm.deck"></spinner>
 
     <div ng-if="vm.deck">
@@ -29,7 +36,23 @@
             </section>
             <section class="border-left-gte-md">
                 <header>Notes</header>
-                <textarea ng-model="vm.deck.notes"
+                <div ng-if="!vm.canEdit && vm.deck.tags.length > 0">
+                    <div class="tags"><span class="badge" ng-repeat="tag in vm.deck.tags">{{tag}}</span></div>
+                    <hr class="dashed">
+                </div>
+                <div class="tag-input" ng-if="vm.canEdit">
+                    <input type="text"
+                           class="tags transparent"
+                           placeholder="tags"
+                           ng-model="vm.deck.tags"
+                           ng-model-options="{updateOn: 'default blur', debounce: {default: 2000, blur: 0}}"
+                           ng-list
+                           ng-change="vm.save()"/>
+                    <hr class="dashed">
+                    <div><span class="badge" ng-repeat="tag in vm.deck.tags track by $index">{{tag}}</span></div>
+                </div>
+                <textarea class="transparent"
+                          ng-model="vm.deck.notes"
                           ng-model-options="{updateOn: 'default blur', debounce: {default: 2000, blur: 0}}"
                           ng-change="vm.save()"
                           ng-disabled="!vm.canEdit"

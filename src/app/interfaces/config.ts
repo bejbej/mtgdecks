@@ -6,6 +6,7 @@ module app {
         cardCacheLimit: number;
         localStorage: {
             user: string;
+            tags: string;
         };
         authClients: {
             google: {

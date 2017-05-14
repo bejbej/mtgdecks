@@ -1,10 +1,27 @@
 <div ng-controller="DecksController as vm">
+    <nav>
+        <div class="select">
+            <div class="select-label">{{vm.currentTag || "All"}}<span class="spacer"></span><span class="chevron bottom" ng-show="vm.tags.length > 0"></span></div>
+            <select ng-model="::vm.currentTag"
+                    ng-change="::vm.filterDecks()"
+                    ng-if="vm.tags.length > 0">
+                <option value="">- All -</option>
+                <option ng-repeat="tag in vm.tags" value="{{::tag}}">{{::tag}}&nbsp;&nbsp;</option>
+            </select>
+        </div>
+        <div class="pull-right">
+            <ng-include src="'auth/auth.html'"></ng-include>
+        </div>
+    </nav>
     <div class="list-group">
         <a class="list-group-item" href="#/decks/new">
             <strong>+</strong>
             Build a New Deck
         </a>
-        <a class="list-group-item" href="#/decks/{{::deck.id}}" ng-repeat="deck in vm.decks">{{::deck.name}}</a>
+        <a class="list-group-item" href="#/decks/{{::deck.id}}" ng-repeat="deck in vm.visibleDecks">
+            {{::deck.name}}
+            <span class="badge" ng-repeat="tag in ::deck.tags track by $index">{{::tag}}</span>
+        </a>
     </div>
     <spinner class="light" ng-if="vm.timeout"></spinner>
 </div>

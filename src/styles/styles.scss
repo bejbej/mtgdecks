@@ -5,16 +5,21 @@
 @import "./components/mixins/animate.scss";
 
 // Components
+@import "./components/chevron.scss";
 @import "./components/flex.scss";
 @import "./components/header.scss";
+@import "./components/hr.scss";
+@import "./components/input.scss";
 @import "./components/lightbox.scss";
 @import "./components/list-group.scss";
 @import "./components/margins.scss";
 @import "./components/nav.scss";
 @import "./components/radio-group.scss";
 @import "./components/section.scss";
+@import "./components/select.scss";
 @import "./components/spinners.scss";
 @import "./components/tabs.scss";
+@import "./components/tag-input.scss";
 @import "./components/textarea.scss";
 
 body {

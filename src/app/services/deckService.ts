@@ -25,34 +25,13 @@ module app {
         }
 
         public createDeck = (deck: Deck): ng.IPromise<number> => {
-            var payload = {
-                name: deck.name,
-                cardGroups: deck.cardGroups.map(cardGroup => {
-                    return {
-                        name: cardGroup.name,
-                        cardBlob: cardGroup.getCardBlob()
-                    };
-                })
-            };
-
-            return this.$http.post<{id:number}>(this.url, payload).then(response => {
+            return this.$http.post<{id:number}>(this.url, this.mapDeck(deck)).then(response => {
                 return response.data.id;
             });
         }
 
         public updateDeck = (deck: Deck): ng.IPromise<any> => {
-            var payload = {
-                name: deck.name,
-                cardGroups: deck.cardGroups.map(cardGroup => {
-                    return {
-                        name: cardGroup.name,
-                        cardBlob: cardGroup.getCardBlob()
-                    };
-                }),
-                notes: deck.notes
-            };
-
-            return this.$http.put(this.url + "/" + deck.id, payload);;
+            return this.$http.put(this.url + "/" + deck.id, this.mapDeck(deck));;
         }
 
         public deleteDeck = (id: number): ng.IPromise<any> => {
@@ -71,7 +50,24 @@ module app {
                 return cardGroup;
             });
             deck.notes = apidata.notes;
+            deck.tags = apidata.tags;
             return deck;
+        }
+
+        private mapDeck = (deck: Deck): IApiDeck => {
+            return {
+                id: undefined,
+                owners: undefined,
+                name: deck.name,
+                cardGroups: deck.cardGroups.map(cardGroup => {
+                    return {
+                        name: cardGroup.name,
+                        cardBlob: cardGroup.getCardBlob()
+                    };
+                }),
+                notes: deck.notes,
+                tags: deck.tags
+            };
         }
     }
 

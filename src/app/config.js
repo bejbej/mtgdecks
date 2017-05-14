@@ -6,6 +6,7 @@
     cardCacheLimit: 1000,
     localStorage: {
         user: "user",
+        tags: "tags"
     },
     authClients: {
         google: {
