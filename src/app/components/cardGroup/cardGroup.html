@@ -49,6 +49,10 @@
             <input type="radio" ng-model="vm.view" value="group-by-cmc" ng-click="vm.showToolbar = false"/>
             Converted Mana Cost
         </label>
+        <label>
+            <input type="radio" ng-model="vm.view" value="group-by-name" ng-click="vm.showToolbar = false"/>
+            Name
+        </label>
     </div>
     <div class="alert alert-danger margin" ng-if="vm.cardGroup.failedCards.length > 0">
         Couldn't identify the following cards:
