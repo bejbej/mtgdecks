@@ -4,6 +4,9 @@ var appConfig = {
         { name: "cmc", types: ["creature", "artifact", "enchantment", "planeswalker", "instant", "sorcery"] }
     ],
     cardCacheLimit: 1000,
+    localStorage: {
+        user: "user",
+    },
     authClients: {
         google: {
             authUrl: "https://mtgdecks-api.herokuapp.com/api/auth/google",
