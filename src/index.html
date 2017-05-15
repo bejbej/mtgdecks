@@ -11,14 +11,14 @@
 </head>
 
 <body>
-    <nav>
-        <a href="#/decks">My Decks</a>
-        <div class="pull-right">
-            <ng-include src="'auth/auth.html'"></ng-include>
-        </div>
-    </nav>
+    <main class="{{pageSize}}">
+        <nav>
+            <a href="#/decks">My Decks</a>
+            <div class="pull-right">
+                <ng-include src="'auth/auth.html'"></ng-include>
+            </div>
+        </nav>
 
-    <main>
         <ng-view></ng-view>
     </main>
     <!-- inject:js -->

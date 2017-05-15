@@ -1,7 +1,7 @@
 <div ng-controller="DeckController as vm">
     <spinner class="light" ng-if="!vm.deck"></spinner>
 
-    <div class="margin-collapse" ng-if="vm.deck">
+    <div ng-if="vm.deck">
         <section>
             <header class="deck-info">
                 <div class="deck-name" ng-if="!vm.canEdit">{{vm.deck.name}}</div>
