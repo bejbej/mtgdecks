@@ -33,6 +33,7 @@
                           ng-model-options="{updateOn: 'default blur', debounce: {default: 2000, blur: 0}}"
                           ng-change="vm.save()"
                           ng-disabled="!vm.canEdit"
+                          allow-tabs
                           msd-elastic></textarea>
                 <header>Stats</header>
                 <stats cards="vm.deck.cardGroups[0].cards" ng-if="vm.deck.cardGroups[0].cards.length > 0"></stats>
