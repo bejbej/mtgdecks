@@ -8,6 +8,10 @@
         });
     });
 
+    angular.module("app").config((SatellizerConfig, config: IConfig) => {
+        SatellizerConfig.tokenPrefix = config.localStorage.prefix;
+    });
+
     angular.module("app").run((config: IConfig, $http: ng.IHttpService, $q: ng.IQService, $auth) => {
         var apiKey = localStorage.getItem("api-key");
         if (apiKey) {

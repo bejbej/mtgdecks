@@ -6,10 +6,11 @@
     cardCacheLimit: 1000,
     cardCacheVersion: 1,
     localStorage: {
-        user: "user",
-        tags: "tags",
-        cards: "cards",
-        cardsVersion: "cards-version"
+        prefix: "mtgdecks",
+        user: "mtgdecks-user",
+        tags: "mtgdecks-tags",
+        cards: "mtgdecks-cards",
+        cardsVersion: "mtgdecks-cards-version"
     },
     authClients: {
         google: {

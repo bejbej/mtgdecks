@@ -15,7 +15,7 @@ module app {
         login = (): ng.IPromise<any> => {
             return this.$auth.authenticate("google").then(() => {
                 return this.UserService.getMe().then(user => {
-                    localStorage.setItem("user", JSON.stringify(user));
+                    localStorage.setItem(this.config.localStorage.user, JSON.stringify(user));
                     this.updateAuthenticationStatus();
                     return user;
                 }, this.logout);
@@ -41,13 +41,18 @@ module app {
         }
 
         getAuthUser = (): User => {
+            var user = undefined;
             if (this.$auth.isAuthenticated()) {
-                return JSON.parse(localStorage.getItem(this.config.localStorage.user));
+                var user =  JSON.parse(localStorage.getItem(this.config.localStorage.user));
+                if (user === undefined) {
+                    this.logout();
+                }
             } else {
                 if (this.isAuthenticated) {
                     this.logout();
                 }
             }
+            return user;
         }
 
         private updateAuthenticationStatus = () => {

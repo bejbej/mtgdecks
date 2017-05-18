@@ -6,6 +6,7 @@ module app {
         cardCacheLimit: number;
         cardCacheVersion: number;
         localStorage: {
+            prefix: string;
             user: string;
             tags: string;
             cards: string;
