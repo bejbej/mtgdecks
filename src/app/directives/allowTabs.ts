@@ -3,7 +3,6 @@ module app {
         restrict = "A";
         link = (scope: ng.IScope, element: ng.IAugmentedJQuery) => {
             element.bind("keydown", event => {
-                debugger;
                 if (event.keyCode === 9) {
                     event.preventDefault();
 
