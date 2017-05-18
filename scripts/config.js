@@ -4,8 +4,13 @@ var appConfig = {
         { name: "cmc", types: ["creature", "artifact", "enchantment", "planeswalker", "instant", "sorcery"] }
     ],
     cardCacheLimit: 1000,
+    cardCacheVersion: 1,
     localStorage: {
-        user: "user",
+        prefix: "mtgdecks",
+        user: "mtgdecks-user",
+        tags: "mtgdecks-tags",
+        cards: "mtgdecks-cards",
+        cardsVersion: "mtgdecks-cards-version"
     },
     authClients: {
         google: {
