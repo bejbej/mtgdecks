@@ -4,9 +4,12 @@
         { name: "cmc", types: ["creature", "artifact", "enchantment", "planeswalker", "instant", "sorcery"] }
     ],
     cardCacheLimit: 1000,
+    cardCacheVersion: 1,
     localStorage: {
         user: "user",
-        tags: "tags"
+        tags: "tags",
+        cards: "cards",
+        cardsVersion: "cards-version"
     },
     authClients: {
         google: {
