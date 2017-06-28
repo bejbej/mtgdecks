@@ -100,7 +100,6 @@ module app {
         }
 
         cancelPendingRequests = () => {
-            console.log("cancelling");            
             if (this.timeout) {
                 this.timeout.resolve();
             }

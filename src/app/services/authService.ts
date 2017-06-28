@@ -10,6 +10,9 @@ module app {
             private config: IConfig,
             private UserService: UserService) {
                 this.isAuthenticated = this.$auth.isAuthenticated();
+                if (!this.isAuthenticated) {
+                    this.logout();
+                }
             }
 
         login = (): ng.IPromise<any> => {

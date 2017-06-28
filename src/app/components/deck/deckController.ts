@@ -90,6 +90,7 @@ module app {
             if (id === "new") {
                 return this.$q.when(this.createNewDeck());
             } else {
+                document.title = "Loading";
                 this.timeout = this.$q.defer();
                 return this.DeckService.getDeck(id, this.timeout.promise).then(deck => {
                     return deck;

@@ -17,10 +17,6 @@
     angular.module("app").config(Route);
 
     angular.module("app").run(($rootScope: IRootScopeService) => {
-        $rootScope.$on("$routeChangeStart", () => {
-            document.title = "Loading";
-        });
-
         $rootScope.$on("$routeChangeSuccess", (event, route) => {
             $rootScope.pageSize = route.pageSize;
             if (route.name) {
