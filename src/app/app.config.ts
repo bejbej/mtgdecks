@@ -28,13 +28,19 @@
         if (lastMouseOverEvent === undefined) {
             lastMouseOverEvent = new Date();
         } else if (new Date().getTime() - lastMouseOverEvent.getTime() < 100) {
-            delete(lastMouseOverEvent);
             appConfig.enableHover = true;
             document.body.removeEventListener("mouseover", enableHover);
+            document.body.addEventListener("touchstart", disableHover);
         } else {
             lastMouseOverEvent = new Date();
         }
     };
 
-    document.body.addEventListener("mouseover", enableHover);
+    var disableHover = () => {
+        appConfig.enableHover = false;
+        document.body.removeEventListener("touchstart", disableHover);
+        document.body.addEventListener("mouseover", enableHover);
+    }
+
+    disableHover();
 }
