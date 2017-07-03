@@ -22,7 +22,7 @@ var appConfig = {
     cardsUrl: "https://mtgdecks-api.herokuapp.com/api/cards",
     decksUrl: "https://mtgdecks-api.herokuapp.com/api/decks",
     usersUrl: "https://mtgdecks-api.herokuapp.com/api/users",
-    imagesUrl: "https://image.deckbrew.com/mtg/multiverseid/",
+    imagesUrl: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={multiverseId}&type=card",
     storeUrl: "http://shop.tcgplayer.com/productcatalog/product/show?ProductName=",
     storeMassEntryUrl: "http://shop.tcgplayer.com/massentry"
 };
