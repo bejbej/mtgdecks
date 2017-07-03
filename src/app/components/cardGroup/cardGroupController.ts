@@ -39,7 +39,7 @@ module app {
         }
 
         startEditing = (): void => {
-            this.cardsBlob = this.cardGroup.getCardBlob();
+            this.cardsBlob = this.cardGroup.cardBlob;
             this.isEditing = true;
         }
 
@@ -47,7 +47,7 @@ module app {
             if (this.form.$dirty) {
                 this.cardGroup.setCardBlob(this.cardsBlob);
                 if (this.onChange) {
-                    this.onChange();
+                    this.onChange(this.cardGroup);
                 }
             }
             this.isEditing = false;

@@ -3,7 +3,7 @@
         <li>
             <div ng-click="vm.showToolbar = !vm.showToolbar">
                 {{::vm.cardGroup.name}}
-                <span class="badge">{{vm.cardGroup.count()}}</span>
+                <span class="badge">{{::vm.cardGroup.count}}</span>
                 <span class="glyphicon"
                       ng-class="{'glyphicon-chevron-up': vm.showToolbar, 'glyphicon-chevron-down': !vm.showToolbar}"
                       ng-if="vm.cardGroup.cards.length > 0"></span>
@@ -17,7 +17,7 @@
         <li>
             <a ng-click="vm.applyChanges()">
                 {{::vm.cardGroup.name}}
-                <span class="badge">{{vm.cardGroup.count()}}</span>
+                <span class="badge">{{::vm.cardGroup.count}}</span>
                 <span class="glyphicon"
                       ng-class="::{'glyphicon-chevron-up': vm.showToolbar, 'glyphicon-chevron-down': !vm.showToolbar}"
                       ng-if="vm.cardGroup.cards.length > 0"></span>
@@ -29,11 +29,11 @@
     </ul>
     <header ng-if="!vm.canEdit && vm.cardGroup.cards.length === 0">
         <span>{{::vm.cardGroup.name}}</span>
-        <span class="badge">{{vm.cardGroup.count()}}</span>
+        <span class="badge">{{::vm.cardGroup.count}}</span>
     </header>
     <header ng-if="!vm.canEdit && vm.cardGroup.cards.length > 0" ng-click="vm.showToolbar = !vm.showToolbar">
         <span>{{::vm.cardGroup.name}}</span>
-        <span class="badge">{{vm.cardGroup.count()}}</span>
+        <span class="badge">{{::vm.cardGroup.count}}</span>
         <span class="glyphicon" ng-class="{'glyphicon-chevron-up': vm.showToolbar, 'glyphicon-chevron-down': !vm.showToolbar}" ng-if="vm.cardGroup.cards.length > 0"></span>
     </header>
     <div class="radio-group" ng-if="vm.cardGroup.cards.length > 0 && !vm.isEditing && vm.showToolbar">
@@ -57,7 +57,7 @@
     <div class="alert alert-danger margin" ng-if="vm.cardGroup.failedCards.length > 0">
         Couldn't identify the following cards:
         <ul>
-            <li ng-repeat="card in ::vm.cardGroup.failedCards">{{::card.name}}</li>
+            <li ng-repeat="card in vm.cardGroup.failedCards track by $index">{{::card}}</li>
         </ul>
     </div>
     <div ng-if="!vm.isEditing && vm.cardGroup.cards.length > 0">

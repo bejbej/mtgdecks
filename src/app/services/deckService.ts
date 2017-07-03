@@ -62,7 +62,7 @@ module app {
                 cardGroups: deck.cardGroups.map(cardGroup => {
                     return {
                         name: cardGroup.name,
-                        cardBlob: cardGroup.getCardBlob()
+                        cardBlob: cardGroup.cardBlob
                     };
                 }),
                 notes: deck.notes,

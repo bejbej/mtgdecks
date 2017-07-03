@@ -31,7 +31,6 @@ module app {
                 this.sync();
                 this.updateTitle();
                 this.updateStoreUrl();
-                this.deck.cardGroups[0].watch(this.updateStoreUrl);
             })
 
             this.$scope.$on("authentication-changed", this.sync);
@@ -49,6 +48,14 @@ module app {
             if (this.canCreate && !this.deck.id && this.deck.cardGroups.some(cardGroup => cardGroup.cards.length > 0)) {
                 this.save();
             }
+        }
+
+        private cardGroupUpdated = (cardGroup: CardGroup) => {
+            if (this.deck.cardGroups.indexOf(cardGroup) === 0) {
+                this.updateStoreUrl();
+            }
+
+            this.save();
         }
 
         private updateStoreUrl = () => {

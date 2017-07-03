@@ -4,9 +4,7 @@ module app {
         constructor(private $injector: ng.auto.IInjectorService) { }
 
         public createCardGroup(): CardGroup {
-            return new CardGroup(
-                this.$injector.get<ng.IQService>("$q"),
-                this.$injector.get<CardService>("CardService"));
+            return new CardGroup(this.$injector.get<CardService>("CardService"));
         }
     }
 

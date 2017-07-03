@@ -1,6 +1,19 @@
 ﻿module app {
     angular.module('app').constant('config', appConfig);
 
+    angular.module("app").constant("cards", cardsCSV.split("\n").slice(1).reduce((dictionary, cardText) => {
+        var parameters = cardText.split("\t");
+        var card = {
+            name: parameters[0],
+            primaryType: parameters[1],
+            cmc: Number(parameters[2]),
+            color: parameters[3],
+            multiverseId: parameters[4]
+        };
+        dictionary[card.name.toLowerCase()] = card;
+        return dictionary;
+    }, {}));
+
     angular.module("app").config(($authProvider, config: IConfig) => {
         $authProvider.google({
             clientId: config.authClients.google.clientId,

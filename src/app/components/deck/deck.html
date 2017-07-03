@@ -31,7 +31,7 @@
         <div class="flex-gte-md">
             <section class="flex-2">
                 <div ng-repeat="cardGroup in ::vm.deck.cardGroups">
-                    <card-group group="cardGroup" on-change="vm.save" can-edit="vm.canEdit" is-editing="{{::$index === 0 && vm.deck.id === undefined}}"></card-group>
+                    <card-group group="cardGroup" on-change="vm.cardGroupUpdated" can-edit="vm.canEdit" is-editing="{{::$index === 0 && vm.deck.id === undefined}}"></card-group>
                 </div>
             </section>
             <section class="border-left-gte-md">
