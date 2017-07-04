@@ -29,11 +29,18 @@ module app {
             }
 
             var start = 0;
-            return currentGroupSizes.map(groupSize => {
+            var groups = currentGroupSizes.map(groupSize => {
                 var group = array.slice(start, start + groupSize);
                 start = start + groupSize;
                 return group;
             });
+
+            var additionalEmptyGroups = numberOfGroups - groups.length;
+            for (var i = 0; i < additionalEmptyGroups; ++i) {
+                groups.push([]);
+            }
+
+            return groups;
         }
 
         private generateReferenceArray = (array): number[][] => {
