@@ -21,8 +21,8 @@
                     <a class="btn btn-default margin-top" href="{{vm.storeUrl}}" target="_blank" ng-if="vm.deck.cardGroups[0].cards.length > 0">TCG Player</a>
                     <!--
              --><button class="btn btn-default margin-top" ng-click="vm.delete()" ng-if="vm.canEdit && vm.deck.id" ng-disabled="vm.isDeleting">
-                    {{ vm.isDeleting ? "Deleting" : "Delete this Deck" }}
-                    <pulse ng-if="vm.isDeleting"></pulse>
+                    <span ng-if="!vm.isDeleting">Delete this Deck</span>
+                    <span ng-if="vm.isDeleting">Deleting <span text-spinner></span></span>
                 </button>
                 </div>
             </header>
