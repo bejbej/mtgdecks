@@ -20,9 +20,9 @@ module app {
             var result = this.parseCardBlob(cards);
             this.failedCards = result.failed;
             this.cards = result.cards;
-            this.cardBlob = this.failedCards.concat(this.cards.map(card => {
+            this.cardBlob = this.failedCards.concat(this.cards.sort((a, b) => a.name > b.name ? 1: -1).map(card => {
                 return card.quantity + "x " + card.name;
-            }).sort()).join("\n");
+            })).join("\n");
             this.count = this.cards.reduce((a, b) => {
                 return a + Number(b.quantity);
             }, 0);
