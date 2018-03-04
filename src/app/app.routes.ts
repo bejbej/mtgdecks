@@ -8,7 +8,7 @@
         constructor($routeProvider: ng.route.IRouteProvider) {
             $routeProvider
                 .when("/decks/:id", { templateUrl: "deck/deck.html" })
-                .when("/decks", <any>{ templateUrl: "decks/decks.html", name: "My Decks", pageSize: "sm" })
+                .when("/decks", { templateUrl: "decks/decks.html", name: "My Decks"})
                 .when("/", { redirectTo: '/decks' })
                 .otherwise({ templateUrl: "404/404.html", name: "Page Not Found" });
         }

@@ -1,4 +1,4 @@
-<div ng-controller="DecksController as vm">
+<main class="sm" ng-controller="DecksController as vm">
     <nav>
         <div class="select">
             <div class="select-label">{{vm.currentTag || "All"}}<span class="spacer"></span><span class="chevron bottom" ng-show="vm.tags.length > 0"></span></div>
@@ -24,4 +24,4 @@
         </a>
     </div>
     <spinner class="light" ng-if="vm.timeout"></spinner>
-</div>
+</main>
