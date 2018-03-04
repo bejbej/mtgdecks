@@ -116,6 +116,12 @@ module app {
             sideboard.name = "Sideboard";
             deck.cardGroups = [mainboard, sideboard];
             deck.notes = "";
+
+            var tags = <ITags>JSON.parse(localStorage.getItem(this.config.localStorage.tags));
+            if (tags && tags.current) {
+                deck.tags = [tags.current];
+            }
+
             return deck;
         }
 
