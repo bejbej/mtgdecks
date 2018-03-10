@@ -6,7 +6,8 @@
                     ng-change="::vm.filterDecks()"
                     ng-if="vm.tags.length > 0">
                 <option value="">- All -</option>
-                <option ng-repeat="tag in vm.tags" value="{{::tag}}">{{::tag}}&nbsp;&nbsp;</option>
+                <option value="Untagged">- Untagged -</option>
+                <option ng-repeat="tag in vm.tags | orderBy: 'toString()'" value="{{::tag}}">{{::tag}}&nbsp;&nbsp;</option>
             </select>
         </div>
         <div class="pull-right">

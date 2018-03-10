@@ -63,6 +63,11 @@ module app {
                 return;
             }
 
+            if (this.currentTag == "Untagged") {
+                this.visibleDecks = this.decks.filter(deck => deck.tags.length === 0);
+                return;
+            }
+
             this.visibleDecks = this.decks.filter(deck => {
                 return deck.tags.some(tag => {
                     return tag.toLocaleLowerCase() === this.currentTag.toLocaleLowerCase();
