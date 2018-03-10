@@ -7,6 +7,18 @@ module app {
             var img = document.createElement("img");
             img.src = url;
 
+            var width = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            var height = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+
+            if ((height * 3) >> 2 > width) {
+                img.style.width = "90%";
+                img.style.borderRadius = "3.5vw";
+            }
+            else {
+                img.style.height = "90%";
+                img.style.borderRadius = "3.5vh";                
+            }
+
             lightbox.appendChild(img);
 
             lightbox.addEventListener("click", (event) => {
