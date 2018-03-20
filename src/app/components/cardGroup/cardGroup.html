@@ -4,9 +4,7 @@
             <div ng-click="vm.showToolbar = !vm.showToolbar">
                 {{::vm.cardGroup.name}}
                 <span class="badge">{{::vm.cardGroup.count}}</span>
-                <span class="glyphicon"
-                      ng-class="{'glyphicon-chevron-up': vm.showToolbar, 'glyphicon-chevron-down': !vm.showToolbar}"
-                      ng-if="vm.cardGroup.cards.length > 0"></span>
+                <span class="icon" ng-if="vm.cardGroup.cards.length > 0">{{vm.showToolbar ? "7" : "4"}}</span>
             </div>
         </li>
         <li>
@@ -18,9 +16,7 @@
             <a ng-click="vm.applyChanges()">
                 {{::vm.cardGroup.name}}
                 <span class="badge">{{::vm.cardGroup.count}}</span>
-                <span class="glyphicon"
-                      ng-class="::{'glyphicon-chevron-up': vm.showToolbar, 'glyphicon-chevron-down': !vm.showToolbar}"
-                      ng-if="vm.cardGroup.cards.length > 0"></span>
+                <span class="icon" ng-if="vm.cardGroup.cards.length > 0">{{::vm.showToolbar ? "7" : "4"}}</span>
             </a>
         </li>
         <li class="active">
@@ -34,7 +30,7 @@
     <header ng-if="!vm.canEdit && vm.cardGroup.cards.length > 0" ng-click="vm.showToolbar = !vm.showToolbar">
         <span>{{::vm.cardGroup.name}}</span>
         <span class="badge">{{::vm.cardGroup.count}}</span>
-        <span class="glyphicon" ng-class="{'glyphicon-chevron-up': vm.showToolbar, 'glyphicon-chevron-down': !vm.showToolbar}" ng-if="vm.cardGroup.cards.length > 0"></span>
+        <span class="icon" ng-if="vm.cardGroup.cards.length > 0">{{vm.showToolbar ? "7" : "4"}}</span>
     </header>
     <div class="radio-group" ng-if="vm.cardGroup.cards.length > 0 && !vm.isEditing && vm.showToolbar">
         <label>

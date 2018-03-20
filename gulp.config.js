@@ -16,7 +16,7 @@
         this.src = {
             config: "./src/app/config.js",
             fonts: [
-                "./bower_components/bootstrap-sass/assets/fonts/bootstrap/*.*"
+                "./src/fonts/*.*"
             ],
             images: "./src/images/*.*",
             index: "./src/index.html",
