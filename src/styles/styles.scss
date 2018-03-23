@@ -5,7 +5,8 @@
 @import "./components/mixins/animate.scss";
 
 // Components
-@import "./components/chevron.scss";
+@import "./components/alert.scss";
+@import "./components/badge.scss";
 @import "./components/flex.scss";
 @import "./components/header.scss";
 @import "./components/hr.scss";
@@ -67,8 +68,8 @@ main {
         content: ":";
     }
     .bar {
-        background-color: #555;
-        color: #555;
+        background-color: #777;
+        color: #777;
     }
     .value {
         color: #aaa;
@@ -145,4 +146,16 @@ main {
             border-bottom-left-radius: 4px;
         }
     }
+}
+
+.pull-right {
+    float: right;
+}
+
+.large {
+    font-size: 18px;
+}
+
+.capitalize {
+    text-transform: capitalize;
 }

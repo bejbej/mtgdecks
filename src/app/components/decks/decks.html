@@ -21,7 +21,7 @@
         </a>
         <a class="list-group-item" href="#/decks/{{::deck.id}}" ng-repeat="deck in vm.visibleDecks">
             {{::deck.name}}
-            <span class="badge" ng-repeat="tag in ::deck.tags track by $index">{{::tag}}</span>
+            <span class="badge pull-right" ng-repeat="tag in ::deck.tags track by $index">{{::tag}}</span>
         </a>
     </div>
     <spinner class="light" ng-if="vm.timeout"></spinner>

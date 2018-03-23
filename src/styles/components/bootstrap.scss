@@ -2,10 +2,7 @@ $screen-xs: 0px;
 $screen-sm: 480px;
 $screen-md: 768px;
 $screen-lg: 1200px;
-$grid-gutter-width: 0px;
-$list-group-border-radius: 0px;
-$icon-font-path: "../fonts/";
-$text-color: #333;
+$text-color: black;
 $btn-border-radius-base: 0px;
 
 // Core variables and mixins
@@ -37,10 +34,10 @@ $btn-border-radius-base: 0px;
 //@import "bootstrap/pagination";
 //@import "bootstrap/pager";
 //@import "bootstrap/labels";
-@import "bootstrap/badges";
+//@import "bootstrap/badges";
 //@import "bootstrap/jumbotron";
 //@import "bootstrap/thumbnails";
-@import "bootstrap/alerts";
+//@import "bootstrap/alerts";
 //@import "bootstrap/progress-bars";
 //@import "bootstrap/media";
 //@import "bootstrap/list-group";
@@ -56,5 +53,5 @@ $btn-border-radius-base: 0px;
 //@import "bootstrap/carousel";
 
 // Utility classes
-@import "bootstrap/utilities";
+//@import "bootstrap/utilities";
 //@import "bootstrap/responsive-utilities";

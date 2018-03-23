@@ -51,10 +51,8 @@
         </label>
     </div>
     <div class="alert alert-danger margin" ng-if="vm.cardGroup.failedCards.length > 0">
-        Couldn't identify the following cards:
-        <ul>
-            <li ng-repeat="card in vm.cardGroup.failedCards track by $index">{{card}}</li>
-        </ul>
+        <p class="alert-title">Unknown Cards</p>
+        <span ng-repeat="card in vm.cardGroup.failedCards track by $index">{{card}}<br></span>
     </div>
     <div ng-if="!vm.isEditing && vm.cardGroup.cards.length > 0">
         <directive-container directive="vm.view" cards="vm.cardGroup.cards"></directive-container>

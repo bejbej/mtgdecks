@@ -1,5 +1,5 @@
 <div class="stat-group">
-    <h3>{{::group.name}}</h3>
+    <p class="large capitalize">{{::group.name}}</p>
     <div class="stat-group-row" ng-repeat="stat in group.stats">
         <span class="name">{{::stat.name}}</span>
         <span class="bar">{{::"X".repeat(stat.value)}}</span>

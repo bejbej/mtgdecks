@@ -8,7 +8,7 @@ module app {
         name: string;
         cards: Card[];
         failedCards: string[];
-        count: number;
+        count: number = 0;
         cardBlob: string;
 
         constructor(private CardService: CardService) {

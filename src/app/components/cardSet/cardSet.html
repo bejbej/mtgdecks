@@ -1,12 +1,15 @@
-<div class="flex-gte-sm margin" style="margin-top: 0px">
+<div class="flex-gte-sm margin" style="margin-bottom:0;">
     <div ng-repeat="column in columns">
         <div class="card-group" ng-repeat="row in ::column">
-            <h3 ng-if="::row.name">{{::row.name}} <span class="badge">{{::row.numberOfCards}}</span></h3>
-            <div ng-repeat="card in ::row.cards">
-                <span class="quantity">{{::card.quantity}}</span>
-                <a class="name" href="{{::card.storeUrl()}}" card-preview="card.imageUrl()" lightbox="card.imageUrl()">{{::card.name}}</a>
-                <span class="price"></span>
-            </div>
+            <p class="large capitalize" ng-if="::row.name">{{::row.name}} <span class="badge">{{::row.numberOfCards}}</span></p>
+            <p>
+                <span ng-repeat="card in ::row.cards">
+                    <span class="quantity">{{::card.quantity}}</span>
+                    <a class="name" href="{{::card.storeUrl()}}" card-preview="card.imageUrl()" lightbox="card.imageUrl()">{{::card.name}}</a>
+                    <span class="price"></span>
+                    <br>
+                </span>
+            </p>
         </div>
     </div>
 </div>
