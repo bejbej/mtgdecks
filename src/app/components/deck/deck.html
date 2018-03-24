@@ -35,7 +35,7 @@
                 </div>
             </section>
             <section class="border-left-gte-md">
-                <header>Notes</header>
+                <header class="padding">Notes</header>
                 <div ng-if="!vm.canEdit && vm.deck.tags.length > 0">
                     <div class="tags"><span class="badge" ng-repeat="tag in vm.deck.tags">{{tag}}</span></div>
                     <hr class="dashed">
@@ -58,7 +58,7 @@
                           ng-disabled="!vm.canEdit"
                           allow-tabs
                           msd-elastic></textarea>
-                <header>Stats</header>
+                <header class="padding">Stats</header>
                 <stats cards="vm.deck.cardGroups[0].cards" ng-if="vm.deck.cardGroups[0].cards.length > 0"></stats>
             </section>
         </div>
