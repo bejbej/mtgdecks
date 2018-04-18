@@ -3,8 +3,6 @@ var appConfig = {
     statCategories: [
         { name: "cmc", types: ["creature", "artifact", "enchantment", "planeswalker", "instant", "sorcery"] }
     ],
-    cardCacheLimit: 1000,
-    cardCacheVersion: 1,
     localStorage: {
         prefix: "mtgdecks",
         user: "mtgdecks-user",
@@ -22,7 +20,7 @@ var appConfig = {
     cardsUrl: "https://mtgdecks-api.herokuapp.com/api/cards",
     decksUrl: "https://mtgdecks-api.herokuapp.com/api/decks",
     usersUrl: "https://mtgdecks-api.herokuapp.com/api/users",
-    imagesUrl: "http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={multiverseId}&type=card",
+    imagesUrl: "https://img.scryfall.com/cards/border_crop/en/{imageUri}.jpg",
     storeUrl: "http://shop.tcgplayer.com/productcatalog/product/show?ProductName=",
     storeMassEntryUrl: "http://shop.tcgplayer.com/massentry"
 };
