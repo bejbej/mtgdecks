@@ -8,7 +8,7 @@
             primaryType: parameters[1],
             cmc: Number(parameters[2]),
             color: parameters[3],
-            multiverseId: parameters[4]
+            imageUri: parameters[4]
         };
         dictionary[card.name.toLowerCase()] = card;
         return dictionary;

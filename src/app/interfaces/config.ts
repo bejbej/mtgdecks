@@ -3,8 +3,6 @@ module app {
         types: string[]
         categories: ICategory[];
         statCategories: ICategory[];
-        cardCacheLimit: number;
-        cardCacheVersion: number;
         localStorage: {
             prefix: string;
             user: string;
