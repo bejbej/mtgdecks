@@ -7,8 +7,7 @@ var appConfig = {
         prefix: "mtgdecks",
         user: "mtgdecks-user",
         tags: "mtgdecks-tags",
-        cards: "mtgdecks-cards",
-        cardsVersion: "mtgdecks-cards-version"
+        cards: "mtgdecks-cards-v1"
     },
     authClients: {
         google: {
@@ -17,10 +16,10 @@ var appConfig = {
             redirectUri: window.location.origin + window.location.pathname
         }
     },
+    cardCacheLimit: 1000,
+    cardExpirationMs: 86400000, //1 day
     cardsUrl: "https://mtgdecks-api.herokuapp.com/api/cards",
     decksUrl: "https://mtgdecks-api.herokuapp.com/api/decks",
     usersUrl: "https://mtgdecks-api.herokuapp.com/api/users",
-    imagesUrl: "https://img.scryfall.com/cards/border_crop/en/{imageUri}.jpg",
-    storeUrl: "http://shop.tcgplayer.com/productcatalog/product/show?ProductName=",
-    storeMassEntryUrl: "http://shop.tcgplayer.com/massentry"
+    imagesUrl: "https://img.scryfall.com/cards/border_crop/en/{imageUri}.jpg"
 };
