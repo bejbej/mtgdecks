@@ -14,7 +14,6 @@ module app {
         isEditing: boolean;
         cardsBlob: string;
         form: ng.IFormController;
-        onChange: Function;
         showToolbar: boolean;
         view: string = "group-by-type";
 
@@ -23,7 +22,6 @@ module app {
             config: IConfig) {
                 
             this.cardGroup = this.$scope.group;
-            this.onChange = this.$scope.onChange;
 
             this.updateEditability();
             this.$scope.$watch("canEdit", this.updateEditability);
@@ -46,9 +44,6 @@ module app {
         applyChanges = (): void => {
             if (this.form.$dirty) {
                 this.cardGroup.setCardBlob(this.cardsBlob);
-                if (this.onChange) {
-                    this.onChange(this.cardGroup);
-                }
             }
             this.isEditing = false;
         }

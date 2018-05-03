@@ -5,7 +5,6 @@ module app {
         scope = {
             canEdit: "=",
             group: "=",
-            onChange: "=",
             isEditing: "@"
 
         };

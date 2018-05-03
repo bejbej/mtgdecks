@@ -18,7 +18,7 @@
     },
     cardCacheLimit: 1000,
     cardExpirationMs: 86400000, //1 day
-    cardsUrl: "http://localhost:8082/api/cards",
+    cardsUrl: "https://mtgdecks-api.herokuapp.com/api/cards",
     decksUrl: "https://mtgdecks-api.herokuapp.com/api/decks",
     usersUrl: "https://mtgdecks-api.herokuapp.com/api/users",
     imagesUrl: "https://img.scryfall.com/cards/border_crop/en/{imageUri}.jpg"

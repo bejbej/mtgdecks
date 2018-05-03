@@ -11,6 +11,7 @@ module app {
         public isDeleting: boolean;
         public canEdit: boolean;
         public canCreate: boolean;
+        public showPrices: boolean;
 
         private timeout: ng.IDeferred<any>;
 
@@ -30,10 +31,25 @@ module app {
                 this.deck = deck;
                 this.sync();
                 this.updateTitle();
+                this.deck.cardGroups.forEach(cardGroup => {
+                    cardGroup.on("changed", event => {
+                        this.save();
+                        if (this.showPrices) {
+                            event.target.loadPrices();
+                        }
+                    });
+                });
             })
 
             this.$scope.$on("authentication-changed", this.sync);
             this.$scope.$on("$destroy", this.cancelPendingRequests);
+        }
+
+        public togglePrices = () => {
+            this.showPrices = !this.showPrices;
+            if (this.showPrices) {
+                this.deck.cardGroups.forEach(cardGroup => cardGroup.loadPrices());
+            }
         }
 
         private updateTitle = () => {

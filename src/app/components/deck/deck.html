@@ -1,4 +1,4 @@
-<main ng-controller="DeckController as vm">
+<main ng-controller="DeckController as vm" class="{{vm.showPrices ? 'show-prices' : 'hide-prices'}}">
     <nav>
         <a href="#/decks">My Decks</a>
         <div class="pull-right">
@@ -18,10 +18,11 @@
                        ng-change="vm.save()"
                        ng-if="vm.canEdit" />
                 <div class="flex flex-padding">
-                <button class="btn btn-default margin-top" ng-click="vm.delete()" ng-if="vm.canEdit && vm.deck.id" ng-disabled="vm.isDeleting">
-                    <span ng-if="!vm.isDeleting">Delete this Deck</span>
-                    <span ng-if="vm.isDeleting">Deleting <span text-spinner></span></span>
-                </button>
+                    <button class="btn btn-default margin-top" ng-click="vm.togglePrices()">{{vm.showPrices ? "Hide Prices" : "Show Prices"}}</button>
+                    <button class="btn btn-default margin-top" ng-click="vm.delete()" ng-if="vm.canEdit && vm.deck.id" ng-disabled="vm.isDeleting">
+                        <span ng-if="!vm.isDeleting">Delete this Deck</span>
+                        <span ng-if="vm.isDeleting">Deleting <span text-spinner></span></span>
+                    </button>
                 </div>
             </header>
         </section>
@@ -29,7 +30,7 @@
         <div class="flex-gte-md">
             <section class="flex-2">
                 <div ng-repeat="cardGroup in ::vm.deck.cardGroups">
-                    <card-group group="cardGroup" on-change="vm.save" can-edit="vm.canEdit" is-editing="{{::$index === 0 && vm.deck.id === undefined}}"></card-group>
+                    <card-group group="cardGroup" can-edit="vm.canEdit" is-editing="{{::$index === 0 && vm.deck.id === undefined}}"></card-group>
                 </div>
             </section>
             <section class="border-left-gte-md">
