@@ -4,7 +4,9 @@ module app {
         constructor(private $injector: ng.auto.IInjectorService) { }
 
         public createCardGroup(): CardGroup {
-            return new CardGroup(this.$injector.get<CardService>("CardService"));
+            let cardPriceService = this.$injector.get<CardPriceService>("CardPriceService");
+            let CardDefinitions = this.$injector.get<{ [id: string]: ICardDefinition}>("CardDefinitions");
+            return new CardGroup(CardDefinitions, cardPriceService);
         }
     }
 

@@ -6,16 +6,13 @@ module app {
 
     class GroupByName implements ng.IDirective {
         
-        letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+        private groupByName = (cards: ICard[]): CardSet[][] => {
 
-        private groupByName = (cards: Card[]): CardSet[][] => {
-
-            var cards = cards.sort((a, b) => {
-                return a.name > b.name ? 1 : -1;
+            var cards = cards.slice(0).sort((a, b) => {
+                return a.definition.name > b.definition.name ? 1 : -1;
             });
 
             var columnLength = Math.ceil(cards.length / 3);
-
             return [
                 [{
                     name: undefined,
@@ -41,9 +38,9 @@ module app {
         };
         templateUrl = "cardSet/groupByName.html";
         link = (scope: scope) => {
-            scope.$watchCollection("cards", (cards: Card[]) => {
+            scope.$watchCollection("cards", (cards: ICard[]) => {
                 scope.columns = this.groupByName(cards);
-            })
+            });
         }
     }
 

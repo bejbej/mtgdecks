@@ -38,13 +38,14 @@ module app {
         }
 
         restrict = "A";
-        link = (scope: ng.IScope, elem: Element[], attrs) => {
+        link = (scope: ng.IScope, elem: ng.IAugmentedJQuery, attrs) => {
             var url: string;
 
             var mouseOver = (event) => {
                 if (this.config.enableHover) {
                     if (!url) {
-                        url = scope.$eval(attrs.lightbox);
+                        let uri = scope.$eval(attrs.lightbox);
+                        url = this.config.imagesUrl.replace(/{([^}]*)}/, uri);
                     }
                     this.showCardPreview(event, url);
                 }

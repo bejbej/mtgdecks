@@ -3,7 +3,7 @@ module app {
     class TextSpinner implements ng.IDirective {
         restrict = "A";
         template = "<span></span>";
-        link = (scope: ng.IScope, elem: Element[], attrs) => {
+        link = (scope: ng.IScope, elem: ng.IAugmentedJQuery, attrs: ng.IAttributes) => {
             let index = 0;
             let states = "0123".split("");
             let intervalId = undefined;
@@ -19,7 +19,6 @@ module app {
             intervalId = window.setInterval(spin, 150);
 
             scope.$on("$destroy", () => {
-                debugger;
                 if (intervalId != undefined) {
                     window.clearInterval(intervalId);
                 }

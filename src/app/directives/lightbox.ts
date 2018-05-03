@@ -1,5 +1,8 @@
 module app {
     class Lightbox {
+
+        constructor(private config: IConfig) { }
+
         showLightbox = (event, url) => {
             var lightbox = document.createElement("div");
             lightbox.className = "lightbox";
@@ -32,12 +35,13 @@ module app {
             var url: string;
             elem[0].addEventListener("click", event => {
                 if (!url) {
-                    url = scope.$eval(attrs.lightbox);
+                    let uri = scope.$eval(attrs.lightbox);
+                    url = this.config.imagesUrl.replace(/{([^}]*)}/, uri);
                 }
                 this.showLightbox(event, url);
             });
         };
     }
 
-    angular.module("app").directive("lightbox", () => new Lightbox());
+    angular.module("app").directive("lightbox", (config) => new Lightbox(config));
 }

@@ -13,7 +13,7 @@ module app {
             var currentGroupSizes = [words.length];
             var currentLargestSize = words.reduce((a, b) => {
                 return a + b;
-            });
+            }, 0);
 
             while (true) {
                 var results = this.split(referenceArray, currentLargestSize - 1);

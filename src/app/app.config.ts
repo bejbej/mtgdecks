@@ -1,7 +1,7 @@
 ﻿module app {
     angular.module('app').constant('config', appConfig);
 
-    angular.module("app").constant("cards", cardsCSV.split("\n").slice(1).reduce((dictionary, cardText) => {
+    angular.module("app").constant("CardDefinitions", cardsCSV.split("\n").slice(1).reduce((dictionary, cardText) => {
         var parameters = cardText.split("\t");
         var card = {
             name: parameters[0],

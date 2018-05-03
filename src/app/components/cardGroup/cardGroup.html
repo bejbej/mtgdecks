@@ -11,7 +11,7 @@
         <span class="tab" ng-click="vm.applyChanges()">
             {{::vm.cardGroup.name}}
             <span class="badge">{{::vm.cardGroup.count}}</span>
-            <span class="icon" ng-if="vm.cardGroup.cards.length > 0">{{::vm.showToolbar ? "7" : "4"}}</span>
+            <span class="icon" ng-if="::vm.cardGroup.cards.length > 0">{{::vm.showToolbar ? "7" : "4"}}</span>
         </span><!--
         --><span class="tab active">Edit</span>
     </header>

@@ -43,7 +43,7 @@ module app {
             }
         }
 
-        getAuthUser = (): User => {
+        getAuthUser = (): IUser => {
             var user = undefined;
             if (this.$auth.isAuthenticated()) {
                 var user =  JSON.parse(localStorage.getItem(this.config.localStorage.user));

@@ -1,75 +1,73 @@
 module app {
-    interface ParseResult {
-        cards: Card[];
-        failed: string[];
-    }
-
     export class CardGroup {
         name: string;
-        cards: Card[];
+        cards: ICard[];
         failedCards: string[];
-        count: number = 0;
+        count: number;
         cardBlob: string;
 
-        constructor(private CardService: CardService) {
+        constructor(
+            private cardDefinitions: { [id: string]: ICardDefinition },
+            private CardPriceService: CardPriceService) {
+
             this.name = "";
+            this.cards = [];
+            this.failedCards = [];
+            this.count = 0;
             this.cardBlob = "";
         }
 
         public setCardBlob = (cards: string): void => {
-            var result = this.parseCardBlob(cards);
-            this.failedCards = result.failed;
-            this.cards = result.cards;
-            this.cardBlob = this.failedCards.concat(this.cards.sort((a, b) => a.name > b.name ? 1: -1).map(card => {
-                return card.quantity + "x " + card.name;
+            this.parseCardBlob(cards);
+            this.cardBlob = this.failedCards.concat(this.cards.sort((a, b) => a.definition.name > b.definition.name ? 1 : -1).map(card => {
+                return card.quantity + "x " + card.definition.name;
             })).join("\n");
-            this.count = this.cards.reduce((a, b) => {
-                return a + Number(b.quantity);
-            }, 0);
+            this.count = this.cards.reduce((sum, card) => sum + Number(card.quantity), 0);
+            this.getPrices();
         }
 
-        private parseCardBlob = (cardInput: string): ParseResult => {
+        private parseCardBlob = (cardInput: string) => {
             cardInput = cardInput.trim();
 
+            this.cards = [];
+            this.failedCards = [];
+
             if (cardInput.length === 0) {
-                return { cards: [], failed: [] };
+                return;
             }
 
-            var result = cardInput.split(/\n[\s\n]*/).reduce((result: ParseResult, text: string) => {
-                var results = /^(?:(\d+)[Xx]?\s)?\s*([^0-9]+)$/.exec(text.trim());
-                if (results === null) {
-                    result.failed.push(text);
-                } else {
-                    var card = this.CardService.getCard(results[2]);
-                    if (card == null) {
-                        result.failed.push(text);
-                    } else {
-                        card.quantity = Number(results[1] || 1);
-                        result.cards.push(card);
-                    }
+            cardInput.split(/\n[\s\n]*/).forEach(line => {
+                var result = /^(?:(\d+)[Xx]?\s)?\s*([^0-9]+)$/.exec(line.trim());
+                if (!result) {
+                    this.failedCards.push(line);
+                    return;
                 }
-                return result;
-            }, { cards: [], failed: [] });
 
-            result.failed = result.failed.sort();
+                let cardDefinition = this.cardDefinitions[result[2].toLowerCase()];
+                if (!cardDefinition) {
+                    this.failedCards.push(line);
+                    return;
+                }
 
-            if (result.cards.length > 1) {
-                var distinct = result.cards.reduce((dictionary, b) => {
-                    if (dictionary[b.name] === undefined) {
-                        dictionary[b.name] = b;
-                    } else {
-                        dictionary[b.name].quantity += b.quantity;
-                    }
-
-                    return dictionary;
-                }, {});
-
-                result.cards = Object.keys(distinct).sort().map(name => {
-                    return distinct[name];
+                this.cards.push({
+                    definition: cardDefinition,
+                    quantity: Number(result[1]) || 1,
+                    usd: undefined
                 });
-            }
+            });
+        }
 
-            return result;
+        private getPrices = () => {
+            return this.CardPriceService.getCardPrices(this.cards.filter(card => !card.usd).map(card => card.definition.name))
+                .then(cardPrices => {
+                    let cardPricesDict = Dictionary.fromArray(cardPrices, card => card.name);
+                    this.cards.forEach(card => {
+                        if (card.usd === undefined) {
+                            let cardPrice = cardPricesDict[card.definition.name.toLowerCase()];
+                            card.usd = cardPrice ? (Math.round(Number(cardPrice.usd) * card.quantity * 100) / 100).toFixed(2) : null;
+                        }
+                    });
+                });
         }
     }
 }

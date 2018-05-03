@@ -6,7 +6,7 @@ module app {
 
     class GroupByCmc implements ng.IDirective {
         
-        private groupByCmc = (cards: Card[]): CardSet[][] => {
+        private groupByCmc = (cards: ICard[]): CardSet[][] => {
 
             var sets = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
@@ -14,7 +14,7 @@ module app {
                 var cardSet = new CardSet();
                 cardSet.name = cmc.toString() + " drop";
                 cardSet.cards = cards.filter(card => {
-                    return card.cmc === cmc;
+                    return card.definition.cmc === cmc;
                 });
                 cardSet.numberOfCards = cardSet.cards.reduce((count, card) => {
                     return count + card.quantity;
@@ -39,7 +39,7 @@ module app {
         };
         templateUrl = "cardSet/cardSet.html";
         link = (scope: scope) => {
-            scope.$watchCollection("cards", (cards: Card[]) => {
+            scope.$watchCollection("cards", (cards: ICard[]) => {
                 scope.columns = this.groupByCmc(cards);
             })
         }

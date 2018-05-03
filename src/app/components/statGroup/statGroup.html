@@ -1,4 +1,4 @@
-<div class="stat-group">
+<div class="stat-group" ng-if="group.stats.length > 0">
     <p class="large capitalize">{{::group.name}}</p>
     <div class="stat-group-row" ng-repeat="stat in group.stats">
         <span class="name">{{::stat.name}}</span>

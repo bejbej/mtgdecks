@@ -6,14 +6,14 @@ module app {
 
     class GroupByType implements ng.IDirective {
         
-        private groupByType = (cards: Card[]): CardSet[][] => {
+        private groupByType = (cards: ICard[]): CardSet[][] => {
             var types = ["creature", "artifact", "enchantment", "planeswalker", "land", "instant", "sorcery"];
 
             var cardSets = types.reduce((array, type) => {
                 var cardSet = new CardSet();
                 cardSet.name = type;
                 cardSet.cards = cards.filter(card => {
-                    return card.primaryType === type;
+                    return card.definition.primaryType === type;
                 });
                 cardSet.numberOfCards = cardSet.cards.reduce((count, card) => {
                     return count + card.quantity;
@@ -37,7 +37,7 @@ module app {
         };
         templateUrl = "cardSet/cardSet.html";
         link = (scope: scope) => {
-            scope.$watchCollection("cards", (cards: Card[]) => {
+            scope.$watchCollection("cards", (cards: ICard[]) => {
                 scope.columns = this.groupByType(cards);
             })
         }

@@ -6,7 +6,7 @@ module app {
 
     class GroupByColor implements ng.IDirective {
         
-        private groupByColor = (cards: Card[]): CardSet[][] => {
+        private groupByColor = (cards: ICard[]): CardSet[][] => {
 
             var colors = ["white", "blue", "black", "red", "green", "multicolored", "colorless"];
 
@@ -14,7 +14,7 @@ module app {
                 var cardSet = new CardSet();
                 cardSet.name = color;
                 cardSet.cards = cards.filter(card => {
-                    return card.color === color;
+                    return card.definition.color === color;
                 });
                 cardSet.numberOfCards = cardSet.cards.reduce((count, card) => {
                     return count + card.quantity;
@@ -39,7 +39,7 @@ module app {
         };
         templateUrl = "cardSet/cardSet.html";
         link = (scope: scope) => {
-            scope.$watchCollection("cards", (cards: Card[]) => {
+            scope.$watchCollection("cards", (cards: ICard[]) => {
                 scope.columns = this.groupByColor(cards);
             })
         }

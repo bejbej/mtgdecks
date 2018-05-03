@@ -8,7 +8,6 @@ module app {
             user: string;
             tags: string;
             cards: string;
-            cardsVersion: string;
         };
         authClients: {
             google: {
@@ -16,12 +15,12 @@ module app {
                 clientId: string;
             }
         }
+        cardCacheLimit: number;
+        cardExpirationMs: number;
         cardsUrl: string;
         decksUrl: string;
         usersUrl: string;
         imagesUrl: string;
-        storeUrl: string;
-        storeMassEntryUrl: string;
         enableHover: boolean;
     }
 }

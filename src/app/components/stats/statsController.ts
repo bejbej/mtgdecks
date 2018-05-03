@@ -13,16 +13,16 @@ module app {
             return self.indexOf(value) === index;
         };
 
-        createStatGroup = (cards: Card[], category: ICategory): StatGroup => {
+        createStatGroup = (cards: ICard[], category: ICategory): StatGroup => {
             var statGroup = new StatGroup();
             statGroup.name = category.name;
 
             var filteredCards = cards.filter(card => {
-                return category.types.indexOf(card.primaryType) >= 0;
+                return category.types.indexOf(card.definition.primaryType) >= 0;
             });
 
             var cmcs = filteredCards.map(card => {
-                return card.cmc;
+                return card.definition.cmc;
             }).filter(this.unique).sort();
 
             statGroup.stats = [];
@@ -30,7 +30,7 @@ module app {
                 var stat = new Stat();
                 stat.name = i.toString();
                 stat.value = filteredCards.filter(card => {
-                    return card.cmc === i;
+                    return card.definition.cmc === i;
                 }).reduce((a, b) => {
                     return a + Number(b.quantity);
                 }, 0);
@@ -40,13 +40,13 @@ module app {
             return statGroup;
         }
 
-        createStatGroups = (cards: Card[], categories: ICategory[]): StatGroup[] => {
+        createStatGroups = (cards: ICard[], categories: ICategory[]): StatGroup[] => {
             return categories.map(category => {
                 return this.createStatGroup(cards, category);
             });
         }
 
-        updateStats = (cards: Card[], x, y) => {
+        updateStats = (cards: ICard[], x, y) => {
             if (cards && cards.length > 0) {
                 this.statGroups = this.createStatGroups(cards, this.categories);
             } else {

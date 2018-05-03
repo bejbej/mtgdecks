@@ -12,10 +12,10 @@ module app {
             });
         }
 
-        private mapApiUser = (apiData: IApiUser): User => {
-            var user = new User();
-            user.id = apiData.id;
-            return user;
+        private mapApiUser = (apiData: IApiUser): IUser => {
+            return {
+                id: apiData.id
+            };
         }
 
     }

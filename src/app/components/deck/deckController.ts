@@ -11,7 +11,6 @@ module app {
         public isDeleting: boolean;
         public canEdit: boolean;
         public canCreate: boolean;
-        public storeUrl: string;
 
         private timeout: ng.IDeferred<any>;
 
@@ -24,13 +23,13 @@ module app {
             private AuthService: AuthService,
             private DeckService: DeckService,
             private DeckFactory: DeckFactory,
+            private CardPriceService: CardPriceService,
             private CardGroupFactory: CardGroupFactory) {
 
             this.getDeck($routeParams.id).then(deck => {
                 this.deck = deck;
                 this.sync();
                 this.updateTitle();
-                this.updateStoreUrl();
             })
 
             this.$scope.$on("authentication-changed", this.sync);
@@ -48,20 +47,6 @@ module app {
             if (this.canCreate && !this.deck.id && this.deck.cardGroups.some(cardGroup => cardGroup.cards.length > 0)) {
                 this.save();
             }
-        }
-
-        private cardGroupUpdated = (cardGroup: CardGroup) => {
-            if (this.deck.cardGroups.indexOf(cardGroup) === 0) {
-                this.updateStoreUrl();
-            }
-
-            this.save();
-        }
-
-        private updateStoreUrl = () => {
-            this.storeUrl = this.config.storeMassEntryUrl + "?c=" + this.deck.cardGroups[0].cards.map(card => {
-                return card.quantity + " " + card.name;
-            }).join("||");
         }
 
         private save = () => {
