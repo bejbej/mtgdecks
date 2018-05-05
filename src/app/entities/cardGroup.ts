@@ -23,6 +23,8 @@ module app {
 
         public on = (event:string, callback: Function) => this.arbiter.on(event, callback);
 
+        public unsubscribe = (event:string, callback: Function) => this.arbiter.unsubscribe(event, callback);
+
         public setCardBlob = (cards: string): void => {
             this.parseCardBlob(cards);
             this.cardBlob = this.failedCards.concat(this.cards.sort((a, b) => a.definition.name > b.definition.name ? 1 : -1).map(card => {

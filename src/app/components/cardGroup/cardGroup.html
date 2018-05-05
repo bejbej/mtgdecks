@@ -32,13 +32,17 @@
             <input type="radio" ng-model="vm.view" value="group-by-name" ng-click="vm.showToolbar = false"/>
             Name
         </label>
+        <label>
+            <input type="radio" ng-model="vm.view" value="group-by-price" ng-click="vm.showToolbar = false"/>
+            Price
+        </label>
     </div>
     <div class="alert alert-danger margin" ng-if="vm.cardGroup.failedCards.length > 0">
         <p class="alert-title">Unknown Cards</p>
         <span ng-repeat="card in vm.cardGroup.failedCards track by $index">{{card}}<br></span>
     </div>
     <div ng-if="!vm.isEditing && vm.cardGroup.cards.length > 0">
-        <directive-container directive="vm.view" cards="vm.cardGroup.cards"></directive-container>
+        <directive-container directive="vm.view" cardgroup="vm.cardGroup"></directive-container>
     </div>
     <form name="vm.form" class="margin" ng-if="vm.isEditing">
         <textarea class="form-control has-bottom-buttons"

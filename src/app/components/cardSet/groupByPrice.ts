@@ -5,12 +5,16 @@ module app {
         columns: CardSet[][];
     }
 
-    class GroupByName implements ng.IDirective {
+    class GroupByPrice implements ng.IDirective {
         
-        private groupByName = (cards: ICard[]): CardSet[][] => {
+        private groupByPrice = (cards: ICard[]): CardSet[][] => {
 
             var cards = cards.slice(0).sort((a, b) => {
-                return a.definition.name > b.definition.name ? 1 : -1;
+                if (Math.round(a.usd * 100) === Math.round(b.usd * 100)) {
+                    return a.definition.name > b.definition.name ? 1 : -1;
+                }
+
+                return a.usd > b.usd ? 1 : -1;
             });
 
             var columnLength = Math.ceil(cards.length / 3);
@@ -39,9 +43,14 @@ module app {
         };
         templateUrl = "cardSet/groupBy2.html";
         link = (scope: scope) => {
-            scope.columns = this.groupByName(scope.cardgroup.cards);
+            let cardGroup = scope.cardgroup;
+            let sort = () => scope.columns = this.groupByPrice(cardGroup.cards);
+            cardGroup.on("prices-changed", sort);
+            scope.$on("$destroy", () => cardGroup.unsubscribe("prices-changed", sort));
+            cardGroup.loadPrices();
+            sort();
         }
     }
 
-    angular.module("app").directive("groupByName", () => new GroupByName());
+    angular.module("app").directive("groupByPrice", () => new GroupByPrice());
 }

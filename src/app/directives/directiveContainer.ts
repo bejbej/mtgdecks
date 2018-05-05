@@ -2,6 +2,8 @@ module app {
     class DirectiveContainer implements ng.IDirective {
         restrict = "E";
         link = (scope: ng.IScope, elem, attrs) => {
+            let currentScope: ng.IScope;
+
             scope.$watch(attrs.directive, directive => {
                 var attributes = Object.keys(attrs).reduce((array, key) => {
                     if (key[0] !== "$" && key !== "directive") {
@@ -12,7 +14,19 @@ module app {
                     return array;
                 }, []).join(" ");
                 var template = "<" + directive + " " + attributes + "></" + directive + ">";
-                var t = this.$compile(template)(scope);
+
+                if (currentScope) {
+                    currentScope.$destroy();
+                }
+
+                currentScope = scope.$new();
+                Object.keys(attrs).forEach(key => {
+                    if (key[0] !== "$" && key !== "directive") {
+                        currentScope[key] = attrs[key];
+                    }
+                });
+
+                var t = this.$compile(template)(currentScope);
                 if (elem[0].firstChild) {
                     elem[0].firstChild.remove();
                 }
@@ -20,8 +34,8 @@ module app {
             });
         }
 
-        constructor(private $compile: ng.ICompileService) { }
+        constructor(private $compile: ng.ICompileService, private $rootScope: ng.IRootScopeService) { }
     }
 
-    angular.module("app").directive("directiveContainer", $compile => new DirectiveContainer($compile));
+    angular.module("app").directive("directiveContainer", ($compile, $rootScope) => new DirectiveContainer($compile, $rootScope));
 }

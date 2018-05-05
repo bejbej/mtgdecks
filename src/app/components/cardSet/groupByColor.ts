@@ -1,6 +1,7 @@
 module app {
 
     interface scope extends ng.IScope {
+        cardgroup: CardGroup;
         columns: CardSet[][];
     }
 
@@ -35,13 +36,11 @@ module app {
 
         restrict = "E";
         scope = {
-            cards: "=",
+            cardgroup: "="
         };
-        templateUrl = "cardSet/cardSet.html";
+        templateUrl = "cardSet/groupBy1.html";
         link = (scope: scope) => {
-            scope.$watchCollection("cards", (cards: ICard[]) => {
-                scope.columns = this.groupByColor(cards);
-            })
+            scope.columns = this.groupByColor(scope.cardgroup.cards);
         }
     }
 

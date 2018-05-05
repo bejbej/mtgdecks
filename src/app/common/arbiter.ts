@@ -13,6 +13,14 @@ module app {
             this.listeners[event].push(callback);
         }
 
+        public unsubscribe = (event: string, callback: Function) => {
+            let callbacks = this.listeners[event];
+            let index = callbacks.indexOf(callback);
+            if (index > -1) {
+                callbacks.splice(index, 1);
+            }
+        }
+
         public broadcast = (event: string) => {
             let callbacks = this.listeners[event];
             if (callbacks) {
