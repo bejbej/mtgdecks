@@ -45,7 +45,7 @@ module app {
                     this.cards.forEach(card => {
                         if (card.usd === undefined) {
                             let cardPrice = cardPricesDict[card.definition.name.toLowerCase()];
-                            card.usd = cardPrice ? (Math.round(Number(cardPrice.usd) * card.quantity * 100) / 100).toFixed(2) : null;
+                            card.usd = cardPrice ? Number(cardPrice.usd) * card.quantity : null;
                         }
                     });
                     this.arbiter.broadcast("prices-changed");

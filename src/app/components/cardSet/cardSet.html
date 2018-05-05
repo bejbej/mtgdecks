@@ -1,12 +1,12 @@
 <div class="flex-gte-sm margin" style="margin-bottom:0;">
     <div ng-repeat="column in columns">
         <div class="card-group" ng-repeat="row in ::column">
-            <p class="large capitalize" ng-if="::row.name">{{::row.name}} <span class="badge">{{::row.numberOfCards}}</span></p>
+            <p class="large capitalize" ng-if="::row.name">{{::row.name}} <span class="light">&#8226; {{::row.numberOfCards}}</span></p>
             <p>
                 <span ng-repeat="card in ::row.cards">
-                    <span class="quantity">{{::card.quantity}}</span>
+                    <span class="quantity light">{{::card.quantity}}</span>
                     <a href="#" class="name" card-preview="card.definition.imageUri" lightbox="card.definition.imageUri">{{::card.definition.name}}</a>
-                    <span class="price">{{::card.usd}}</span>
+                    <span class="price small light">{{::card.usd | number: 2}}</span>
                     <br>
                 </span>
             </p>

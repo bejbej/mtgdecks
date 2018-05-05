@@ -57,20 +57,12 @@ main {
     border-left: 1px solid #ddd;
 }
 
-.quantity {
-    color: #aaa;
-    &::after {
-        content: "x";
-    }
+.quantity::after {
+    content: "x";
 }
 
 .hide-prices .price {
     display: none;
-}
-
-.price {
-    font-size: 12px;
-    color: #aaa;
 }
 
 .stat-group {
@@ -80,15 +72,6 @@ main {
     .bar {
         background-color: #777;
         color: #777;
-    }
-    .value {
-        color: #aaa;
-        &::before {
-            content: "(";
-        }
-        &::after {
-            content: ")";
-        }
     }
 }
 
@@ -163,6 +146,14 @@ main {
 
 .large {
     font-size: 18px;
+}
+
+.small {
+    font-size: 12px;
+}
+
+.light {
+    color: #777;
 }
 
 .capitalize {

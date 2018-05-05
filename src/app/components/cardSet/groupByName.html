@@ -2,9 +2,9 @@
     <div ng-repeat="column in columns">
         <div class="card-group" ng-repeat="row in ::column">
             <span ng-repeat="card in ::row.cards">
-                <span class="quantity">{{::card.quantity}}</span>
+                <span class="quantity light">{{::card.quantity}}</span>
                 <a class="name" href="#" card-preview="card.definition.imageUri" lightbox="card.definition.imageUri">{{::card.definition.name}}</a>
-                <span class="price">{{::card.usd}}</span>
+                <span class="price small light">{{::card.usd | number: 2}}</span>
                 <br>
             </span>
         </div>

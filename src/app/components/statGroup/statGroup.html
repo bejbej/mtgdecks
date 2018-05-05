@@ -3,6 +3,6 @@
     <div class="stat-group-row" ng-repeat="stat in group.stats">
         <span class="name">{{::stat.name}}</span>
         <span class="bar">{{::"X".repeat(stat.value)}}</span>
-        <span class="value" ng-if="stat.value > 0">{{::stat.value}}</span>
+        <span class="light" ng-if="stat.value > 0">{{::stat.value}}</span>
     </div>
 </div>
