@@ -1,19 +1,17 @@
 <div ng-controller="CardGroupController as vm">
-    <header class="flex" ng-if="!vm.isEditing">
-        <span class="tab" ng-click="vm.showToolbar = !vm.showToolbar">
-            {{::vm.cardGroup.name}}
-            <span class="badge">{{::vm.cardGroup.count}}</span>
-            <span class="icon" ng-if="vm.cardGroup.cards.length > 0">{{vm.showToolbar ? "7" : "4"}}</span>
-        </span><!--
-        --><span class="tab" ng-if="vm.canEdit" ng-click="vm.startEditing()">Edit</span>
+    <header class="flex padding-h-lte-sm" ng-if="!vm.isEditing">
+        <button class="header-button text-left-gte-sm" ng-click="vm.showToolbar = !vm.showToolbar">
+            <div>{{::vm.cardGroup.name}} <span class="icon" ng-if="vm.cardGroup.cards.length > 0">{{vm.showToolbar ? "7" : "4"}}</span></div>
+            <div class="small light">{{::vm.cardGroup.count}} cards <span class="price" ng-if="::vm.cardGroup.usd">&#8226; ${{vm.cardGroup.usd | number: 2}}</span></div>
+        </button><!--
+        --><span class="header-button" ng-if="vm.canEdit" ng-click="vm.startEditing()">Edit</span>
     </header>
-    <header class="flex" ng-if="vm.isEditing">
-        <span class="tab" ng-click="vm.applyChanges()">
-            {{::vm.cardGroup.name}}
-            <span class="badge">{{::vm.cardGroup.count}}</span>
-            <span class="icon" ng-if="::vm.cardGroup.cards.length > 0">{{::vm.showToolbar ? "7" : "4"}}</span>
-        </span><!--
-        --><span class="tab active">Edit</span>
+    <header class="flex padding-h-lte-sm" ng-if="vm.isEditing">
+        <button class="header-button text-left-gte-sm" ng-click="vm.applyChanges()">
+            <div>{{::vm.cardGroup.name}} <span class="icon" ng-if="vm.cardGroup.cards.length > 0">{{vm.showToolbar ? "7" : "4"}}</span></div>
+            <div class="small light">{{::vm.cardGroup.count}} cards <span class="price" ng-if="::vm.cardGroup.usd">&#8226; ${{vm.cardGroup.usd | number: 2}}</span></div>
+        </button><!--
+        --><span class="tab">Edit</span>
     </header>
     <div class="radio-group" ng-if="vm.cardGroup.cards.length > 0 && !vm.isEditing && vm.showToolbar">
         <label>

@@ -159,3 +159,9 @@ main {
 .capitalize {
     text-transform: capitalize;
 }
+
+.text-left-gte-sm {
+    @media (min-width: $screen-xs-max) {
+        text-align: left;
+    }
+}

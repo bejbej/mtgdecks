@@ -1,47 +1,42 @@
-.tab {
-    display: inline-block;
-    border: 0;
-    color: black;
-    background-color: transparent;
-    padding: 13px 15px;
+.header-button {
+    height:44px;
     min-width: 100px;
+    display: inline-block;
+    vertical-align: bottom;
     text-align: center;
+    padding: 0 15px;
+    border: 1px solid transparent;
 
     &:hover {
         background-color: rgba(0,0,0,0.1);
     }
 
-    &.active {
-        background-color: white;
-        border-top: 1px solid #ddd;
-        border-bottom: 1px solid white;
-        margin-bottom: -1px;
-        padding-top: 8px;
-        margin-top: 4px;
-        border-radius: 4px 4px 0 0;
-
-        &:not(:last-child) {
-            border-right: 1px solid #ddd;
-        }
-
-        &:not(:first-child) {
-            border-left: 1px solid #ddd;
-        }
-
-        border-right: 1px solid #ddd;
-
-        @media (min-width: $screen-xs-max) {
-            border-right: 1px solid #ddd;
-        }
+    @at-root button#{&} {
+        border: 0;
+        background-color: transparent;
     }
 
-    @media (max-width: $screen-xs-max) {
-        &:last-of-type {
-            margin-right: 5px;
-        }
-
-        &:first-of-type {
-            margin-left: 5px;
-        }
+    &:not(button) {
+        line-height: 44px;
     }
+}
+
+button.header-button:focus {
+    outline: none;
+}
+
+.tab {
+    display: inline-block;
+    height: 42px;
+    min-width: 100px;
+    padding: 0 15px;
+    margin-bottom: -1px;
+    vertical-align: bottom;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 4px 4px 0 0;
+    border-bottom-color: white;
+    line-height: 38px;
+    text-align: center;
+    align-self: flex-end;
 }

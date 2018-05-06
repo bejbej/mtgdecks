@@ -5,6 +5,7 @@ module app {
         failedCards: string[];
         count: number;
         cardBlob: string;
+        usd: number;
 
         private arbiter: Arbiter<CardGroup>;
 
@@ -50,6 +51,7 @@ module app {
                             card.usd = cardPrice ? Number(cardPrice.usd) * card.quantity : null;
                         }
                     });
+                    this.usd = this.cards.reduce((sum, card)=> sum + card.usd, 0);
                     this.arbiter.broadcast("prices-changed");
                 });
         }
