@@ -22,9 +22,9 @@ module app {
             this.arbiter = new Arbiter(this);
         }
 
-        public on = (event:string, callback: Function) => this.arbiter.on(event, callback);
+        public on = (event: string, callback: Function) => this.arbiter.on(event, callback);
 
-        public unsubscribe = (event:string, callback: Function) => this.arbiter.unsubscribe(event, callback);
+        public unsubscribe = (event: string, callback: Function) => this.arbiter.unsubscribe(event, callback);
 
         public setCardBlob = (cards: string): void => {
             this.parseCardBlob(cards);
@@ -51,7 +51,7 @@ module app {
                             card.usd = cardPrice ? Number(cardPrice.usd) * card.quantity : null;
                         }
                     });
-                    this.usd = this.cards.reduce((sum, card)=> sum + card.usd, 0);
+                    this.usd = this.cards.reduce((sum, card) => sum + card.usd, 0);
                     this.arbiter.broadcast("prices-changed");
                 });
         }
@@ -66,6 +66,8 @@ module app {
                 return;
             }
 
+            let cardDict: { [id: string]: ICard } = {};
+
             cardInput.split(/\n[\s\n]*/).forEach(line => {
                 var result = /^(?:(\d+)[Xx]?\s)?\s*([^0-9]+)$/.exec(line.trim());
                 if (!result) {
@@ -79,12 +81,12 @@ module app {
                     return;
                 }
 
-                this.cards.push({
-                    definition: cardDefinition,
-                    quantity: Number(result[1]) || 1,
-                    usd: undefined
-                });
+                let card = cardDict[cardDefinition.name] = cardDict[cardDefinition.name] || { definition: cardDefinition, quantity: 0, usd: undefined };
+
+                card.quantity += Number(result[1]) || 1;
             });
+
+            this.cards = Dictionary.toArray(cardDict);
         }
     }
 }
