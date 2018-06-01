@@ -8,8 +8,10 @@ module app {
         usd: number;
 
         private arbiter: Arbiter<CardGroup>;
+        private timeout: ng.IDeferred<any>;
 
         constructor(
+            private $q: ng.IQService,
             private cardDefinitions: { [id: string]: ICardDefinition },
             private CardPriceService: CardPriceService) {
 
@@ -35,6 +37,12 @@ module app {
             this.arbiter.broadcast("changed");
         }
 
+        public destroy = (): void => {
+            if (this.timeout) {
+                this.timeout.resolve();
+            }
+        }
+
         public loadPrices = () => {
             let unknownCardNames = this.cards.filter(card => !card.usd).map(card => card.definition.name);
 
@@ -42,7 +50,8 @@ module app {
                 return;
             }
 
-            return this.CardPriceService.getCardPrices(unknownCardNames)
+            this.timeout = this.$q.defer();
+            return this.CardPriceService.getCardPrices(unknownCardNames, this.timeout.promise)
                 .then(cardPrices => {
                     let cardPricesDict = Dictionary.fromArray(cardPrices, card => card.name);
                     this.cards.forEach(card => {
@@ -53,7 +62,8 @@ module app {
                     });
                     this.usd = this.cards.reduce((sum, card) => sum + card.usd, 0);
                     this.arbiter.broadcast("prices-changed");
-                });
+                })
+                .finally(() => delete this.timeout);
         }
 
         private parseCardBlob = (cardInput: string) => {

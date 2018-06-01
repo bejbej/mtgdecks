@@ -42,7 +42,7 @@ module app {
             })
 
             this.$scope.$on("authentication-changed", this.sync);
-            this.$scope.$on("$destroy", this.cancelPendingRequests);
+            this.$scope.$on("$destroy", this.destroy);
         }
 
         public togglePrices = () => {
@@ -126,9 +126,13 @@ module app {
             return deck;
         }
 
-        private cancelPendingRequests = () => {
+        private destroy = () => {
             if (this.timeout) {
                 this.timeout.resolve();
+            }
+
+            if (this.deck) {
+                this.deck.destroy();
             }
         }
     }

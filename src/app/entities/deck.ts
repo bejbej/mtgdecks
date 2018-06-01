@@ -30,5 +30,9 @@ module app {
                 return this.$q.reject();
             }
         }
+
+        public destroy = () => {
+            this.cardGroups.forEach(cardGroup => cardGroup.destroy());
+        }
     }
 }

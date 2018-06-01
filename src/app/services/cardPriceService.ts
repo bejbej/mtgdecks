@@ -12,11 +12,11 @@ module app {
             this.expirationMs = config.cardExpirationMs || 0;
         }
 
-        public getCardPrices = (cardNames: string[]): ng.IPromise<ICardPrice[]> => {
+        public getCardPrices = (cardNames: string[], timeout: ng.IPromise<any>): ng.IPromise<ICardPrice[]> => {
             cardNames = cardNames.map(cardName => cardName.toLowerCase());
             let knownCards = this.getKnownCards(cardNames);
             let unknownCardNames = cardNames.except(knownCards.map(card => card.name));
-            return this.getUnknownCards(unknownCardNames)
+            return this.getUnknownCards(unknownCardNames, timeout)
                 .then(unknownCards => {
                     let now = new Date().getTime().toString();
                     unknownCards.forEach(card => card.modifiedOn = now);
@@ -50,7 +50,7 @@ module app {
             }, []);
         }
 
-        private getUnknownCards = (cardNames: string[]): ng.IPromise<ICardPrice[]> => {
+        private getUnknownCards = (cardNames: string[], timeout: ng.IPromise<any>): ng.IPromise<ICardPrice[]> => {
             if (cardNames.length === 0) {
                 return this.$q.when([]);
             }
@@ -58,7 +58,8 @@ module app {
             let csv = cardNames.join("\n");
             let config = {
                 headers: {
-                    "Content-Type": "application/text"
+                    "Content-Type": "application/text",
+                    "timeout": timeout
                 }
             };
             return this.$http.post<string>(this.url, csv, config)
