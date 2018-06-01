@@ -17,7 +17,7 @@ var appConfig = {
         }
     },
     cardCacheLimit: 1000,
-    cardExpirationMs: 86400000, //1 day
+    cardExpirationMs: 259200000, //3 days
     cardsUrl: "https://mtgdecks-api.herokuapp.com/api/cards",
     decksUrl: "https://mtgdecks-api.herokuapp.com/api/decks",
     usersUrl: "https://mtgdecks-api.herokuapp.com/api/users",
