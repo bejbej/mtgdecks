@@ -12,6 +12,7 @@ module app {
         public canEdit: boolean;
         public canCreate: boolean;
         public showPrices: boolean;
+        public showPricesSpinner: boolean;
 
         private timeout: ng.IDeferred<any>;
 
@@ -48,7 +49,8 @@ module app {
         public togglePrices = () => {
             this.showPrices = !this.showPrices;
             if (this.showPrices) {
-                this.deck.cardGroups.forEach(cardGroup => cardGroup.loadPrices());
+                this.showPricesSpinner = true;
+                this.deck.loadPrices().finally(() => this.showPricesSpinner = false);
             }
         }
 

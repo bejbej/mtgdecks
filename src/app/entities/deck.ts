@@ -34,5 +34,9 @@ module app {
         public destroy = () => {
             this.cardGroups.forEach(cardGroup => cardGroup.destroy());
         }
+
+        public loadPrices = () => {
+            return this.$q.all(this.cardGroups.map(cardGroup => cardGroup.loadPrices()));
+        }
     }
 }

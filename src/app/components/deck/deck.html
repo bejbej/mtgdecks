@@ -18,7 +18,10 @@
                        ng-change="vm.save()"
                        ng-if="vm.canEdit" />
                 <div class="flex flex-padding">
-                    <button class="btn btn-default margin-top" ng-click="vm.togglePrices()">{{vm.showPrices ? "Hide Prices" : "Show Prices"}}</button>
+                    <button class="btn btn-default margin-top" ng-click="vm.togglePrices()">
+                        {{vm.showPrices ? "Hide Prices" : "Show Prices"}}
+                        <span text-spinner ng-if="vm.showPricesSpinner && vm.showPrices"></span>
+                    </button>
                     <button class="btn btn-default margin-top" ng-click="vm.delete()" ng-if="vm.canEdit && vm.deck.id" ng-disabled="vm.isDeleting">
                         <span ng-if="!vm.isDeleting">Delete this Deck</span>
                         <span ng-if="vm.isDeleting">Deleting <span text-spinner></span></span>
