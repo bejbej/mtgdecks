@@ -68,7 +68,10 @@ module app {
                     this.usd = this.cards.reduce((sum, card) => sum + card.usd, 0);
                     this.arbiter.broadcast("prices-changed");
                 })
-                .finally(() => delete this.timeout);
+                .finally(() => {
+                    delete this.timeout;
+                    delete this.loadPricesPromise;
+                });
 
             return this.loadPricesPromise;
         }
