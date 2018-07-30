@@ -1,5 +1,5 @@
 module app {
-    export class CardSet {
+    export interface ICardSet {
         name: string;
         numberOfCards: Number;
         cards: ICard[];

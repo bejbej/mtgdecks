@@ -6,15 +6,31 @@ module app {
 
     class DeckController {
 
-        public deck: Deck;
-        public isSaving: boolean;
-        public isDeleting: boolean;
-        public canEdit: boolean;
-        public canCreate: boolean;
-        public showPrices: boolean;
-        public showPricesSpinner: boolean;
+        // Data
+        deck: IDeck;
+        statCards: ICard[];
+        private cardGroupsThatAreLoadingPrices: ICardGroup[] = [];
 
-        private timeout: ng.IDeferred<any>;
+        // State Tracking
+        isSaving: boolean;
+        isDeleting: boolean;
+        isLoading: boolean;
+        isLoadingPrices: boolean;
+        isDirty: boolean;
+        canWrite: boolean;
+        showPrices: boolean;
+
+        // Emitters
+        loadPrices: IBroadcaster<void> = new Arbiter<void>();
+
+        // Listeners
+        cardGroupChanged: ISubscriber<ICardGroup> = new Arbiter<ICardGroup>();
+        pricesLoaded: ISubscriber<ICardGroup> = new Arbiter<ICardGroup>();
+        cardsChanged: ISubscriber<ICardGroupData> = new Arbiter<ICardGroupData>();
+
+        // Subscriptions
+        private deckSubscription: ICancellable<IDeck>;
+        private authSubscription: ISubscription;
 
         constructor(
             $routeParams: IRouteParams,
@@ -22,35 +38,67 @@ module app {
             private $q: ng.IQService,
             private $scope: ng.IScope,
             private config: IConfig,
-            private AuthService: AuthService,
-            private DeckService: DeckService,
-            private DeckFactory: DeckFactory,
-            private CardPriceService: CardPriceService,
-            private CardGroupFactory: CardGroupFactory) {
+            private authService: AuthService,
+            private deckService: DeckService) {
 
-            this.getDeck($routeParams.id).then(deck => {
-                this.deck = deck;
-                this.sync();
-                this.updateTitle();
-                this.deck.cardGroups.forEach(cardGroup => {
-                    cardGroup.on("changed", event => {
-                        this.save();
-                        if (this.showPrices) {
-                            event.target.loadPrices();
-                        }
-                    });
-                });
-            })
+            this.isLoading = true;
+            this.loadDeck($routeParams.id)
+                .then(() => {
+                    this.sync();
+                    this.updateTitle();
+                })
+                .finally(() => this.isLoading = false)
 
-            this.$scope.$on("authentication-changed", this.sync);
+            this.authSubscription = this.authService.subscribe(this.sync);
             this.$scope.$on("$destroy", this.destroy);
+            this.pricesLoaded.subscribe(this.onPricesLoaded);
+            this.cardGroupChanged.subscribe(this.save);
+            this.cardsChanged.subscribe(this.onCardsChanged)
         }
 
-        public togglePrices = () => {
+        togglePrices = () => {
             this.showPrices = !this.showPrices;
             if (this.showPrices) {
-                this.showPricesSpinner = true;
-                this.deck.loadPrices().finally(() => this.showPricesSpinner = false);
+                this.isLoadingPrices = true;
+                this.cardGroupsThatAreLoadingPrices = this.deck.cardGroups.slice();
+                this.loadPrices.broadcast();
+            }
+        }
+
+        onTagsChanged = () => {
+            this.deck.tags = this.deck.tags.map(x => x.toLowerCase());
+            this.save();
+        }
+
+        delete = () => {
+            if (!confirm("Are you sure you want to delete this deck?")) {
+                return;
+            }
+    
+            this.isDeleting = true;
+            this.deckService.deleteDeck(this.deck.id)
+                .then(() => this.$location.path("/decks"))
+                .finally(() => this.isDeleting = false);
+        }
+
+        private onCardsChanged = (cardGroupData: ICardGroupData) => {
+            if (this.showPrices) {
+                this.loadPrices.broadcast();
+            }
+
+            if (this.deck.cardGroups.indexOf(cardGroupData.cardGroup) === 0) {
+                this.statCards = cardGroupData.cards;
+            }
+        }
+
+        private onPricesLoaded = (cardGroup: ICardGroup) => {
+            let index = this.cardGroupsThatAreLoadingPrices.indexOf(cardGroup);
+            if (index > -1) {
+                this.cardGroupsThatAreLoadingPrices.splice(index, 1);
+            }
+
+            if (this.cardGroupsThatAreLoadingPrices.length === 0) {
+                this.isLoadingPrices = false;
             }
         }
 
@@ -59,85 +107,86 @@ module app {
         }
 
         private sync = () => {
-            var authUser = this.AuthService.getAuthUser();
-            this.canCreate = authUser !== undefined;
-            this.canEdit = !this.deck.id || (authUser && this.deck.owners.indexOf(authUser.id) >= 0);
-            if (this.canCreate && !this.deck.id && this.deck.cardGroups.some(cardGroup => cardGroup.cards.length > 0)) {
+            var authUser = this.authService.getAuthUser();
+            if (!this.deck.id && authUser) {
+                this.deck.owners = [authUser.id];
+            }
+            this.canWrite = authUser && this.deck.owners.indexOf(authUser.id) > -1;
+            if (this.canWrite && this.isDirty) {
                 this.save();
             }
         }
 
         private save = () => {
-            this.updateTitle();
+            this.isDirty = true;
+            let authUser = this.authService.getAuthUser();
 
-            var authUser = this.AuthService.getAuthUser();
-            if (authUser === undefined) {
+            if (!authUser) {
                 return;
             }
 
             this.isSaving = true;
-            this.deck.save().then(() => {
-                this.deck.owners = this.deck.owners || [authUser.id];
-                this.$location.update_path("/decks/" + this.deck.id);
-            }).finally(() => {
-                this.isSaving = false;
-            });
+            return this.deck.id ? this.updateDeck() : this.createDeck();
         }
 
-        private delete = () => {
-            var r = confirm("Are you sure you want to delete this deck?");
-            if (r) {
-                this.isDeleting = true;
-                this.deck.delete().then(() => {
-                    location.hash = "/decks";
-                }).finally(() => {
-                    this.isDeleting = false;
-                });
-            }
+        private updateDeck = () => {
+            return this.deckService.updateDeck(this.deck)
+                .then(() => this.isDirty = false)
+                .finally(() => this.isSaving = false);
         }
 
-        private getDeck = (id: string): ng.IPromise<Deck> => {
+        private createDeck = () => {
+            return this.deckService.createDeck(this.deck)
+                .then(id => {
+                    this.deck.id = id;
+                    this.isDirty = false;
+                    this.$location.update_path("/decks/" + this.deck.id);
+                })
+                .finally(() => this.isSaving = false);
+        }
+
+        private loadDeck = (id: string): ng.IPromise<IDeck> => {
             if (id === "new") {
-                return this.$q.when(this.createNewDeck());
-            } else {
-                document.title = "Loading";
-                this.timeout = this.$q.defer();
-                return this.DeckService.getDeck(id, this.timeout.promise).then(deck => {
-                    return deck;
-                }).finally(() => {
-                    delete this.timeout;
-                });
+                this.deck = this.newDeck();
+                return this.$q.when(this.deck);
             }
+
+            document.title = "Loading";
+            this.deckSubscription = this.deckService.getDeck(id);
+            return this.deckSubscription.promise
+                .then(deck => this.deck = deck)
+                .finally(() => delete this.deckSubscription);
         }
 
-        private createNewDeck = () => {
-            var deck = this.DeckFactory.createDeck();
-            deck.name = "New Deck";
-            var mainboard = this.CardGroupFactory.createCardGroup();
-            var sideboard = this.CardGroupFactory.createCardGroup();
-            mainboard.name = "Mainboard";
-            sideboard.name = "Sideboard";
-            deck.cardGroups = [mainboard, sideboard];
-            deck.notes = "";
+        private newDeck = () => {
+            let tagState = <ITagState>JSON.parse(localStorage.getItem(this.config.localStorage.tags));
+            let tags = tagState && tagState.current ? [tagState.current] : [];
 
-            var tags = <ITags>JSON.parse(localStorage.getItem(this.config.localStorage.tags));
-            if (tags && tags.current) {
-                deck.tags = [tags.current];
-            }
-
-            return deck;
+            return {
+                cardGroups: [{
+                    name: "Mainboard",
+                    cardBlob: ""
+                },
+                {
+                    name: "Sideboard",
+                    cardBlob: ""
+                }],
+                id: undefined,
+                name: "New Deck",
+                notes: "",
+                owners: [],
+                tags: tags
+            };
         }
 
         private destroy = () => {
-            if (this.timeout) {
-                this.timeout.resolve();
-            }
-
-            if (this.deck) {
-                this.deck.destroy();
+            this.authSubscription.unsubscribe();
+            if (this.deckSubscription) {
+                this.deckSubscription.cancel();
+                delete this.deckSubscription;
             }
         }
     }
 
-    angular.module("app").controller("DeckController", DeckController);
+    angular.module("app").controller("deckController", DeckController);
 }

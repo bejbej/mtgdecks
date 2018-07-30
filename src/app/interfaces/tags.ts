@@ -1,5 +1,5 @@
 module app {
-    export interface ITags {
+    export interface ITagState {
         all: string[];
         current: string;
     }

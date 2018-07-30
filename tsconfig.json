@@ -1,4 +1,7 @@
 {
   "declarationFiles": true,
-  "noExternalResolve":  true
+  "noExternalResolve":  true,
+  "compilerOptions": {
+    "target": "es5"
+  }
 }

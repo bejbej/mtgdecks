@@ -6,9 +6,13 @@ module app {
 
     export class GroupEvenly {
 
-        public exec = <T>(array: T[], numberOfGroups: number, func: Function): T[][] => {
-            var words = array.map<number>(<any>func);
-            var referenceArray = this.generateReferenceArray(words);
+        static exec = <T>(array: T[], numberOfGroups: number, groupSizeFunc: (T) => number): T[][] => {
+            if (array.length === 0) {
+                return [];
+            }
+
+            var words = array.map<number>(<any>groupSizeFunc);
+            var referenceArray = GroupEvenly.generateReferenceArray(words);
 
             var currentGroupSizes = [words.length];
             var currentLargestSize = words.reduce((a, b) => {
@@ -16,7 +20,7 @@ module app {
             }, 0);
 
             while (true) {
-                var results = this.split(referenceArray, currentLargestSize - 1);
+                var results = GroupEvenly.split(referenceArray, currentLargestSize - 1);
                 if (results === undefined) {
                     break;
                 }
@@ -43,7 +47,7 @@ module app {
             return groups;
         }
 
-        private generateReferenceArray = (array): number[][] => {
+        private static generateReferenceArray = (array): number[][] => {
             var out = [];
             for (var i = 0; i < array.length; ++i) {
                 var accumulator = 0;
@@ -57,7 +61,7 @@ module app {
             return out;
         }
 
-        private split = (referenceArray: number[][], size): SplitResults => {
+        private static split = (referenceArray: number[][], size): SplitResults => {
             var groupSizes = [];
             var largestSize = 0;
             for (var i = 0; i < referenceArray.length;) {

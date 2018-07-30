@@ -1,11 +1,14 @@
 module app {
-
     class CardGroup implements ng.IDirective {
         restrict = "E";
         scope = {
+            data: "=",
             canEdit: "=",
-            group: "=",
-            isEditing: "@"
+            isEditing: "@",
+            shouldLoadPrices: "=",
+            cardGroupChanged: "=",
+            cardsChanged: "=",
+            pricesLoaded: "="
 
         };
         templateUrl = "cardGroup/cardGroup.html";

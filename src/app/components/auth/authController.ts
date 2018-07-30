@@ -1,26 +1,25 @@
 module app {
-
     class AuthController {
 
-        private isLoggingIn: boolean;
+        isLoggingIn: boolean;
 
-        constructor(private AuthService: AuthService) { }
+        constructor(private authService: AuthService) { }
 
         login = () => {
             this.isLoggingIn = true;
-            return this.AuthService.login().finally(() => {
+            return this.authService.login().finally(() => {
                 this.isLoggingIn = false;
             });
         }
 
         logout = () => {
-            return this.AuthService.logout();
+            return this.authService.logout();
         }
 
         isLoggedIn = () => {
-            return this.AuthService.isLoggedIn();
+            return this.authService.isLoggedIn();
         }
     }
-
-    angular.module("app").controller("AuthController", AuthController);
+    
+    angular.module("app").controller("authController", AuthController);
 }

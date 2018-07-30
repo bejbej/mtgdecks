@@ -12,17 +12,23 @@ module app {
             this.expirationMs = config.cardExpirationMs || 0;
         }
 
-        public getCardPrices = (cardNames: string[], timeout: ng.IPromise<any>): ng.IPromise<ICardPrice[]> => {
+        public getCardPrices = (cardNames: string[]): ICancellable<ICardPrice[]> => {
             cardNames = cardNames.map(cardName => cardName.toLowerCase());
             let knownCards = this.getKnownCards(cardNames);
             let unknownCardNames = cardNames.except(knownCards.map(card => card.name));
-            return this.getUnknownCards(unknownCardNames, timeout)
+            
+            let timeout = this.$q.defer();
+            let promise = this.getUnknownCards(unknownCardNames, timeout.promise)
                 .then(unknownCards => {
                     let now = new Date().getTime().toString();
                     unknownCards.forEach(card => card.modifiedOn = now);
                     this.save(unknownCards);
                     return knownCards.concat(unknownCards);
                 });
+            return {
+                cancel: () => timeout.resolve(),
+                promise: promise
+            };
         }
 
         private getCache = (): ICardPrice[] => {
@@ -59,8 +65,8 @@ module app {
             let config = {
                 headers: {
                     "Content-Type": "application/text",
-                    "timeout": timeout
-                }
+                },
+                "timeout": timeout
             };
             return this.$http.post<string>(this.url, csv, config)
                 .then(response => CSV.parse(response.data, "\t"));
@@ -90,5 +96,5 @@ module app {
         }
     }
 
-    angular.module("app").service("CardPriceService", CardPriceService);
+    angular.module("app").service("cardPriceService", CardPriceService);
 }

@@ -1,28 +1,28 @@
-<main ng-controller="DeckController as vm" class="{{vm.showPrices ? 'show-prices' : 'hide-prices'}}">
+<main ng-controller="deckController as vm" class="{{vm.showPrices ? 'show-prices' : 'hide-prices'}}">
     <nav>
         <a href="#/decks">My Decks</a>
         <div class="pull-right">
-            <ng-include src="'auth/auth.html'"></ng-include>
+            <auth></auth>
         </div>
     </nav>
 
-    <spinner class="light" ng-if="!vm.deck"></spinner>
+    <spinner class="light" ng-if="vm.isLoading"></spinner>
 
     <div ng-if="vm.deck">
         <section>
             <header class="deck-info">
-                <div class="deck-name" ng-if="!vm.canEdit">{{vm.deck.name}}</div>
+                <div class="deck-name" ng-if="!vm.canWrite">{{vm.deck.name}}</div>
                 <input class="form-control deck-name-input"
                        ng-model="vm.deck.name"
                        ng-model-options="{updateOn: 'default blur', debounce: {default: 2000, blur: 0}}"
                        ng-change="vm.save()"
-                       ng-if="vm.canEdit" />
+                       ng-if="vm.canWrite" />
                 <div class="flex flex-padding">
                     <button class="btn btn-default margin-top" ng-click="vm.togglePrices()">
                         {{vm.showPrices ? "Hide Prices" : "Show Prices"}}
-                        <span text-spinner ng-if="vm.showPricesSpinner && vm.showPrices"></span>
-                    </button>
-                    <button class="btn btn-default margin-top" ng-click="vm.delete()" ng-if="vm.canEdit && vm.deck.id" ng-disabled="vm.isDeleting">
+                        <span text-spinner ng-if="vm.isLoadingPrices && vm.showPrices"></span>
+                    </button><!--
+                    --><button class="btn btn-default margin-top" ng-click="vm.delete()" ng-if="vm.canWrite && vm.deck.id" ng-disabled="vm.isDeleting">
                         <span ng-if="!vm.isDeleting">Delete this Deck</span>
                         <span ng-if="vm.isDeleting">Deleting <span text-spinner></span></span>
                     </button>
@@ -33,35 +33,42 @@
         <div class="flex-gte-md">
             <section class="flex-2">
                 <div ng-repeat="cardGroup in ::vm.deck.cardGroups">
-                    <card-group group="cardGroup" can-edit="vm.canEdit" is-editing="{{::$index === 0 && vm.deck.id === undefined}}"></card-group>
+                    <card-group data="cardGroup"
+                        can-edit="vm.canWrite"
+                        is-editing="{{::$index === 0 && !vm.deck.id}}"
+                        should-load-prices="vm.loadPrices"
+                        card-group-changed="vm.cardGroupChanged"
+                        cards-changed="vm.cardsChanged"
+                        prices-loaded="vm.pricesLoaded"></card-group>
                 </div>
             </section>
             <section class="border-left-gte-md">
                 <header class="padding">Notes</header>
-                <div ng-if="!vm.canEdit && vm.deck.tags.length > 0">
+                <div ng-if="!vm.canWrite && vm.deck.tags.length > 0">
                     <div class="tags"><span class="badge" ng-repeat="tag in vm.deck.tags">{{tag}}</span></div>
                     <hr class="dashed">
                 </div>
-                <div class="tag-input" ng-if="vm.canEdit">
+                <div class="tag-input" ng-if="vm.canWrite">
                     <input type="text"
-                           class="tags transparent"
-                           placeholder="tags"
-                           ng-model="vm.deck.tags"
-                           ng-model-options="{updateOn: 'default blur', debounce: {default: 2000, blur: 0}}"
-                           ng-list
-                           ng-change="vm.save()"/>
+                        class="tags transparent"
+                        placeholder="tags"
+                        ng-model="vm.deck.tags"
+                        ng-model-options="{updateOn: 'default blur', debounce: {default: 2000, blur: 0}}"
+                        ng-list
+                        ng-change="vm.onTagsChanged()"/>
                     <hr class="dashed">
                     <div><span class="badge" ng-repeat="tag in vm.deck.tags track by $index">{{tag}}</span></div>
                 </div>
                 <textarea class="transparent"
-                          ng-model="vm.deck.notes"
-                          ng-model-options="{updateOn: 'default blur', debounce: {default: 2000, blur: 0}}"
-                          ng-change="vm.save()"
-                          ng-disabled="!vm.canEdit"
-                          allow-tabs
-                          msd-elastic></textarea>
+                    placeholder="notes"
+                    ng-model="vm.deck.notes"
+                    ng-model-options="{updateOn: 'default blur', debounce: {default: 2000, blur: 0}}"
+                    ng-change="vm.save()"
+                    ng-disabled="!vm.canWrite"
+                    allow-tabs
+                    msd-elastic></textarea>
                 <header class="padding">Stats</header>
-                <stats cards="vm.deck.cardGroups[0].cards" ng-if="vm.deck.cardGroups[0].cards.length > 0"></stats>
+                <stats cards="vm.statCards"></stats>
             </section>
         </div>
     </div>

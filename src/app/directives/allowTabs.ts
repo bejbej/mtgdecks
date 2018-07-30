@@ -6,10 +6,10 @@ module app {
                 if (event.keyCode === 9) {
                     event.preventDefault();
 
-                    var target = <HTMLTextAreaElement>event.target;
-                    var start = target.selectionStart;
-                    var end = target.selectionEnd;
-                    var value = target.value;
+                    let target = <HTMLTextAreaElement>event.target;
+                    let start = target.selectionStart;
+                    let end = target.selectionEnd;
+                    let value = target.value;
                     target.value = value.substring(0, start) + "\t" + value.substring(end);
                     target.selectionStart = start + 1;
                     target.selectionEnd  = target.selectionStart;

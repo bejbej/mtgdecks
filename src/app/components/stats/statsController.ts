@@ -1,59 +1,41 @@
 module app {
     class StatsController {
 
-        private statGroups: StatGroup[];
-        private categories: ICategory[];
+        stats: { value: string }[];
+
+        private static cardTypes = app.Dictionary.fromArray(["creature", "artifact", "enchantment", "planeswalker", "instant", "sorcery"], x => x);
 
         constructor($scope: ng.IScope, config: IConfig) {
-            this.categories = config.statCategories;
             $scope.$watchCollection("cards", this.updateStats);
         }
 
-        unique = function (value, index, self) {
-            return self.indexOf(value) === index;
-        };
-
-        createStatGroup = (cards: ICard[], category: ICategory): StatGroup => {
-            var statGroup = new StatGroup();
-            statGroup.name = category.name;
-
-            var filteredCards = cards.filter(card => {
-                return category.types.indexOf(card.definition.primaryType) >= 0;
-            });
-
-            var cmcs = filteredCards.map(card => {
-                return card.definition.cmc;
-            }).filter(this.unique).sort();
-
-            statGroup.stats = [];
-            for (var i = 0; i <= cmcs[cmcs.length - 1]; ++i) {
-                var stat = new Stat();
-                stat.name = i.toString();
-                stat.value = filteredCards.filter(card => {
-                    return card.definition.cmc === i;
-                }).reduce((a, b) => {
-                    return a + Number(b.quantity);
-                }, 0);
-                statGroup.stats.push(stat);
+        private updateStats = (cards: ICard[]) => {
+            if (!cards) {
+                delete this.stats;
+                return;
             }
-
-            return statGroup;
-        }
-
-        createStatGroups = (cards: ICard[], categories: ICategory[]): StatGroup[] => {
-            return categories.map(category => {
-                return this.createStatGroup(cards, category);
+    
+            let stats = new Array(17).fill(0);
+    
+            cards.forEach(card => {
+                if (StatsController.cardTypes[card.definition.primaryType] === undefined) {
+                    return;
+                }
+    
+                stats[card.definition.cmc] += card.quantity;
             });
-        }
-
-        updateStats = (cards: ICard[], x, y) => {
-            if (cards && cards.length > 0) {
-                this.statGroups = this.createStatGroups(cards, this.categories);
-            } else {
-                this.statGroups = [];
+    
+            for (var i = stats.length - 1; i > -1 && stats[i] === 0; --i) {
+                stats.pop();
             }
+    
+            this.stats = stats.map(stat => {
+                return {
+                    value: new Array(stat).fill("X").join("")
+                }
+            });
         }
     }
 
-    angular.module("app").controller("StatsController", StatsController);
+    angular.module("app").controller("statsController", StatsController);
 }

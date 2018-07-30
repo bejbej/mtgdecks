@@ -1,5 +1,5 @@
 module app {
-    export class Stat {
+    export interface Stat {
         name: string;
         value: number;
     }

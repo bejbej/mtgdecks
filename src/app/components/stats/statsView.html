@@ -1,3 +1,8 @@
-<div class="margin" ng-controller="StatsController as vm">
-    <stat-group group="vm.statGroups[0]"></stat-group>
+<div class="stat-group margin" ng-if="vm.stats && vm.stats.length > 0">
+    <p class="large capitalize">Cmc</p>
+    <div class="stat-group-row" ng-repeat="stat in vm.stats">
+        <span class="name">{{::$index}}</span>
+        <span class="bar">{{::stat.value}}</span>
+        <span class="light" ng-if="::stat.value.length > 0">{{::stat.value.length}}</span>
+    </div>
 </div>

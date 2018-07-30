@@ -3,25 +3,27 @@ module app {
     export class AuthService {
 
         private isAuthenticated: boolean;
+        private arbiter: Arbiter<void> = new Arbiter<void>();
 
         constructor(
             private $auth: Auth,
-            private $rootScope,
-            private config: IConfig,
-            private UserService: UserService) {
-                this.isAuthenticated = this.$auth.isAuthenticated();
-                if (!this.isAuthenticated) {
-                    this.logout();
-                }
+            private $http: ng.IHttpService,
+            private config: IConfig) {
+
+            this.isAuthenticated = this.$auth.isAuthenticated();
+            if (!this.isAuthenticated) {
+                this.logout();
             }
+        }
 
         login = (): ng.IPromise<any> => {
             return this.$auth.authenticate("google").then(() => {
-                return this.UserService.getMe().then(user => {
-                    localStorage.setItem(this.config.localStorage.user, JSON.stringify(user));
-                    this.updateAuthenticationStatus();
-                    return user;
-                }, this.logout);
+                return this.$http.post<IUser>(this.config.usersUrl + "/me", null)
+                    .then(response => {
+                        localStorage.setItem(this.config.localStorage.user, JSON.stringify(response.data));
+                        this.updateAuthenticationStatus();
+                    })
+                    .catch(this.logout);
             })
         }
 
@@ -46,7 +48,7 @@ module app {
         getAuthUser = (): IUser => {
             var user = undefined;
             if (this.$auth.isAuthenticated()) {
-                var user =  JSON.parse(localStorage.getItem(this.config.localStorage.user));
+                var user = JSON.parse(localStorage.getItem(this.config.localStorage.user));
                 if (user === undefined) {
                     this.logout();
                 }
@@ -58,11 +60,15 @@ module app {
             return user;
         }
 
+        subscribe = (callback) => {
+            return this.arbiter.subscribe(callback);
+        }
+
         private updateAuthenticationStatus = () => {
             this.isAuthenticated = this.$auth.isAuthenticated();
-            this.$rootScope.$broadcast("authentication-changed");
+            this.arbiter.broadcast();
         }
     }
 
-    angular.module("app").service("AuthService", AuthService);
+    angular.module("app").service("authService", AuthService);
 }

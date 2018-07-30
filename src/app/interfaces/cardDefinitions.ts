@@ -4,6 +4,6 @@ module app {
         primaryType: string;
         color: string;
         imageUri: string;
-        cmc: Number;
+        cmc: number;
     }
 }

@@ -1,34 +1,35 @@
 module app {
-    export class Arbiter<T> {
-        private listeners: { [id:string]: Function[] };
-        private target: T;
+    export interface ISubscription {
+        unsubscribe: () => void;
+    }
 
-        constructor(target: T) {
-            this.target = target;
-            this.listeners = {};
-        }
+    export interface IBroadcaster<T> {
+        broadcast: (value?: T) => void;
+    }
 
-        public on = (event: string, callback: Function) => {
-            this.listeners[event] = this.listeners[event] || [];
-            this.listeners[event].push(callback);
-        }
+    export interface ISubscriber<T> {
+        subscribe: (callBack: (value: T) => any) => ISubscription
+    }
 
-        public unsubscribe = (event: string, callback: Function) => {
-            let callbacks = this.listeners[event];
-            let index = callbacks.indexOf(callback);
-            if (index > -1) {
-                callbacks.splice(index, 1);
+    export class Arbiter<T> implements ISubscriber<T>, IBroadcaster<T> {
+        private listeners: Function[] = [];
+
+        public subscribe = (callback: Function): ISubscription => {
+            this.listeners.push(callback);
+            return {
+                unsubscribe: () => {
+                    let index = this.listeners.indexOf(callback);
+                    if (index > -1) {
+                        this.listeners.splice(index, 1);
+                    }
+                }
             }
         }
 
-        public broadcast = (event: string) => {
-            let callbacks = this.listeners[event];
-            if (callbacks) {
-                callbacks.forEach(callback => {
-                    let event = { target: this.target };
-                    callback(event);
-                });
-            }
+        public broadcast = (value?: T) => {
+            this.listeners.forEach(listener => {
+                listener(value);
+            });
         }
     }
 }

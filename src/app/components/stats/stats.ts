@@ -5,6 +5,7 @@ module app {
         scope = {
             cards: "="
         };
+        controller = "statsController as vm";
         templateUrl = "stats/statsView.html";
     }
 

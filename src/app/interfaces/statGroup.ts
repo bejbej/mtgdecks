@@ -1,5 +1,5 @@
 module app {
-    export class StatGroup {
+    export interface StatGroup {
         name: string;
         stats: Stat[];
     }

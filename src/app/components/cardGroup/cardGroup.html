@@ -1,52 +1,53 @@
 <div ng-controller="CardGroupController as vm">
     <header class="flex padding-h-lte-sm" ng-if="!vm.isEditing">
         <button class="header-button text-left-gte-sm" ng-click="vm.showToolbar = !vm.showToolbar">
-            <div>{{::vm.cardGroup.name}} <span class="icon" ng-if="vm.cardGroup.cards.length > 0">{{vm.showToolbar ? "7" : "4"}}</span></div>
-            <div class="small light">{{::vm.cardGroup.count}} cards <span class="price" ng-if="::vm.cardGroup.usd">&#8226; ${{vm.cardGroup.usd | number: 2}}</span></div>
+            <div>{{::vm.cardGroup.name}} <span class="icon" ng-if="vm.cards.length > 0">{{vm.showToolbar ? "7" : "4"}}</span></div>
+            <div class="small light">{{::vm.count}} cards <span class="price" ng-if="::vm.usd">&#8226; ${{vm.usd | number: 2}}</span></div>
         </button><!--
-        --><span class="header-button" ng-if="vm.canEdit" ng-click="vm.startEditing()">Edit</span>
+        --><span class="header-button" ng-if="canEdit" ng-click="vm.startEditing()">Edit</span>
     </header>
     <header class="flex padding-h-lte-sm" ng-if="vm.isEditing">
         <button class="header-button text-left-gte-sm" ng-click="vm.applyChanges()">
-            <div>{{::vm.cardGroup.name}} <span class="icon" ng-if="vm.cardGroup.cards.length > 0">{{vm.showToolbar ? "7" : "4"}}</span></div>
-            <div class="small light">{{::vm.cardGroup.count}} cards <span class="price" ng-if="::vm.cardGroup.usd">&#8226; ${{vm.cardGroup.usd | number: 2}}</span></div>
+            <div>{{::vm.cardGroup.name}} <span class="icon" ng-if="vm.cards.length > 0">{{vm.showToolbar ? "7" : "4"}}</span></div>
+            <div class="small light">{{::vm.count}} cards <span class="price" ng-if="::vm.usd">&#8226; ${{vm.usd | number: 2}}</span></div>
         </button><!--
         --><span class="tab">Edit</span>
     </header>
-    <div class="radio-group" ng-if="vm.cardGroup.cards.length > 0 && !vm.isEditing && vm.showToolbar">
-        <label>
-            <input type="radio" ng-model="vm.view" value="group-by-type" ng-click="vm.showToolbar = false"/>
-            Card Type
-        </label>
-        <label>
-            <input type="radio" ng-model="vm.view" value="group-by-color" ng-click="vm.showToolbar = false"/>
-            Color
-        </label>
-        <label>
-            <input type="radio" ng-model="vm.view" value="group-by-cmc" ng-click="vm.showToolbar = false"/>
-            Converted Mana Cost
-        </label>
-        <label>
-            <input type="radio" ng-model="vm.view" value="group-by-name" ng-click="vm.showToolbar = false"/>
-            Name
-        </label>
-        <label>
-            <input type="radio" ng-model="vm.view" value="group-by-price" ng-click="vm.showToolbar = false"/>
-            Price
-        </label>
-    </div>
-    <div class="alert alert-danger margin" ng-if="vm.cardGroup.failedCards.length > 0">
+    <form>
+        <div class="radio-group" ng-show="vm.cards.length > 0 && !vm.isEditing && vm.showToolbar">
+            <label>
+                <input type="radio" name="view" checked="checked" ng-click="vm.setGroupFunc(vm.cardGrouper.groupByType)"/>
+                Card Type
+            </label>
+            <label>
+                <input type="radio" name="view" ng-click="vm.setGroupFunc(vm.cardGrouper.groupByColor)"/>
+                Color
+            </label>
+            <label>
+                <input type="radio" name="view" ng-click="vm.setGroupFunc(vm.cardGrouper.groupByCmc)"/>
+                Converted Mana Cost
+            </label>
+            <label>
+                <input type="radio" name="view" ng-click="vm.setGroupFunc(vm.cardGrouper.groupByName)"/>
+                Name
+            </label>
+            <label>
+                <input type="radio" name="view" ng-click="vm.setGroupFunc(vm.cardGrouper.groupByPrice)"/>
+                Price
+            </label>
+        </div>
+    </form>
+    <div class="alert alert-danger margin" ng-if="vm.invalidCards.length > 0">
         <p class="alert-title">Unknown Cards</p>
-        <span ng-repeat="card in vm.cardGroup.failedCards track by $index">{{card}}<br></span>
+        <span ng-repeat="card in vm.invalidCards track by $index">{{card}}<br></span>
     </div>
-    <div ng-if="!vm.isEditing && vm.cardGroup.cards.length > 0">
-        <directive-container directive="vm.view" cardgroup="vm.cardGroup"></directive-container>
+    <div ng-if="!vm.isEditing && vm.cards.length > 0">
+        <card-view columns="vm.cardView" show-headers="vm.showHeaders"></card-view>
     </div>
     <form name="vm.form" class="margin" ng-if="vm.isEditing">
         <textarea class="form-control has-bottom-buttons"
                   placeholder="4x Island"
-                  ng-model="vm.cardsBlob"
-                  ng-model-options="{updateOn: 'blur'}"
+                  ng-model="vm.cardBlob"
                   msd-elastic></textarea>
         <div class="bottom-buttons">
             <button class="btn btn-default" type="button" ng-click="vm.applyChanges()">Apply Changes</button><!--

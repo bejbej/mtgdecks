@@ -2,19 +2,17 @@ module app {
 
     class CardPreview implements ng.IDirective {
 
-        constructor(private config: IConfig) {
-
-        }
+        constructor(private config: IConfig) { }
 
         getOffset = (el) => {
-            var rect = el.getBoundingClientRect();
-            var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-            var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            let rect = el.getBoundingClientRect();
+            let scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
             return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
         };
 
         showCardPreview = (event: Event, url: string): void => {
-            var img: any = document.getElementById("card-preview");
+            let img: any = document.getElementById("card-preview");
 
             if (!img) {
                 img = document.createElement("img");
@@ -22,14 +20,14 @@ module app {
                 document.body.appendChild(img);
             }
 
-            var offset = this.getOffset(event.currentTarget);
+            let offset = this.getOffset(event.currentTarget);
             img.style.top = offset.top - 100 + "px";
             img.style.left = offset.left + (<HTMLElement>event.currentTarget).offsetWidth + 20 + "px";
             img.src = url;
         }
 
         hideCardPreview = (): void => {
-            var img: any = document.getElementById("card-preview");
+            let img: any = document.getElementById("card-preview");
             if (img) {
                 img.src = "";
                 img.style.top = "-300px";
@@ -39,9 +37,9 @@ module app {
 
         restrict = "A";
         link = (scope: ng.IScope, elem: ng.IAugmentedJQuery, attrs) => {
-            var url: string;
+            let url: string;
 
-            var mouseOver = (event) => {
+            let mouseOver = (event) => {
                 if (this.config.enableHover) {
                     if (!url) {
                         let uri = scope.$eval(attrs.lightbox);
@@ -51,7 +49,7 @@ module app {
                 }
             }
 
-            var mouseLeave = (event) => {
+            let mouseLeave = (event) => {
                 if (this.config.enableHover) {
                     this.hideCardPreview();
                 }
