@@ -21,5 +21,5 @@
     cardsUrl: "https://mtgdecks-api.herokuapp.com/api/cards",
     decksUrl: "https://mtgdecks-api.herokuapp.com/api/decks",
     usersUrl: "https://mtgdecks-api.herokuapp.com/api/users",
-    imagesUrl: "https://img.scryfall.com/cards/border_crop/en/{imageUri}.jpg"
+    imagesUrl: "https://img.scryfall.com/cards/border_crop/{imageUri}.jpg"
 };

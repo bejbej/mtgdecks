@@ -107,6 +107,9 @@ module app {
         }
 
         private sync = () => {
+            if (!this.deck) {
+                return;
+            }
             var authUser = this.authService.getAuthUser();
             if (!this.deck.id && authUser) {
                 this.deck.owners = [authUser.id];
